@@ -103,8 +103,8 @@ p{margin:0}
 .seat-strip b{font-family:var(--head);font-size:1.1rem;letter-spacing:-.02em}
 
 /* hero visual */
-.scan{position:relative;min-height:600px}
-.adcard{position:absolute;left:0;top:10px;width:min(330px,72%);background:var(--paper);border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(17,16,20,.35);overflow:hidden}
+.scan{position:relative;min-height:560px}
+.adcard{position:absolute;left:0;top:0;z-index:2;width:48%;background:var(--paper);border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(17,16,20,.35);overflow:visible}
 .ad-top{display:flex;align-items:center;gap:10px;padding:12px 14px}
 .ad-av{width:34px;height:34px;border-radius:50%;background:#F2C9A9;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:.85rem}
 .ad-name{font-weight:700;font-size:.9rem;line-height:1.2}
@@ -113,36 +113,43 @@ p{margin:0}
 .ad-img svg{width:100%;height:100%}
 .scanline{position:absolute;left:0;right:0;height:46px;top:-50px;background:linear-gradient(180deg,rgba(203,239,47,0) 0%,rgba(203,239,47,.55) 85%,var(--lime) 100%);mix-blend-mode:multiply;animation:scan 2.6s .4s ease-in-out 2}
 @keyframes scan{0%{top:-50px}100%{top:100%}}
-.ad-copy{padding:12px 14px 16px;font-size:.88rem;line-height:1.45}
-.ad-cta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-weight:700;font-size:.82rem}
-.ad-cta span:last-child{background:var(--ink);color:var(--cream);border-radius:8px;padding:6px 12px}
-.flag{background:var(--red-soft);box-shadow:inset 0 -2px 0 var(--red);border-radius:3px;padding:0 2px}
+.ad-copy{padding:12px 14px 14px;font-size:.86rem;line-height:1.5}
+.ad-cta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-weight:700;font-size:.8rem}
+.ad-cta>span:last-child{background:var(--ink);color:var(--cream);border-radius:8px;padding:6px 12px;flex:none}
+.flag{white-space:nowrap;background:var(--red-soft);box-shadow:inset 0 -2px 0 var(--red);border-radius:3px;padding:0 2px}
+.pin{display:inline-block;vertical-align:2px;margin-left:4px;width:18px;height:18px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 2px var(--ink);color:var(--ink);font:800 .68rem/18px var(--head);font-style:normal;text-align:center;opacity:0;transform:scale(.4);animation:pinIn .35s ease forwards}
+.pin.p1{animation-delay:1.6s}.pin.p2{animation-delay:2.1s}.pin.p3{animation-delay:2.6s}
+@keyframes pinIn{to{opacity:1;transform:none}}
 
-.report{position:absolute;right:0;top:120px;width:min(360px,78%);background:var(--ink);color:var(--cream);border-radius:24px;padding:22px;box-shadow:0 40px 80px -30px rgba(17,16,20,.6)}
-.report-head{display:flex;align-items:center;gap:16px}
+.report{position:absolute;right:0;top:64px;z-index:1;width:56%;background:var(--ink);color:var(--cream);border-radius:24px;padding:22px 22px 18px 34px;box-shadow:0 40px 80px -30px rgba(17,16,20,.6)}
+.report-head{display:flex;align-items:center;gap:14px}
 .ring{width:96px;height:96px;flex:none;position:relative}
 .ring svg{width:96px;height:96px;transform:rotate(-90deg)}
 .ring .num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.9rem;letter-spacing:-.04em}
 .ring .num small{font-size:.6rem;color:var(--muted-on-ink);font-weight:600;display:block;text-align:center;margin-top:-6px;letter-spacing:0}
-.report-title{font-family:var(--head);font-weight:700;font-size:1.15rem;letter-spacing:-.02em;line-height:1.2}
-.report-title span{display:block;color:var(--muted-on-ink);font-family:var(--body);font-weight:500;font-size:.85rem;letter-spacing:0;margin-top:4px}
-.finds{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
-.finds li{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:14px;padding:12px 14px;font-size:.88rem;line-height:1.4;opacity:0;transform:translateY(8px);animation:pop .5s ease forwards}
+.report .ring,.report .ring svg{width:80px;height:80px}
+.report .ring .num{font-size:1.6rem}
+.report .ring .num small{font-size:.5rem;margin-top:-4px}
+.report-title{font-family:var(--head);font-weight:700;font-size:1.1rem;letter-spacing:-.02em;line-height:1.2}
+.report-title span{display:block;color:var(--muted-on-ink);font-family:var(--body);font-weight:500;font-size:.84rem;letter-spacing:0;margin-top:4px}
+.finds{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.finds li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:14px;padding:11px 12px;font-size:.85rem;line-height:1.4;opacity:0;transform:translateY(8px);animation:pop .5s ease forwards}
 .finds li:nth-child(1){animation-delay:1.6s}.finds li:nth-child(2){animation-delay:2.1s}.finds li:nth-child(3){animation-delay:2.6s}
 @keyframes pop{to{opacity:1;transform:none}}
-.finds b{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:2px}
-.finds b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);flex:none}
+.fnum{width:22px;height:22px;border-radius:50%;background:var(--lime);color:var(--ink);font:800 .72rem/22px var(--head);text-align:center;font-style:normal}
+.finds b{display:block;font-weight:700;margin-bottom:2px}
 .finds .fix{color:var(--lime)}
-.badge-src{position:absolute;right:6%;bottom:0;background:var(--lime);color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:700;font-size:.85rem;box-shadow:inset 0 0 0 2px var(--ink);display:flex;align-items:center;gap:8px}
+.report-foot{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--ink-3);font-size:.8rem;font-weight:600;color:var(--muted-on-ink)}
+.report-foot svg{flex:none}
 @media (max-width:960px){
   .hero-grid{grid-template-columns:1fr}
-  .scan{min-height:560px;max-width:520px;width:100%;margin-inline:auto}
+  .scan{max-width:560px;width:100%;margin-inline:auto}
 }
 @media (max-width:600px){
-  .scan{min-height:0;display:flex;flex-direction:column}
-  .adcard{position:relative;top:auto;width:78%}
-  .report{position:relative;top:auto;right:auto;margin:-150px 0 0 auto;width:90%}
-  .badge-src{display:none}
+  .scan{min-height:0;display:flex;flex-direction:column;gap:14px}
+  .adcard,.report{position:relative;top:auto;left:auto;right:auto;width:100%}
+  .adcard{width:88%}
+  .report{padding:20px}
 }
 
 /* ---------- Problems ---------- */
@@ -500,7 +507,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .finds li{opacity:1;transform:none}
+  .finds li,.pin{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -568,8 +575,8 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
           <div class="scanline"></div>
         </div>
         <div class="ad-copy">
-          New festive kurtas. <span class="flag">100% guaranteed</span> perfect fit or money back! Cash on delivery available.
-          <div class="ad-cta"><span>kurtistudio.in</span><span>Shop now</span></div>
+          New festive kurtas. <span class="flag">100% guaranteed<i class="pin p1" aria-hidden="true">1</i></span> perfect fit or money back! <span class="flag">Cash on delivery<i class="pin p3" aria-hidden="true">3</i></span> available.
+          <div class="ad-cta"><span class="flag">kurtistudio.in<i class="pin p2" aria-hidden="true">2</i></span><span>Shop now</span></div>
         </div>
       </div>
 
@@ -582,15 +589,14 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
           <div class="report-title">AdSure report<span>3 problems to fix before you spend</span></div>
         </div>
         <ul class="finds">
-          <li><b>“100% guaranteed” in the ad text</b><span class="fix">Fix: show real customer reviews instead.</span></li>
-          <li><b>Website takes 5 seconds to open</b><span class="fix">Fix: compress images, remove heavy apps.</span></li>
-          <li><b>Returned COD orders counted as sales</b><span class="fix">Fix: count only delivered orders.</span></li>
+          <li><i class="fnum" aria-hidden="true">1</i><span><b>“100% guaranteed” in the ad text</b><span class="fix">Fix: show real customer reviews instead.</span></span></li>
+          <li><i class="fnum" aria-hidden="true">2</i><span><b>Website takes 5 seconds to open</b><span class="fix">Fix: compress images, remove heavy apps.</span></span></li>
+          <li><i class="fnum" aria-hidden="true">3</i><span><b>Returned COD orders counted as sales</b><span class="fix">Fix: count only delivered orders.</span></span></li>
         </ul>
-      </div>
-
-      <div class="badge-src" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
-        Every result shows its source
+        <p class="report-foot">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#CBEF2F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+          Every result shows its source
+        </p>
       </div>
     </div>
   </div>
@@ -1129,7 +1135,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
         <li><span>2</span><div><b>We reach out</b><p>By email or phone when your seat opens.</p></div></li>
         <li><span>3</span><div><b>Check your first ad</b><p>See your score, the problems and the fixes.</p></div></li>
       </ol>
-      <p class="contact-mini">Questions? Write to <a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a> or call <a href="tel:+916386459941">+91 63864 59941</a>.</p>
+      <p class="contact-mini">Questions? Write to <a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a>.</p>
     </div>
 
     <form class="card" id="form" novalidate>
@@ -1236,7 +1242,6 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a></li>
-          <li><a href="tel:+916386459941">+91 63864 59941</a></li>
         </ul>
       </div>
       <div>
@@ -1613,7 +1618,7 @@ form.addEventListener("submit", async e => {
     $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
   } catch (err) {
     console.error("AdSure form error:", err.status, err.code, err.message);
-    showMsg("Something went wrong and your details weren't saved. Please try again, or call +91 63864 59941.", false);
+    showMsg("Something went wrong and your details weren't saved. Please try again, or email adsure@myyahoo.com.", false);
     const d = document.createElement("small");
     d.style.cssText = "display:block;margin-top:6px;opacity:.75";
     d.textContent = whyFailed(err);
@@ -1693,7 +1698,7 @@ form.addEventListener("submit", async e => {
       $("#pop-done").querySelector("button").focus();
     } catch (err) {
       console.error("AdSure popup error:", err.status, err.code, err.message);
-      pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or call +91 63864 59941.";
+      pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or email adsure@myyahoo.com.";
       const d = document.createElement("small"); d.style.cssText = "display:block;margin-top:6px;opacity:.75"; d.textContent = whyFailed(err); pmsg.appendChild(d);
       pmsg.className = "form-msg show no";
     } finally { pbtn.disabled = false; pbtn.textContent = label; }
