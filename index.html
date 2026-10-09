@@ -159,31 +159,49 @@ p{margin:0}
 @media (max-width:1000px){.prob-grid{grid-template-columns:repeat(2,1fr)}.root{grid-template-columns:1fr}}
 @media (max-width:560px){.prob-grid{grid-template-columns:1fr}}
 
-/* ---------- Video ---------- */
+/* ---------- Video player ---------- */
 .video{background:var(--ink);color:var(--cream)}
-.video-grid{display:grid;grid-template-columns:1fr 2fr;gap:clamp(28px,4vw,56px);align-items:center}
-.video-grid.solo{grid-template-columns:1fr}
-.vframe{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--ink-2);border:1px solid var(--ink-3);aspect-ratio:16/9}
-.vframe video,.vframe iframe{width:100%;height:100%;object-fit:cover;border:0;background:#000}
-.vcover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(18px,3vw,32px);background:
+.player{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+.stage{display:flex;justify-content:center;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-lg);overflow:hidden}
+.vframe{--arn:1.7778;--maxh:min(76vh,720px);position:relative;width:min(100%,calc(var(--maxh) * var(--arn)));aspect-ratio:var(--arn);background:#000}
+.vframe video,.vframe iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border:0;background:#000}
+.vcover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:clamp(18px,3vw,32px);background:
   radial-gradient(120% 90% at 85% 10%,rgba(203,239,47,.22),transparent 55%),
-  linear-gradient(180deg,rgba(17,16,20,.1),rgba(17,16,20,.85));border:0;color:var(--cream);text-align:left;cursor:pointer;width:100%}
-.vcover .play{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:var(--lime);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(203,239,47,.18);transition:transform .2s}
+  linear-gradient(180deg,rgba(17,16,20,.15),rgba(17,16,20,.88));border:0;color:var(--cream);text-align:left;cursor:pointer;width:100%;z-index:2}
+.vcover .play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;background:var(--lime);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(203,239,47,.18);transition:transform .2s}
 .vcover:hover .play{transform:translate(-50%,-50%) scale(1.06)}
 .vcover .play svg{width:30px;height:30px;margin-left:5px}
 .vcover strong{font-family:var(--head);font-size:clamp(1.2rem,2.4vw,1.7rem);letter-spacing:-.02em;line-height:1.15}
 .vcover span{color:var(--muted-on-ink);font-size:.95rem}
+.vcover .vc-kicker{color:var(--lime);font-weight:600}
 .vframe.hidden-cover .vcover{display:none}
-.vmissing{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:24px;color:var(--muted-on-ink);font-size:.95rem}
+.vmissing{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:24px;color:var(--muted-on-ink);font-size:.95rem;z-index:3;background:var(--ink-2)}
 .vframe.is-missing .vmissing{display:grid}
-.vframe.is-missing .vcover,.vframe.is-missing video{display:none}
-.video-points{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
+.side{display:grid;gap:18px}
+.vlist{display:grid;gap:10px}
+.vlist[hidden]{display:none}
+.vlist-title{font-family:var(--head);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;margin-bottom:2px}
+.vitem{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:center;width:100%;text-align:left;padding:14px;border-radius:18px;background:var(--ink-2);border:1.5px solid var(--ink-3);color:var(--cream);cursor:pointer;transition:border-color .15s, background .15s}
+.vitem:hover{border-color:#4A4952}
+.vitem[aria-pressed="true"]{border-color:var(--lime);background:rgba(203,239,47,.07)}
+.vitem[hidden]{display:none}
+.vnum{width:46px;height:46px;border-radius:50%;background:var(--ink-3);display:grid;place-items:center;font-family:var(--head);font-weight:800}
+.vitem[aria-pressed="true"] .vnum{background:var(--lime);color:var(--ink)}
+.vnum .eq{display:none;gap:3px;align-items:flex-end;height:16px}
+.vnum .eq i{width:3px;background:var(--ink);border-radius:2px;animation:eq 1s ease-in-out infinite}
+.vnum .eq i:nth-child(2){animation-delay:.2s}.vnum .eq i:nth-child(3){animation-delay:.4s}
+@keyframes eq{0%,100%{height:4px}50%{height:16px}}
+.vitem.playing .vnum .n{display:none}
+.vitem.playing .vnum .eq{display:flex}
+.vitem b{display:block;font-family:var(--head);font-size:1.05rem;letter-spacing:-.015em;line-height:1.25}
+.vitem small{display:block;color:var(--muted-on-ink);font-size:.88rem;line-height:1.4;margin-top:3px}
+.vitem .dur{display:inline-block;margin-top:6px;font-size:.8rem;font-weight:600;color:var(--cream);background:var(--ink-3);border-radius:999px;padding:2px 9px}
+.vitem .dur:empty{display:none}
+.video-points{list-style:none;padding:0;margin:0;display:grid;gap:12px}
 .video-points li{display:flex;gap:12px;align-items:flex-start}
 .video-points li::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat;margin-top:3px}
-.shorts{display:none;margin-top:22px}
-.shorts.show{display:block}
-.shorts .vframe{aspect-ratio:9/16;max-width:260px}
-@media (max-width:900px){.video-grid{grid-template-columns:1fr}}
+@media (max-width:960px){.player{grid-template-columns:1fr}.vlist{grid-template-columns:1fr 1fr}.vlist-title{grid-column:1/-1}}
+@media (max-width:560px){.vlist{grid-template-columns:1fr}.vcover .play{width:62px;height:62px;top:40%}.vcover .play svg{width:24px;height:24px}.vcover>span:last-child{display:none}}
 
 /* ---------- How ---------- */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
@@ -602,32 +620,35 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 
 <!-- ============ VIDEO ============ -->
 <section class="section video on-ink" id="video">
-  <div class="wrap video-grid">
-    <div>
+  <div class="wrap">
+    <div class="section-head">
       <p class="kicker">Watch in under a minute</p>
       <h2>See how AdSure works</h2>
-      <p class="lede">A small business owner runs ads, spends money and gets nothing. Then she checks her ad with AdSure first.</p>
-      <ul class="video-points">
-        <li>Set up your ad on a familiar screen</li>
-        <li>Get a score out of 10 with every problem named</li>
-        <li>Fix it before you spend, not after</li>
-      </ul>
-      <div class="shorts" id="shorts">
-        <p class="kicker" style="margin-top:8px">The short version</p>
-        <div class="vframe" data-video="short">
-          <video preload="metadata" playsinline controls></video>
-          <div class="vmissing"><p>Short video not added yet.</p></div>
+      <p class="lede">Short stories of small businesses losing money on ads, and what changes when they check first.</p>
+    </div>
+    <div class="player">
+      <div class="stage">
+        <div class="vframe" id="vframe">
+          <video id="vid" preload="metadata" playsinline></video>
+          <button class="vcover" type="button" id="vcover">
+            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#111014"><path d="M7 4.5v15l12-7.5z"/></svg></span>
+            <span class="vc-kicker" id="vc-kicker"></span>
+            <strong id="vc-title">A health check-up for your ads</strong>
+            <span>Turn on sound</span>
+          </button>
+          <div class="vmissing"><p id="vmissing-text">Add your video files in <code>config.js</code>.</p></div>
         </div>
       </div>
-    </div>
-    <div class="vframe" data-video="main">
-      <video preload="metadata" playsinline></video>
-      <button class="vcover" type="button" aria-label="Play the AdSure video">
-        <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#111014"><path d="M7 4.5v15l12-7.5z"/></svg></span>
-        <strong>A health check-up for your ads</strong>
-        <span>Turn on sound</span>
-      </button>
-      <div class="vmissing"><p>Add your video file at <code>assets/adsure-explainer.mp4</code>,<br>or set a YouTube ID in the settings at the bottom of this file.</p></div>
+      <div class="side">
+        <div class="vlist" id="vlist" role="group" aria-label="Choose a video">
+          <p class="vlist-title">Choose a video</p>
+        </div>
+        <ul class="video-points">
+          <li>Set up your ad on a familiar screen</li>
+          <li>Get a score out of 10 with every problem named</li>
+          <li>Fix it before you spend, not after</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1051,7 +1072,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
         <li><span>2</span><div><b>We reach out</b><p>By email or phone when your seat opens.</p></div></li>
         <li><span>3</span><div><b>Check your first ad</b><p>See your score, the problems and the fixes.</p></div></li>
       </ol>
-      <p class="contact-mini">Questions? Write to <a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a> or call <a href="tel:+916386459941">+91 63864 59941</a>.</p>
+      <p class="contact-mini">Questions? Call <a href="tel:+916386459941">+91 63864 59941</a>.</p>
     </div>
 
     <form class="card" id="form" novalidate>
@@ -1157,7 +1178,6 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
       <div>
         <h4>Contact</h4>
         <ul>
-          <li><a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a></li>
           <li><a href="tel:+916386459941">+91 63864 59941</a></li>
         </ul>
       </div>
@@ -1183,26 +1203,20 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   <a class="btn btn-lime" href="#join">Get early access</a>
 </div>
 
+<script src="config.js"></script>
 <script>
-/* ================================================================
-   SETTINGS: edit these values
-   ================================================================ */
-const CONFIG = {
-  // Supabase: Project Settings > API. Leave empty until you set it up.
-  SUPABASE_URL: "https://zzfldryjluevajwbitra.supabase.co",            // e.g. "https://abcdxyz.supabase.co"
-  SUPABASE_ANON_KEY: "sb_publishable_Osib6-_IbK-Wi5Xs8OOlng_9s-z4S4h",       // the "anon public" or "publishable" key (safe to put here)
-
+/* Settings live in config.js. These defaults are used for anything missing there. */
+const CONFIG = Object.assign({
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: "",
   TOTAL_SEATS: 500,
-  PRICE: 1599,                 // ₹ per month for founding members
-  REGULAR_PRICE: null,         // set e.g. 2499 ONLY if that will be your real later price; shows struck through
-
-  VIDEO_MAIN: "assets/adsure-explainer.mp4",   // your main explainer video file
-  VIDEO_MAIN_POSTER: "",                        // optional poster image, e.g. "assets/video-poster.jpg"
-  YOUTUBE_ID: "",                               // optional: use a YouTube video instead, e.g. "dQw4w9WgXcQ"
-  VIDEO_SHORT: "assets/adsure-short.mp4",       // optional vertical short video; hidden if the file isn't there
-
-  REFRESH_SECONDS: 20          // how often the live seat count refreshes
-};
+  PRICE: 1599,
+  REGULAR_PRICE: null,
+  VIDEOS: [{ title: "How AdSure works", text: "", file: "assets/adsure-explainer.mp4" }],
+  REFRESH_SECONDS: 20
+}, window.ADSURE_CONFIG || {});
+CONFIG.SUPABASE_URL = String(CONFIG.SUPABASE_URL || "").trim().replace(/\/+$/, "");
+CONFIG.SUPABASE_ANON_KEY = String(CONFIG.SUPABASE_ANON_KEY || "").trim();
 
 /* ================================================================ */
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
@@ -1422,7 +1436,7 @@ form.addEventListener("submit", async e => {
   msg.className = "form-msg";
   if (form.company_site.value) return;           // bot trap
   if (!validate()) return;
-  if (!hasDB) { showMsg("The form isn't connected yet. Add your Supabase URL and key in the settings at the bottom of index.html.", false); return; }
+  if (!hasDB) { showMsg("The form isn't connected yet. Add your Supabase URL and key in config.js.", false); return; }
 
   const data = {
     name: $("#f-name").value.trim(),
@@ -1442,7 +1456,10 @@ form.addEventListener("submit", async e => {
       method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(data)
     });
     if (r.status === 409) { showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
-    if (!r.ok) throw new Error(await r.text());
+    if (!r.ok) {
+      const body = await r.text(); let j = {}; try { j = JSON.parse(body); } catch (_) {}
+      const e = new Error(j.message || body || ("HTTP " + r.status)); e.status = r.status; e.code = j.code || ""; throw e;
+    }
     await fetchSeats();
     const position = taken;
     const inBeta = position > 0 && position <= CONFIG.TOTAL_SEATS;
@@ -1457,32 +1474,102 @@ form.addEventListener("submit", async e => {
     }
     $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
   } catch (err) {
-    console.error(err);
-    showMsg("Something went wrong and your details weren't saved. Please try again, or email adsure@myyahoo.com.", false);
+    console.error("AdSure form error:", err.status, err.code, err.message);
+    showMsg("Something went wrong and your details weren't saved. Please try again, or call +91 63864 59941.", false);
+    // Short reason for the site owner (also printed in the browser console)
+    const m = String(err.message || ""), st = err.status, c = err.code;
+    let why;
+    if (err instanceof TypeError) why = "Can't reach Supabase. Check SUPABASE_URL (no slash at the end).";
+    else if (c === "42501" || /permission|row-level security/i.test(m)) why = "Supabase blocked the save (permissions). Run the fix SQL.";
+    else if (st === 401 || /api key|jwt/i.test(m)) why = "Supabase rejected the key. Check SUPABASE_ANON_KEY.";
+    else if (st === 404 || c === "PGRST205" || c === "42P01") why = "The early_access table wasn't found. Run the SQL in Supabase.";
+    else if (c === "23514" || c === "23502") why = "A detail didn't match the table rules.";
+    else why = m.slice(0, 160);
+    const d = document.createElement("small");
+    d.style.cssText = "display:block;margin-top:6px;opacity:.75";
+    d.textContent = "Reason: " + why + (c ? " (code " + c + ")" : st ? " (status " + st + ")" : "");
+    msg.appendChild(d);
   } finally { btn.disabled = false; btn.textContent = label; }
 });
 
 /* ================================================================
-   VIDEO
+   VIDEO PLAYER (switch between videos with the buttons)
    ================================================================ */
-(function video(){
-  const main = document.querySelector('[data-video="main"]');
-  const v = main.querySelector("video"), cover = main.querySelector(".vcover");
-  if (CONFIG.YOUTUBE_ID) {
-    cover.addEventListener("click", () => {
-      main.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(CONFIG.YOUTUBE_ID)}?autoplay=1&rel=0" title="AdSure video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
-    });
-  } else {
-    if (CONFIG.VIDEO_MAIN_POSTER) v.poster = CONFIG.VIDEO_MAIN_POSTER;
-    v.src = CONFIG.VIDEO_MAIN;
-    v.addEventListener("error", () => main.classList.add("is-missing"));
-    cover.addEventListener("click", () => { main.classList.add("hidden-cover"); v.controls = true; v.play().catch(() => {}); });
+(function player(){
+  const list = (CONFIG.VIDEOS || []).filter(v => v && (v.file || v.youtube));
+  const frame = $("#vframe"), vid = $("#vid"), cover = $("#vcover"), vlist = $("#vlist");
+  const missing = text => { frame.classList.add("is-missing"); $("#vmissing-text").innerHTML = text; };
+  if (!list.length) { vlist.hidden = true; missing("Add your video files in <code>config.js</code>."); return; }
+
+  let cur = -1;
+  const fmt = d => { if (!isFinite(d) || d <= 0) return ""; const t = Math.round(d); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); };
+  const available = () => list.map((v, i) => v.missing ? -1 : i).filter(i => i > -1);
+  const esc = t => String(t || "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  const btns = list.map((v, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "vitem"; b.setAttribute("aria-pressed", "false");
+    b.innerHTML = `<span class="vnum" aria-hidden="true"><span class="n">${i + 1}</span><span class="eq"><i></i><i></i><i></i></span></span>
+      <span><b>${esc(v.title)}</b>${v.text ? `<small>${esc(v.text)}</small>` : ""}<span class="dur">${v.youtube ? "YouTube" : ""}</span></span>`;
+    b.addEventListener("click", () => select(i, true));
+    vlist.appendChild(b);
+    if (v.file) {                         // read the length, and hide the button if the file isn't uploaded
+      const probe = document.createElement("video");
+      probe.preload = "metadata"; probe.muted = true;
+      probe.addEventListener("loadedmetadata", () => { b.querySelector(".dur").textContent = fmt(probe.duration); });
+      probe.addEventListener("error", () => markMissing(i));
+      probe.src = v.file;
+    }
+    return b;
+  });
+
+  function refreshList(){ vlist.hidden = available().length < 2; }
+  function markMissing(i){
+    if (list[i].missing) return;
+    list[i].missing = true; btns[i].hidden = true; refreshList();
+    const left = available();
+    if (!left.length) missing(`Video not uploaded yet: <code>${esc(list[i].file)}</code>`);
+    else if (cur === i) select(left[0], false);
   }
-  const shorts = $("#shorts"), sv = shorts.querySelector("video");
-  if (CONFIG.VIDEO_SHORT) {
-    sv.addEventListener("loadedmetadata", () => shorts.classList.add("show"));
-    sv.src = CONFIG.VIDEO_SHORT;
+  function setRatio(r){ frame.style.setProperty("--arn", (r && isFinite(r)) ? r : 16 / 9); }
+
+  function select(i, play){
+    const v = list[i]; cur = i;
+    btns.forEach((b, j) => { b.setAttribute("aria-pressed", j === i); b.classList.remove("playing"); });
+    frame.querySelectorAll("iframe").forEach(f => f.remove());
+    frame.classList.remove("is-missing", "hidden-cover");
+    $("#vc-title").textContent = v.title || "AdSure";
+    $("#vc-kicker").textContent = available().length > 1 ? `Video ${available().indexOf(i) + 1} of ${available().length}` : "";
+    vid.pause(); vid.controls = false;
+    if (v.youtube) { vid.removeAttribute("src"); vid.load(); vid.hidden = true; setRatio(16 / 9); }
+    else { vid.hidden = false; vid.poster = v.poster || ""; vid.src = v.file; }
+    if (play) start();
   }
+  function start(){
+    const v = list[cur];
+    frame.classList.add("hidden-cover");
+    if (v.youtube) {
+      const f = document.createElement("iframe");
+      f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtube)}?autoplay=1&rel=0&playsinline=1`;
+      f.title = v.title || "AdSure video";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true;
+      frame.appendChild(f);
+    } else { vid.controls = true; vid.play().catch(() => {}); }
+  }
+
+  cover.addEventListener("click", start);
+  vid.addEventListener("loadedmetadata", () => setRatio(vid.videoWidth / vid.videoHeight));
+  vid.addEventListener("error", () => { if (vid.getAttribute("src") && cur > -1 && !list[cur].youtube) markMissing(cur); });
+  vid.addEventListener("play", () => btns[cur] && btns[cur].classList.add("playing"));
+  vid.addEventListener("pause", () => btns[cur] && btns[cur].classList.remove("playing"));
+  vid.addEventListener("ended", () => {
+    const left = available(), pos = left.indexOf(cur);
+    if (pos > -1 && pos < left.length - 1) { select(left[pos + 1], false); $("#vc-kicker").textContent = "Up next"; }
+    else { frame.classList.remove("hidden-cover"); vid.controls = false; $("#vc-kicker").textContent = "Watch again"; }
+  });
+
+  refreshList();
+  select(0, false);
 })();
 </script>
 </body>
