@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AdSure: a health check-up for your ads, before you spend money on them</title>
+<meta name="description" content="Set up your Meta or Google ad on a familiar screen. AdSure runs 248 checks and shows what's wrong, in plain words, with the fix. Made in India. 500 beta seats.">
+<meta name="theme-color" content="#F4F1EB">
+<meta property="og:title" content="AdSure: a health check-up for your ads">
+<meta property="og:description" content="Find costly ad mistakes before your money is gone. 248 checks for Meta and Google Ads, built for India.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og-image.png">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --cream:#F4F1EB;
+  --paper:#FFFDF8;
+  --ink:#111014;
+  --ink-2:#1D1C22;
+  --ink-3:#2A2930;
+  --lime:#CBEF2F;
+  --lime-soft:#EEF8C4;
+  --line:#DDD7CA;
+  --muted:#5E5A52;
+  --muted-on-ink:#A9A6A0;
+  --red:#D9483B;
+  --red-soft:#FBE3DF;
+  --head:"Outfit", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --body:"DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --wrap:1180px;
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(84px + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg,video{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+.on-ink :focus-visible{outline-color:var(--lime)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:min(var(--wrap),100% - 40px);margin-inline:auto}
+
+h1,h2,h3{font-family:var(--head);line-height:1.05;letter-spacing:-.035em;margin:0;font-weight:800}
+h1{font-size:clamp(2.5rem,5.3vw,4.4rem)}
+h2{font-size:clamp(2.1rem,4.4vw,3.5rem);max-width:17ch}
+h3{font-size:1.35rem;letter-spacing:-.02em;font-weight:700;line-height:1.2}
+p{margin:0}
+.lede{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--muted);max-width:56ch;margin-top:18px}
+.on-ink .lede{color:var(--muted-on-ink)}
+.section{padding:clamp(72px,10vw,128px) 0}
+.section-head{display:grid;gap:4px;margin-bottom:clamp(36px,5vw,56px)}
+.kicker{font-family:var(--head);font-weight:600;font-size:1rem;color:var(--muted);letter-spacing:-.01em;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:22px;height:8px;border-radius:8px;background:var(--lime);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.on-ink .kicker{color:var(--muted-on-ink)}
+.on-ink .kicker::before{box-shadow:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;padding:16px 26px;font-family:var(--head);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;text-decoration:none;cursor:pointer;transition:transform .15s ease, background .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn-lime{background:var(--lime);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn-lime:hover{background:#D9F75A}
+.btn-ink{background:var(--ink);color:var(--cream)}
+.btn-ink:hover{background:var(--ink-3)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn-ghost:hover{background:rgba(17,16,20,.06)}
+
+/* ---------- Nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(244,241,235,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.scrolled{border-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.nav-logo img{height:28px;width:auto}
+.nav-links{display:flex;gap:28px;font-weight:500;font-size:.98rem}
+.nav-links a{text-decoration:none;color:var(--muted)}
+.nav-links a:hover{color:var(--ink)}
+.nav .btn{padding:11px 20px;font-size:.98rem}
+@media (max-width:900px){.nav-links{display:none}}
+
+/* ---------- Hero ---------- */
+.hero{padding:clamp(40px,6vw,80px) 0 clamp(64px,8vw,104px);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+.hero h1{max-width:15ch}
+.hero .lede{font-size:clamp(1.1rem,1.7vw,1.3rem)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.works{display:flex;align-items:center;flex-wrap:wrap;gap:12px 22px;margin-top:36px;color:var(--muted);font-size:.95rem}
+.works-logos{display:flex;align-items:center;gap:14px}
+.plat{display:inline-flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 16px 8px 10px;font-weight:600;color:var(--ink);font-size:.95rem}
+.plat img{height:22px;width:auto}
+.plat img.missing{display:none}
+
+.seat-strip{display:flex;align-items:center;gap:14px;margin-top:22px;font-size:.98rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;max-width:460px}
+.live-dot{width:10px;height:10px;border-radius:50%;background:#2DB55D;flex:none;position:relative}
+.live-dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid #2DB55D;opacity:0;animation:ping 2s ease-out infinite}
+@keyframes ping{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.seat-strip b{font-family:var(--head);font-size:1.1rem;letter-spacing:-.02em}
+
+/* hero visual */
+.scan{position:relative;min-height:600px}
+.adcard{position:absolute;left:0;top:10px;width:min(330px,72%);background:var(--paper);border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(17,16,20,.35);overflow:hidden}
+.ad-top{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.ad-av{width:34px;height:34px;border-radius:50%;background:#F2C9A9;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:.85rem}
+.ad-name{font-weight:700;font-size:.9rem;line-height:1.2}
+.ad-name small{display:block;font-weight:500;color:var(--muted);font-size:.75rem}
+.ad-img{position:relative;aspect-ratio:1/1;background:#F7E7D4;overflow:hidden}
+.ad-img svg{width:100%;height:100%}
+.scanline{position:absolute;left:0;right:0;height:46px;top:-50px;background:linear-gradient(180deg,rgba(203,239,47,0) 0%,rgba(203,239,47,.55) 85%,var(--lime) 100%);mix-blend-mode:multiply;animation:scan 2.6s .4s ease-in-out 2}
+@keyframes scan{0%{top:-50px}100%{top:100%}}
+.ad-copy{padding:12px 14px 16px;font-size:.88rem;line-height:1.45}
+.ad-cta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-weight:700;font-size:.82rem}
+.ad-cta span:last-child{background:var(--ink);color:var(--cream);border-radius:8px;padding:6px 12px}
+.flag{background:var(--red-soft);box-shadow:inset 0 -2px 0 var(--red);border-radius:3px;padding:0 2px}
+
+.report{position:absolute;right:0;top:120px;width:min(360px,78%);background:var(--ink);color:var(--cream);border-radius:24px;padding:22px;box-shadow:0 40px 80px -30px rgba(17,16,20,.6)}
+.report-head{display:flex;align-items:center;gap:16px}
+.ring{width:96px;height:96px;flex:none;position:relative}
+.ring svg{width:96px;height:96px;transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.9rem;letter-spacing:-.04em}
+.ring .num small{font-size:.6rem;color:var(--muted-on-ink);font-weight:600;display:block;text-align:center;margin-top:-6px;letter-spacing:0}
+.report-title{font-family:var(--head);font-weight:700;font-size:1.15rem;letter-spacing:-.02em;line-height:1.2}
+.report-title span{display:block;color:var(--muted-on-ink);font-family:var(--body);font-weight:500;font-size:.85rem;letter-spacing:0;margin-top:4px}
+.finds{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.finds li{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:14px;padding:12px 14px;font-size:.88rem;line-height:1.4;opacity:0;transform:translateY(8px);animation:pop .5s ease forwards}
+.finds li:nth-child(1){animation-delay:1.6s}.finds li:nth-child(2){animation-delay:2.1s}.finds li:nth-child(3){animation-delay:2.6s}
+@keyframes pop{to{opacity:1;transform:none}}
+.finds b{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:2px}
+.finds b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);flex:none}
+.finds .fix{color:var(--lime)}
+.badge-src{position:absolute;right:6%;bottom:0;background:var(--lime);color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:700;font-size:.85rem;box-shadow:inset 0 0 0 2px var(--ink);display:flex;align-items:center;gap:8px}
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:1fr}
+  .scan{min-height:560px;max-width:520px;width:100%;margin-inline:auto}
+}
+@media (max-width:600px){
+  .scan{min-height:0;display:flex;flex-direction:column}
+  .adcard{position:relative;top:auto;width:78%}
+  .report{position:relative;top:auto;right:auto;margin:-150px 0 0 auto;width:90%}
+  .badge-src{display:none}
+}
+
+/* ---------- Problems ---------- */
+.problems{background:var(--paper);border-block:1px solid var(--line)}
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.prob{background:var(--cream);border-radius:var(--r-md);padding:22px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--line)}
+.prob svg{width:100%;height:auto;aspect-ratio:4/3;background:var(--paper);border-radius:12px;border:1px solid var(--line)}
+.prob h3{font-size:1.3rem}
+.prob p{color:var(--muted);font-size:.97rem}
+.root{margin-top:22px;background:var(--ink);color:var(--cream);border-radius:var(--r-lg);padding:clamp(24px,4vw,40px);display:grid;grid-template-columns:1fr 1.3fr;gap:28px;align-items:center}
+.root p{font-family:var(--head);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-.025em;line-height:1.2}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1.5px solid var(--ink-3);background:var(--ink-2);border-radius:999px;padding:9px 16px;font-weight:600;font-size:.95rem}
+.chip.hot{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+@media (max-width:1000px){.prob-grid{grid-template-columns:repeat(2,1fr)}.root{grid-template-columns:1fr}}
+@media (max-width:560px){.prob-grid{grid-template-columns:1fr}}
+
+/* ---------- Video ---------- */
+.video{background:var(--ink);color:var(--cream)}
+.video-grid{display:grid;grid-template-columns:1fr 2fr;gap:clamp(28px,4vw,56px);align-items:center}
+.video-grid.solo{grid-template-columns:1fr}
+.vframe{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--ink-2);border:1px solid var(--ink-3);aspect-ratio:16/9}
+.vframe video,.vframe iframe{width:100%;height:100%;object-fit:cover;border:0;background:#000}
+.vcover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(18px,3vw,32px);background:
+  radial-gradient(120% 90% at 85% 10%,rgba(203,239,47,.22),transparent 55%),
+  linear-gradient(180deg,rgba(17,16,20,.1),rgba(17,16,20,.85));border:0;color:var(--cream);text-align:left;cursor:pointer;width:100%}
+.vcover .play{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:var(--lime);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(203,239,47,.18);transition:transform .2s}
+.vcover:hover .play{transform:translate(-50%,-50%) scale(1.06)}
+.vcover .play svg{width:30px;height:30px;margin-left:5px}
+.vcover strong{font-family:var(--head);font-size:clamp(1.2rem,2.4vw,1.7rem);letter-spacing:-.02em;line-height:1.15}
+.vcover span{color:var(--muted-on-ink);font-size:.95rem}
+.vframe.hidden-cover .vcover{display:none}
+.vmissing{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:24px;color:var(--muted-on-ink);font-size:.95rem}
+.vframe.is-missing .vmissing{display:grid}
+.vframe.is-missing .vcover,.vframe.is-missing video{display:none}
+.video-points{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
+.video-points li{display:flex;gap:12px;align-items:flex-start}
+.video-points li::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat;margin-top:3px}
+.shorts{display:none;margin-top:22px}
+.shorts.show{display:block}
+.shorts .vframe{aspect-ratio:9/16;max-width:260px}
+@media (max-width:900px){.video-grid{grid-template-columns:1fr}}
+
+/* ---------- How ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.step{position:relative;padding:24px;border-radius:var(--r-md);background:var(--paper);border:1px solid var(--line)}
+.step-n{font-family:var(--head);font-weight:800;font-size:.95rem;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--lime);margin-bottom:18px}
+.step svg{width:100%;height:auto;aspect-ratio:16/10;margin-bottom:18px;border-radius:12px;background:var(--cream);border:1px solid var(--line)}
+.step p{color:var(--muted);font-size:.97rem;margin-top:6px}
+.how-note{margin-top:22px;display:flex;align-items:center;gap:14px;font-size:1rem;color:var(--muted)}
+.how-note strong{color:var(--ink)}
+@media (max-width:1000px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* ---------- Calculators ---------- */
+.calc{background:var(--paper);border-block:1px solid var(--line)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.tab{border:0;border-radius:999px;padding:12px 20px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--cream);box-shadow:none}
+.panel{display:grid;grid-template-columns:1fr 1fr;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line)}
+.panel[hidden]{display:none}
+.inputs{padding:clamp(22px,3.5vw,40px);display:grid;gap:22px;background:var(--cream);align-content:start}
+.field label,.field .lbl{display:flex;justify-content:space-between;gap:12px;font-weight:600;font-size:.98rem;margin-bottom:8px}
+.field label output{font-family:var(--head);font-weight:700}
+.field small{display:block;color:var(--muted);font-size:.85rem;margin-top:6px;line-height:1.45}
+.money{display:flex;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:0 14px;transition:border-color .15s}
+.money:focus-within{border-color:var(--ink)}
+.money span{color:var(--muted);font-weight:600}
+.money input{border:0;background:transparent;padding:14px 8px;width:100%;font-size:1.1rem;font-weight:600;outline:none}
+input[type=range]{width:100%;accent-color:var(--ink);height:28px}
+.toggle{display:flex;gap:8px}
+.toggle button{flex:1;border:0;border-radius:12px;padding:12px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:600;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink)}
+.result{background:var(--ink);color:var(--cream);padding:clamp(22px,3.5vw,40px);display:flex;flex-direction:column;gap:18px}
+.big{font-family:var(--head);font-weight:800;font-size:clamp(2.6rem,5vw,4rem);letter-spacing:-.045em;line-height:1}
+.big.bad{color:#FF8A7E}
+.big.good{color:var(--lime)}
+.res-label{color:var(--muted-on-ink);font-size:.98rem}
+.rows{display:grid;gap:0;border-top:1px solid var(--ink-3)}
+.rows div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--ink-3);font-size:.97rem}
+.rows div span:first-child{color:var(--muted-on-ink)}
+.rows div span:last-child{font-weight:700;text-align:right}
+.verdict{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:14px;padding:14px 16px;font-size:.98rem;line-height:1.5}
+.result .btn{align-self:flex-start;margin-top:auto}
+.calc-foot{margin-top:16px;color:var(--muted);font-size:.88rem;max-width:80ch}
+@media (max-width:900px){.panel{grid-template-columns:1fr}}
+
+/* ---------- Benefits ---------- */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:26px;display:flex;flex-direction:column;gap:10px}
+.tile p{color:var(--muted);font-size:.98rem}
+.tile .ic{width:46px;height:46px;border-radius:14px;background:var(--lime);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--ink);margin-bottom:6px}
+.tile .ic svg{width:24px;height:24px}
+.t-wide{grid-column:span 3}.t-third{grid-column:span 2}
+.t-dark{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.t-dark p{color:var(--muted-on-ink)}
+.tile .t-big{font-family:var(--head);font-weight:800;font-size:clamp(3.4rem,6vw,5rem);letter-spacing:-.05em;line-height:.9;color:var(--lime)}
+.india-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.india-list span{background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.88rem;font-weight:600}
+.src-mix{display:grid;gap:8px;margin-top:10px}
+.src-mix div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:.9rem}
+.bar{grid-column:1/-1;height:8px;border-radius:8px;background:var(--ink-3);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--lime);border-radius:8px}
+@media (max-width:1000px){.t-wide,.t-third{grid-column:span 3}}
+@media (max-width:640px){.bento{grid-template-columns:1fr}.t-wide,.t-third{grid-column:auto}}
+
+/* ---------- Example ---------- */
+.example-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:stretch}
+.ex-card{background:var(--ink);color:var(--cream);border-radius:var(--r-lg);padding:clamp(22px,3.5vw,36px)}
+.ex-score{display:flex;align-items:center;gap:20px;margin-bottom:22px}
+.ex-score .ring,.ex-score .ring svg{width:120px;height:120px}
+.ex-score .num{font-size:2.4rem}
+.warn{display:inline-flex;align-items:center;gap:8px;background:rgba(217,72,59,.18);color:#FF9D93;border-radius:999px;padding:6px 12px;font-weight:600;font-size:.88rem;margin-top:8px}
+.cat{display:grid;grid-template-columns:150px 1fr 36px;align-items:center;gap:12px;padding:9px 0;font-size:.95rem}
+.cat .track{height:10px;border-radius:10px;background:var(--ink-3);overflow:hidden}
+.cat .track i{display:block;height:100%;border-radius:10px;background:var(--cream)}
+.cat.low .track i{background:var(--lime)}
+.cat b{font-family:var(--head);text-align:right}
+.ex-key{margin-top:14px;color:var(--muted-on-ink);font-size:.85rem}
+.fixes{display:grid;gap:14px}
+.fixrow{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fixrow .p{font-weight:700;line-height:1.35}
+.fixrow .p small,.fixrow .f small{display:block;font-weight:600;font-size:.8rem;margin-bottom:4px;color:var(--red)}
+.fixrow .f small{color:#5E7A00}
+.fixrow .f{line-height:1.4;padding-left:18px;border-left:3px solid var(--lime)}
+.ex-note{color:var(--muted);font-size:.9rem;margin-top:4px}
+@media (max-width:960px){.example-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.fixrow{grid-template-columns:1fr}.cat{grid-template-columns:120px 1fr 32px}}
+
+/* ---------- Tables ---------- */
+.vs{background:var(--ink);color:var(--cream)}
+.tbl-wrap{position:relative;overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--ink-3);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:720px}
+th,td{padding:16px 18px;text-align:left;vertical-align:middle;font-size:.97rem}
+thead th{font-family:var(--head);font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+.vs thead th{background:var(--ink-2)}
+.vs tbody tr+tr td,.vs tbody tr+tr th{border-top:1px solid var(--ink-3)}
+.vs tbody th{font-weight:500;color:#E7E4DE}
+td.c{text-align:center;width:140px}
+th.c{text-align:center}
+.col-us{background:rgba(203,239,47,.08)}
+.vs thead th.col-us{background:var(--lime);color:var(--ink)}
+.mk{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:600;font-size:.88rem}
+.mk svg{width:22px;height:22px}
+.mk.no{color:#8B8882}
+.mk.part{color:#F2C94C}
+.vs-foot{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.vs-foot div{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-md);padding:20px 22px;color:var(--muted-on-ink)}
+.vs-foot strong{color:var(--cream);display:block;font-family:var(--head);font-size:1.15rem;letter-spacing:-.015em;margin-bottom:6px}
+@media (max-width:760px){.vs-foot{grid-template-columns:1fr}}
+
+.cmp .tbl-wrap{border-color:var(--line);background:var(--paper)}
+.cmp thead th{background:var(--cream);border-bottom:1px solid var(--line)}
+.cmp tbody tr+tr td,.cmp tbody tr+tr th{border-top:1px solid var(--line)}
+.cmp tbody th{font-weight:600}
+.cmp .col-us{background:var(--lime-soft)}
+.cmp thead th.col-us{background:var(--ink);color:var(--lime)}
+.cmp .mk.no{color:#9A958B}
+.cmp .mk.part{color:#9A6B00}
+.cmp .mk.yes{color:var(--ink)}
+.cmp td.txt{font-weight:600;text-align:center}
+
+/* ---------- Promise ---------- */
+.promise-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(28px,5vw,64px);align-items:start}
+.plist{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pitem{border-top:3px solid var(--ink);padding-top:16px}
+.pitem p{color:var(--muted);font-size:.97rem;margin-top:6px}
+@media (max-width:900px){.promise-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.plist{grid-template-columns:1fr}}
+
+/* ---------- Pricing ---------- */
+.pricing{background:var(--paper);border-block:1px solid var(--line)}
+.price-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:stretch}
+.price-card{background:var(--ink);color:var(--cream);border-radius:var(--r-lg);padding:clamp(26px,4vw,44px);position:relative;overflow:hidden}
+.price-tag{display:inline-block;background:var(--lime);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.9rem}
+.price{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-top:22px}
+.price .amt{font-family:var(--head);font-weight:800;font-size:clamp(3.6rem,8vw,6rem);letter-spacing:-.05em;line-height:.9}
+.price .per{color:var(--muted-on-ink);font-size:1.05rem}
+.price s{color:var(--muted-on-ink);font-family:var(--head);font-size:1.6rem;font-weight:600}
+.perday{display:flex;align-items:center;gap:16px;margin-top:22px;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:18px;padding:16px 18px}
+.perday .eq{font-family:var(--head);font-weight:800;font-size:2.1rem;letter-spacing:-.04em;color:var(--lime);line-height:1}
+.perday p{color:var(--muted-on-ink);font-size:.95rem;line-height:1.4}
+.perday p b{color:var(--cream)}
+.incl{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+.incl li{display:flex;gap:10px;font-size:.98rem;line-height:1.4}
+.incl li::before{content:"";width:20px;height:20px;flex:none;border-radius:50%;margin-top:1px;background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/12px no-repeat}
+.addons{margin-top:24px;padding-top:20px;border-top:1px solid var(--ink-3);color:var(--muted-on-ink);font-size:.93rem}
+.addons b{color:var(--cream)}
+.price-card .btn{margin-top:26px}
+@media (max-width:600px){.incl{grid-template-columns:1fr}}
+
+.seats{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(24px,3.5vw,36px);display:flex;flex-direction:column;gap:18px}
+.seats-top{display:flex;align-items:center;gap:10px;font-weight:600}
+.seats .seat-count{color:var(--ink);font-family:var(--head);font-weight:800;letter-spacing:-.05em;line-height:.9;font-size:clamp(4rem,9vw,6.5rem)}
+.seats .seat-count small{font-size:.32em;letter-spacing:-.02em;color:var(--muted);font-weight:700}
+.meter{height:16px;border-radius:16px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--lime);box-shadow:inset 0 0 0 1.5px var(--ink);border-radius:16px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.seats .seat-left{color:var(--ink);font-family:var(--head);font-weight:700;font-size:1.3rem;letter-spacing:-.02em}
+.seats p{color:var(--muted);font-size:.95rem}
+.ticket{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin-top:auto}
+.ticket i{aspect-ratio:1;border-radius:2px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}
+.ticket i.on{background:var(--ink);box-shadow:none}
+@media (max-width:900px){.price-grid{grid-template-columns:1fr}}
+
+/* ---------- Join ---------- */
+.join-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:start}
+.next{list-style:none;padding:0;margin:30px 0 0;display:grid;gap:18px}
+.next li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start}
+.next li span{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-family:var(--head);font-weight:800}
+.next b{display:block;font-family:var(--head);font-size:1.12rem;letter-spacing:-.015em}
+.next p{color:var(--muted);font-size:.96rem}
+.contact-mini{margin-top:30px;color:var(--muted);font-size:.95rem}
+.contact-mini a{font-weight:600;color:var(--ink)}
+form.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3.5vw,36px);display:grid;gap:16px;box-shadow:0 30px 60px -40px rgba(17,16,20,.35)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f label{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px}
+.f input[type=text],.f input[type=email],.f input[type=tel],.f select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--cream);font-size:1rem;outline:none;transition:border-color .15s, background .15s;appearance:none;-webkit-appearance:none}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.f input:focus,.f select:focus{border-color:var(--ink);background:var(--paper)}
+.f input[aria-invalid="true"],.f select[aria-invalid="true"]{border-color:var(--red)}
+.err{color:var(--red);font-size:.85rem;margin-top:5px;display:none}
+.f.bad .err{display:block}
+.checks{display:flex;gap:10px;flex-wrap:wrap}
+.checks label{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:600;cursor:pointer;margin:0;background:var(--cream)}
+.checks input{accent-color:var(--ink);width:18px;height:18px}
+.checks label:has(input:checked){border-color:var(--ink);background:var(--lime)}
+.f label.consent{display:flex;font-weight:400;margin:0}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);line-height:1.45}
+.consent input{accent-color:var(--ink);width:18px;height:18px;margin-top:2px;flex:none}
+.hp{position:absolute;left:-9999px}
+form .btn{width:100%;padding:18px}
+.form-msg{border-radius:14px;padding:14px 16px;font-size:.96rem;display:none}
+.form-msg.show{display:block}
+.form-msg.ok{background:var(--lime-soft);box-shadow:inset 0 0 0 1.5px #A8C61D}
+.form-msg.no{background:var(--red-soft);box-shadow:inset 0 0 0 1.5px var(--red)}
+.fine{font-size:.85rem;color:var(--muted);text-align:center}
+.done{display:none;text-align:center;padding:24px 8px}
+.done.show{display:block}
+.done .tick{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--lime);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--ink)}
+.done h3{font-size:1.8rem}
+.done p{color:var(--muted);margin-top:10px}
+.done .seatno{font-family:var(--head);font-weight:800;font-size:1.2rem;margin-top:14px}
+@media (max-width:900px){.join-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.frow{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,5vw,64px)}
+details{border-bottom:1px solid var(--line)}
+details:first-child{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font-family:var(--head);font-weight:700;font-size:1.18rem;letter-spacing:-.015em;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:4px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M12 6v12M6 12h12'/%3E%3C/svg%3E") center/14px no-repeat;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg);background-color:var(--lime);box-shadow:inset 0 0 0 1.5px var(--ink)}
+details p{padding:0 0 22px;color:var(--muted);max-width:64ch}
+@media (max-width:900px){.faq-grid{grid-template-columns:1fr}}
+
+/* ---------- Final CTA + footer ---------- */
+.final{background:var(--lime);border-block:2px solid var(--ink)}
+.final-in{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.final h2{max-width:18ch}
+.final p{margin-top:12px;font-size:1.1rem}
+footer{background:var(--ink);color:var(--muted-on-ink);padding:64px 0 calc(40px + env(safe-area-inset-bottom,0px))}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+.foot-grid img{height:30px;width:auto;margin-bottom:16px}
+footer h4{color:var(--cream);font-family:var(--head);font-size:1rem;margin:0 0 12px;letter-spacing:-.01em}
+footer a{text-decoration:none;color:var(--cream)}
+footer a:hover{color:var(--lime)}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.made{display:inline-flex;align-items:center;gap:10px;margin-top:16px;color:var(--cream);font-weight:600}
+.made svg{width:30px;height:20px;border-radius:3px}
+.legal{margin-top:44px;padding-top:22px;border-top:1px solid var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.85rem}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr}}
+
+/* sticky mobile CTA */
+.mcta{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--ink);color:var(--cream);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;justify-content:space-between;gap:12px;transform:translateY(110%);transition:transform .25s}
+.mcta.show{transform:none}
+.mcta small{display:block;color:var(--muted-on-ink);font-size:.8rem}
+.mcta b{font-family:var(--head)}
+.mcta .btn{padding:12px 18px;font-size:.95rem;box-shadow:none}
+@media (max-width:760px){.mcta{display:flex}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .finds li{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="nav-logo" href="#top" aria-label="AdSure home"><img src="assets/logo-dark.png" alt="adsure" width="440" height="96"></a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#calculator">Calculators</a>
+      <a href="#vs-platforms">Why AdSure</a>
+      <a href="#pricing">Price</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-ink" href="#join">Get early access</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>A health check&#8209;up for your ads, before you spend money on them.</h1>
+      <p class="lede">Set up your ad on a screen that works like Meta or Google Ads. AdSure runs 248 checks and tells you what's wrong, in plain words, with the exact fix.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-lime" href="#join">Get early access</a>
+        <a class="btn btn-ghost" href="#calculator">Check what you're losing</a>
+      </div>
+      <div class="seat-strip" aria-live="polite">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>Beta is open to the first 500 members. <b><span data-seats-left>500</span> seats left</b></span>
+      </div>
+      <div class="works">
+        <span>Works with</span>
+        <div class="works-logos">
+          <span class="plat"><img src="assets/google-ads-logo.svg" alt="" onerror="this.classList.add('missing')">Google Ads</span>
+          <span class="plat"><img src="assets/meta-logo.svg" alt="" onerror="this.classList.add('missing')">Meta Ads</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scan" aria-label="Example: AdSure checks a sample clothing ad and finds three problems">
+      <div class="adcard" aria-hidden="true">
+        <div class="ad-top">
+          <div class="ad-av">KS</div>
+          <div class="ad-name">Kurti Studio<small>Sponsored</small></div>
+        </div>
+        <div class="ad-img">
+          <svg viewBox="0 0 300 300" fill="none">
+            <rect width="300" height="300" fill="#F7E7D4"/>
+            <circle cx="236" cy="62" r="34" fill="#F2C9A9"/>
+            <path d="M150 52c0-10 14-10 14 0 0 7-14 8-14 18" stroke="#111014" stroke-width="4" stroke-linecap="round"/>
+            <path d="M88 96l62-26 62 26" stroke="#111014" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M110 92l18-8c6 14 38 14 44 0l18 8 30 40-22 14-14-16 8 140H108l8-140-14 16-22-14z" fill="#E8692F" stroke="#111014" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M128 84c6 14 38 14 44 0l-6 34h-32z" fill="#F4F1EB" stroke="#111014" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M150 118v150" stroke="#111014" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+            <g fill="#F4F1EB"><circle cx="128" cy="170" r="5"/><circle cx="172" cy="170" r="5"/><circle cx="128" cy="214" r="5"/><circle cx="172" cy="214" r="5"/><circle cx="150" cy="248" r="5"/></g>
+            <rect x="24" y="230" width="86" height="40" rx="10" fill="#111014"/>
+            <text x="67" y="256" text-anchor="middle" font-family="Outfit, sans-serif" font-weight="800" font-size="17" fill="#CBEF2F">₹899</text>
+          </svg>
+          <div class="scanline"></div>
+        </div>
+        <div class="ad-copy">
+          New festive kurtas. <span class="flag">100% guaranteed</span> perfect fit or money back! Cash on delivery available.
+          <div class="ad-cta"><span>kurtistudio.in</span><span>Shop now</span></div>
+        </div>
+      </div>
+
+      <div class="report">
+        <div class="report-head">
+          <div class="ring" data-score="6.5">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" stroke="#2A2930" stroke-width="10" fill="none"/><circle class="arc" cx="50" cy="50" r="42" stroke="#CBEF2F" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264"/></svg>
+            <div class="num"><div>6.5<small>out of 10</small></div></div>
+          </div>
+          <div class="report-title">AdSure report<span>3 problems to fix before you spend</span></div>
+        </div>
+        <ul class="finds">
+          <li><b>“100% guaranteed” in the ad text</b><span class="fix">Fix: show real customer reviews instead.</span></li>
+          <li><b>Website takes 5 seconds to open</b><span class="fix">Fix: compress images, remove heavy apps.</span></li>
+          <li><b>Returned COD orders counted as sales</b><span class="fix">Fix: count only delivered orders.</span></li>
+        </ul>
+      </div>
+
+      <div class="badge-src" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+        Every result shows its source
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEMS ============ -->
+<section class="section problems" id="problems">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Sound familiar?</p>
+      <h2>Are you facing any of these?</h2>
+      <p class="lede">If you said yes to even one, your ads are costing you more than they should. A broken ad doesn't stop spending. It just stops earning.</p>
+    </div>
+    <div class="prob-grid">
+      <article class="prob">
+        <svg viewBox="0 0 160 120" aria-hidden="true" fill="none">
+          <rect x="52" y="12" width="56" height="98" rx="10" fill="#FFFDF8" stroke="#111014" stroke-width="3"/>
+          <rect x="72" y="18" width="16" height="4" rx="2" fill="#111014"/>
+          <rect x="60" y="32" width="38" height="16" rx="8" fill="#F4F1EB" stroke="#111014" stroke-width="2"/>
+          <path d="M66 40h24" stroke="#111014" stroke-width="2" stroke-linecap="round"/>
+          <rect x="64" y="54" width="38" height="16" rx="8" fill="#CBEF2F" stroke="#111014" stroke-width="2"/>
+          <path d="M70 62h20" stroke="#111014" stroke-width="2" stroke-linecap="round"/>
+          <rect x="60" y="76" width="38" height="16" rx="8" fill="#F4F1EB" stroke="#111014" stroke-width="2"/>
+          <text x="79" y="88" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="12" fill="#D9483B">???</text>
+          <circle cx="122" cy="34" r="15" fill="#D9483B"/><path d="M116 28l12 12M128 28l-12 12" stroke="#FFFDF8" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <h3>Getting bad leads?</h3>
+        <p>People fill the form but never pick up, or say they never asked.</p>
+      </article>
+      <article class="prob">
+        <svg viewBox="0 0 160 120" aria-hidden="true" fill="none">
+          <path d="M40 50l40-18 40 18v42l-40 18-40-18z" fill="#E9C9A0" stroke="#111014" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M40 50l40 18 40-18M80 68v42" stroke="#111014" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M60 41l40 18" stroke="#111014" stroke-width="3"/>
+          <rect x="88" y="78" width="26" height="14" rx="3" fill="#FFFDF8" stroke="#111014" stroke-width="2" transform="rotate(-24 101 85)"/>
+          <path d="M132 30c-14-12-36-12-48-2" stroke="#D9483B" stroke-width="4" stroke-linecap="round"/>
+          <path d="M84 20l0 10 10 0" stroke="#D9483B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="18" y="16" width="44" height="20" rx="10" fill="#111014"/>
+          <text x="40" y="30" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="11" fill="#CBEF2F">RTO</text>
+        </svg>
+        <h3>Getting fake orders?</h3>
+        <p>Cash on delivery orders that come back unopened, and you pay shipping both ways.</p>
+      </article>
+      <article class="prob">
+        <svg viewBox="0 0 160 120" aria-hidden="true" fill="none">
+          <g stroke="#111014" stroke-width="2.5">
+            <circle cx="44" cy="40" r="15" fill="#F2C9A9"/><circle cx="80" cy="40" r="15" fill="#F4F1EB" stroke-dasharray="4 4"/><circle cx="116" cy="40" r="15" fill="#F4F1EB" stroke-dasharray="4 4"/>
+            <circle cx="44" cy="82" r="15" fill="#F4F1EB" stroke-dasharray="4 4"/><circle cx="80" cy="82" r="15" fill="#F4F1EB" stroke-dasharray="4 4"/><circle cx="116" cy="82" r="15" fill="#CBEF2F"/>
+          </g>
+          <g stroke="#9A958B" stroke-width="2.4" stroke-linecap="round">
+            <path d="M75 36l4 4M79 36l-4 4M82 36l4 4M86 36l-4 4"/><path d="M111 36l4 4M115 36l-4 4M118 36l4 4M122 36l-4 4"/>
+            <path d="M39 78l4 4M43 78l-4 4M46 78l4 4M50 78l-4 4"/><path d="M75 78l4 4M79 78l-4 4M82 78l4 4M86 78l-4 4"/>
+          </g>
+          <g fill="#111014"><circle cx="39" cy="38" r="2"/><circle cx="49" cy="38" r="2"/><circle cx="111" cy="80" r="2"/><circle cx="121" cy="80" r="2"/></g>
+          <path d="M39 45c3 3 7 3 10 0M111 87c3 3 7 3 10 0" stroke="#111014" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h3>Getting dead-account followers?</h3>
+        <p>Your follower count goes up, but nobody likes, comments or buys.</p>
+      </article>
+      <article class="prob">
+        <svg viewBox="0 0 160 120" aria-hidden="true" fill="none">
+          <circle cx="40" cy="58" r="24" fill="#CBEF2F" stroke="#111014" stroke-width="3"/>
+          <text x="40" y="65" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="18" fill="#111014">₹100</text>
+          <path d="M70 58h26" stroke="#111014" stroke-width="3" stroke-linecap="round"/>
+          <path d="M90 50l8 8-8 8" stroke="#111014" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="124" cy="58" r="15" fill="#FBE3DF" stroke="#111014" stroke-width="3"/>
+          <text x="124" y="63" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="12" fill="#D9483B">₹60</text>
+          <path d="M28 98h96" stroke="#DDD7CA" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <h3>Not getting good returns?</h3>
+        <p>You put ₹100 into ads and get back less in profit than you spent.</p>
+      </article>
+    </div>
+    <div class="root on-ink">
+      <p>It's rarely just who sees the ad. Good results depend on all of these, and AdSure checks every one.</p>
+      <div class="chips">
+        <span class="chip">Who sees the ad</span><span class="chip">Budget</span><span class="chip">Ad image and text</span>
+        <span class="chip hot">Tracking links</span><span class="chip hot">Website page</span><span class="chip">Ad rules</span><span class="chip hot">Profit maths</span>
+        <span style="flex-basis:100%;color:var(--muted-on-ink);font-size:.9rem;margin-top:4px">Lime ones are the ones most people never check.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section class="section video on-ink" id="video">
+  <div class="wrap video-grid">
+    <div>
+      <p class="kicker">Watch in under a minute</p>
+      <h2>See how AdSure works</h2>
+      <p class="lede">A small business owner runs ads, spends money and gets nothing. Then she checks her ad with AdSure first.</p>
+      <ul class="video-points">
+        <li>Set up your ad on a familiar screen</li>
+        <li>Get a score out of 10 with every problem named</li>
+        <li>Fix it before you spend, not after</li>
+      </ul>
+      <div class="shorts" id="shorts">
+        <p class="kicker" style="margin-top:8px">The short version</p>
+        <div class="vframe" data-video="short">
+          <video preload="metadata" playsinline controls></video>
+          <div class="vmissing"><p>Short video not added yet.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="vframe" data-video="main">
+      <video preload="metadata" playsinline></video>
+      <button class="vcover" type="button" aria-label="Play the AdSure video">
+        <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#111014"><path d="M7 4.5v15l12-7.5z"/></svg></span>
+        <strong>A health check-up for your ads</strong>
+        <span>Turn on sound</span>
+      </button>
+      <div class="vmissing"><p>Add your video file at <code>assets/adsure-explainer.mp4</code>,<br>or set a YouTube ID in the settings at the bottom of this file.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">How it works</p>
+      <h2>Four simple steps. No long forms.</h2>
+      <p class="lede">If you can create an ad on Meta or Google, you already know how to use AdSure. Test your ad here first, without spending a rupee on the real platform.</p>
+    </div>
+    <div class="steps">
+      <article class="step">
+        <div class="step-n" aria-hidden="true">1</div>
+        <svg viewBox="0 0 200 125" aria-hidden="true" fill="none">
+          <rect x="16" y="14" width="168" height="98" rx="10" fill="#FFFDF8" stroke="#111014" stroke-width="2.5"/>
+          <path d="M16 32h168" stroke="#111014" stroke-width="2.5"/>
+          <circle cx="28" cy="23" r="3" fill="#111014"/><circle cx="38" cy="23" r="3" fill="#111014"/>
+          <rect x="28" y="42" width="44" height="8" rx="4" fill="#DDD7CA"/><rect x="28" y="56" width="66" height="14" rx="5" fill="#F4F1EB" stroke="#111014" stroke-width="2"/>
+          <rect x="28" y="78" width="44" height="8" rx="4" fill="#DDD7CA"/><rect x="28" y="92" width="66" height="12" rx="5" fill="#F4F1EB" stroke="#111014" stroke-width="2"/>
+          <rect x="108" y="42" width="64" height="52" rx="8" fill="#F7E7D4" stroke="#111014" stroke-width="2"/>
+          <rect x="120" y="98" width="52" height="12" rx="6" fill="#CBEF2F" stroke="#111014" stroke-width="2"/>
+        </svg>
+        <h3>Set up your ad</h3>
+        <p>On a screen that looks and works like Meta or Google Ads.</p>
+      </article>
+      <article class="step">
+        <div class="step-n" aria-hidden="true">2</div>
+        <svg viewBox="0 0 200 125" aria-hidden="true" fill="none">
+          <rect x="56" y="10" width="88" height="106" rx="12" fill="#111014"/>
+          <rect x="66" y="20" width="68" height="26" rx="6" fill="#CBEF2F"/>
+          <text x="128" y="39" text-anchor="end" font-family="Outfit,sans-serif" font-weight="800" font-size="15" fill="#111014">₹405</text>
+          <g fill="#2A2930"><rect x="66" y="54" width="20" height="16" rx="4"/><rect x="90" y="54" width="20" height="16" rx="4"/><rect x="114" y="54" width="20" height="16" rx="4"/><rect x="66" y="74" width="20" height="16" rx="4"/><rect x="90" y="74" width="20" height="16" rx="4"/><rect x="66" y="94" width="20" height="14" rx="4"/><rect x="90" y="94" width="20" height="14" rx="4"/></g>
+          <rect x="114" y="74" width="20" height="34" rx="4" fill="#CBEF2F"/>
+        </svg>
+        <h3>We do the maths</h3>
+        <p>What each sale really earns you, after returns and costs.</p>
+      </article>
+      <article class="step">
+        <div class="step-n" aria-hidden="true">3</div>
+        <svg viewBox="0 0 200 125" aria-hidden="true" fill="none">
+          <rect x="40" y="10" width="120" height="106" rx="10" fill="#FFFDF8" stroke="#111014" stroke-width="2.5"/>
+          <g stroke="#111014" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="54" y="24" width="14" height="14" rx="4" fill="#CBEF2F"/><path d="M57 31l3 3 5-6"/>
+            <rect x="54" y="50" width="14" height="14" rx="4" fill="#CBEF2F"/><path d="M57 57l3 3 5-6"/>
+            <rect x="54" y="76" width="14" height="14" rx="4" fill="#FBE3DF"/><path d="M58 80l6 6M64 80l-6 6" stroke="#D9483B"/>
+          </g>
+          <rect x="76" y="27" width="66" height="8" rx="4" fill="#DDD7CA"/><rect x="76" y="53" width="54" height="8" rx="4" fill="#DDD7CA"/><rect x="76" y="79" width="60" height="8" rx="4" fill="#DDD7CA"/>
+          <text x="100" y="110" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="11" fill="#5E5A52">1 of 248</text>
+        </svg>
+        <h3>We run 248 checks</h3>
+        <p>Every rule, the same way, every time. Each one has a source.</p>
+      </article>
+      <article class="step">
+        <div class="step-n" aria-hidden="true">4</div>
+        <svg viewBox="0 0 200 125" aria-hidden="true" fill="none">
+          <rect x="22" y="14" width="156" height="98" rx="12" fill="#111014"/>
+          <circle cx="62" cy="62" r="26" stroke="#2A2930" stroke-width="8"/>
+          <path d="M62 36a26 26 0 1 1-24.7 34" stroke="#CBEF2F" stroke-width="8" stroke-linecap="round"/>
+          <text x="62" y="68" text-anchor="middle" font-family="Outfit,sans-serif" font-weight="800" font-size="16" fill="#F4F1EB">8.4</text>
+          <rect x="102" y="38" width="62" height="10" rx="5" fill="#2A2930"/><rect x="102" y="56" width="50" height="10" rx="5" fill="#2A2930"/><rect x="102" y="74" width="56" height="10" rx="5" fill="#CBEF2F"/>
+        </svg>
+        <h3>Get your report</h3>
+        <p>Score out of 10, the problems, and the exact fixes.</p>
+      </article>
+    </div>
+    <p class="how-note"><span class="live-dot" aria-hidden="true" style="background:#CBEF2F;box-shadow:0 0 0 2px #111014"></span><span><strong>Missing a detail?</strong> We skip that check and tell you. We never guess.</span></p>
+  </div>
+</section>
+
+<!-- ============ CALCULATORS ============ -->
+<section class="section calc" id="calculator">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Free calculators</p>
+      <h2>Find out what your ads are really costing you</h2>
+      <p class="lede">Put in your own numbers. It takes a minute, and most people are surprised by the first one.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Calculators">
+      <button class="tab" role="tab" id="t-profit" aria-controls="p-profit" aria-selected="true">Real profit per sale</button>
+      <button class="tab" role="tab" id="t-waste" aria-controls="p-waste" aria-selected="false" tabindex="-1">Money lost to mistakes</button>
+      <button class="tab" role="tab" id="t-agency" aria-controls="p-agency" aria-selected="false" tabindex="-1">Agency vs AdSure</button>
+    </div>
+
+    <!-- profit -->
+    <div class="panel" role="tabpanel" id="p-profit" aria-labelledby="t-profit">
+      <div class="inputs">
+        <div class="field">
+          <label for="aov">Average order value</label>
+          <div class="money"><span>₹</span><input id="aov" type="text" inputmode="numeric" value="899"></div>
+        </div>
+        <div class="field">
+          <label for="margin">Your profit margin <output for="margin" id="margin-o">45%</output></label>
+          <input id="margin" type="range" min="5" max="90" step="1" value="45">
+          <small>What's left from each order after product cost and packing, before ads.</small>
+        </div>
+        <div class="field">
+          <label for="cpa">What ads cost you per order</label>
+          <div class="money"><span>₹</span><input id="cpa" type="text" inputmode="numeric" value="450"></div>
+          <small>Ads Manager calls this "cost per purchase".</small>
+        </div>
+        <div class="field">
+          <span class="lbl">Do you offer cash on delivery?</span>
+          <div class="toggle" id="cod">
+            <button type="button" aria-pressed="true" data-v="1">Yes</button>
+            <button type="button" aria-pressed="false" data-v="0">No</button>
+          </div>
+        </div>
+        <div class="field" id="rto-wrap">
+          <label for="rto">Orders that come back undelivered <output for="rto" id="rto-o">25%</output></label>
+          <input id="rto" type="range" min="0" max="60" step="1" value="25">
+          <small>Not sure? Many COD-heavy stores see around 25%.</small>
+        </div>
+        <div class="field" id="rtoc-wrap">
+          <label for="rtoc">Your cost for each returned order</label>
+          <div class="money"><span>₹</span><input id="rtoc" type="text" inputmode="numeric" value="120"></div>
+          <small>Shipping both ways and packing.</small>
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <p class="res-label" id="pr-label">On every delivered order, you</p>
+        <p class="big" id="pr-big">₹0</p>
+        <div class="rows">
+          <div><span>You keep per order, before ads</span><span id="pr-keep">₹0</span></div>
+          <div><span>Real ad cost per delivered order</span><span id="pr-real">₹0</span></div>
+          <div><span>Highest cost per order in Ads Manager to break even</span><span id="pr-max">₹0</span></div>
+          <div><span>Return on ad spend you need to break even</span><span id="pr-roas">0x</span></div>
+        </div>
+        <p class="verdict" id="pr-verdict"></p>
+        <a class="btn btn-lime" href="#join">Check my ads with AdSure</a>
+      </div>
+    </div>
+
+    <!-- waste -->
+    <div class="panel" role="tabpanel" id="p-waste" aria-labelledby="t-waste" hidden>
+      <div class="inputs">
+        <div class="field">
+          <label for="spend">Your monthly ad spend</label>
+          <div class="money"><span>₹</span><input id="spend" type="text" inputmode="numeric" value="50000"></div>
+        </div>
+        <div class="field">
+          <label for="wpct">Share lost to fixable mistakes <output for="wpct" id="wpct-o">15%</output></label>
+          <input id="wpct" type="range" min="1" max="50" step="1" value="15">
+          <small>Your own guess. Think broken tracking, a slow website page, the wrong audience, or ads paused after being rejected.</small>
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <p class="res-label">Money you may be losing every year</p>
+        <p class="big bad" id="w-year">₹0</p>
+        <div class="rows">
+          <div><span>Lost every month</span><span id="w-month">₹0</span></div>
+          <div><span>AdSure every month</span><span id="w-price">₹1,599</span></div>
+          <div><span>Saved each month if you fix it, after AdSure</span><span id="w-net">₹0</span></div>
+        </div>
+        <p class="verdict" id="w-verdict"></p>
+        <a class="btn btn-lime" href="#join">Stop the leak, get early access</a>
+      </div>
+    </div>
+
+    <!-- agency -->
+    <div class="panel" role="tabpanel" id="p-agency" aria-labelledby="t-agency" hidden>
+      <div class="inputs">
+        <div class="field">
+          <label for="afee">What an agency charges you every month</label>
+          <div class="money"><span>₹</span><input id="afee" type="text" inputmode="numeric" value="25000"></div>
+          <small>Put in a real quote you have, or what you pay today.</small>
+        </div>
+        <div class="field">
+          <label for="months">For how many months <output for="months" id="months-o">12</output></label>
+          <input id="months" type="range" min="1" max="24" step="1" value="12">
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <p class="res-label">You keep, by checking ads yourself</p>
+        <p class="big good" id="a-save">₹0</p>
+        <div class="rows">
+          <div><span>Agency</span><span id="a-agency">₹0</span></div>
+          <div><span>AdSure</span><span id="a-us">₹0</span></div>
+          <div><span>One AdSure month costs about</span><span id="a-days">0 days of agency fee</span></div>
+        </div>
+        <p class="verdict">AdSure doesn't run your ads for you. It shows you exactly what to fix, with the reason, so you can run them yourself with confidence. Need a person? Book an expert call by the hour.</p>
+        <a class="btn btn-lime" href="#join">Get early access</a>
+      </div>
+    </div>
+    <p class="calc-foot">These are simple estimates from the numbers you enter. The profit maths uses the same formulas as the AdSure engine, including the cost of cash-on-delivery returns.</p>
+  </div>
+</section>
+
+<!-- ============ BENEFITS ============ -->
+<section class="section" id="benefits">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">What you get</p>
+      <h2>Like a blood test, but for your ads</h2>
+      <p class="lede">Doctors follow tested guidelines, not guesses. AdSure works the same way.</p>
+    </div>
+    <div class="bento">
+      <article class="tile t-wide t-dark on-ink">
+        <p class="t-big">248</p>
+        <h3>Checks, each with its source</h3>
+        <p>Written down from where it came from, so you can see why, not just what.</p>
+        <div class="src-mix" aria-label="Where the 248 checks come from">
+          <div><span>Official Google and Meta rules</span><b>131</b><span class="bar"><i style="width:53%"></i></span></div>
+          <div><span>Experienced ad buyers</span><b>94</b><span class="bar"><i style="width:38%"></i></span></div>
+          <div><span>Industry research and platform studies</span><b>23</b><span class="bar"><i style="width:9%"></i></span></div>
+        </div>
+      </article>
+      <article class="tile t-wide">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+        <h3>Made for India</h3>
+        <p>Checks that global tools skip, for how Indians buy and the rules Indian ads must follow.</p>
+        <div class="india-list">
+          <span>Cash on delivery returns</span><span>Fake claims (ASCI)</span><span>Health and cure claims</span><span>Loan and finance ads (RBI)</span><span>Gaming ads (2025 law)</span><span>Hindi and Hinglish ad text</span>
+        </div>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+        <h3>See problems before you spend</h3>
+        <p>Find costly mistakes while your money is still in your account.</p>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10M7 9h10M10 4c3 0 5 2 5 5s-2 5-5 5H7l8 7"/></svg></div>
+        <h3>Know your real profit</h3>
+        <p>See what each sale truly earns, after returns, before you scale up.</p>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Fewer rejected ads</h3>
+        <p>Catch the rule mistakes that commonly get ads rejected and accounts flagged.</p>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg></div>
+        <h3>Creatives checked twice</h3>
+        <p>An ad expert checks the hook and the product. Our trained AI spots blur, too much text and wrong sizes.</p>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg></div>
+        <h3>Same answer every time</h3>
+        <p>Check the same ad twice and you get the same score. No mood swings.</p>
+      </article>
+      <article class="tile t-third">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>An expert when you need one</h3>
+        <p>Book a call with people who have 15+ years in ads and have grown businesses from ₹1 Cr to ₹100 Cr. Paid by the hour.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXAMPLE ============ -->
+<section class="section" id="example" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">A real report from our engine</p>
+      <h2>A clothing brand's ad scored 4 out of 10</h2>
+      <p class="lede">The ad text broke an ad rule, so the score was capped. Here's what AdSure told them, in plain words.</p>
+    </div>
+    <div class="example-grid">
+      <div class="ex-card on-ink">
+        <div class="ex-score">
+          <div class="ring" data-score="4.0">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" stroke="#2A2930" stroke-width="10" fill="none"/><circle class="arc" cx="50" cy="50" r="42" stroke="#FF8A7E" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264"/></svg>
+            <div class="num"><div>4.0<small>out of 10</small></div></div>
+          </div>
+          <div>
+            <p class="report-title">Kurta brand on Meta</p>
+            <span class="warn">Ad likely to be rejected</span>
+          </div>
+        </div>
+        <div role="list" aria-label="Scores by area">
+          <div class="cat" role="listitem"><span>Who sees the ad</span><span class="track"><i style="width:83%"></i></span><b>8.3</b></div>
+          <div class="cat" role="listitem"><span>Ad image and text</span><span class="track"><i style="width:82%"></i></span><b>8.2</b></div>
+          <div class="cat" role="listitem"><span>Sales tracking</span><span class="track"><i style="width:78%"></i></span><b>7.8</b></div>
+          <div class="cat low" role="listitem"><span>Campaign setup</span><span class="track"><i style="width:40%"></i></span><b>4.0</b></div>
+          <div class="cat low" role="listitem"><span>Website page</span><span class="track"><i style="width:33%"></i></span><b>3.3</b></div>
+          <div class="cat low" role="listitem"><span>Bid settings</span><span class="track"><i style="width:33%"></i></span><b>3.3</b></div>
+        </div>
+        <p class="ex-key">Lime bars need fixing first.</p>
+      </div>
+      <div class="fixes">
+        <div class="fixrow"><p class="p"><small>Problem</small>The ad said “100% guaranteed”</p><p class="f"><small>Fix</small>Show real customer reviews instead. Guarantee claims break Indian ad rules (ASCI) and Meta's policy.</p></div>
+        <div class="fixrow"><p class="p"><small>Problem</small>Paid ₹450 to get a sale that earns ₹405</p><p class="f"><small>Fix</small>Spend less per sale, or sell bundles so each order earns more.</p></div>
+        <div class="fixrow"><p class="p"><small>Problem</small>Counted cash orders that were returned</p><p class="f"><small>Fix</small>Count only delivered orders, so you see your true cost per sale.</p></div>
+        <p class="ex-note">₹405 is ₹899 order value at a 45% margin, so every first sale lost money. AdSure also found 17 smaller fixes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VS META / GOOGLE ============ -->
+<section class="section vs on-ink" id="vs-platforms">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Why not just use Meta's or Google's own suggestions?</p>
+      <h2>They tune the ad. We check everything around it.</h2>
+      <p class="lede">Meta Advantage+ and Google's recommendations are useful. But they mostly work on settings inside their own platform: audience, bids, budget and ad versions. Your money is also lost on the website, the tracking link, the creative and the profit maths.</p>
+    </div>
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Comparison with Meta and Google suggestions">
+      <table>
+        <thead>
+          <tr><th scope="col">What gets checked</th><th scope="col" class="c">Meta's suggestions</th><th scope="col" class="c">Google's recommendations</th><th scope="col" class="c col-us">AdSure</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Audience, bid and budget changes</th><td class="c" data-m="y"></td><td class="c" data-m="y"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Your website page: speed, trust, cash on delivery</th><td class="c" data-m="n"></td><td class="c" data-m="p"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Tracking links and sales tracking set up right</th><td class="c" data-m="p"></td><td class="c" data-m="p"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Creative quality, checked by a human expert</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Your real profit per sale, after COD returns</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Warns about Indian ad-law problems before you publish</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Meta and Google checked in one place</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Doesn't earn more when you spend more</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vs-foot">
+      <div><strong>Keep using their suggestions</strong>AdSure isn't a replacement for Ads Manager. It's the check-up you run before and around it.</div>
+      <div><strong>A second opinion with no stake</strong>Ad platforms earn from your ad spend. AdSure earns the same ₹1,599 whether you spend ₹5,000 or ₹5 lakh.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE OPTIONS ============ -->
+<section class="section cmp" id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">What people do today</p>
+      <h2>The usual fixes don't really help</h2>
+      <p class="lede">Help is either too expensive or too general. Here's how the options compare.</p>
+    </div>
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Comparison with agencies, YouTube tips, Ads Manager and AI chatbots">
+      <table>
+        <thead>
+          <tr><th scope="col"></th><th scope="col" class="c">Agency</th><th scope="col" class="c">YouTube tips</th><th scope="col" class="c">Ads Manager alone</th><th scope="col" class="c">AI chatbot</th><th scope="col" class="c col-us">AdSure</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Monthly cost</th><td class="c txt">High fee</td><td class="c txt">Free</td><td class="c txt">Free</td><td class="c txt">Free or paid</td><td class="c txt col-us">₹1,599</td></tr>
+          <tr><th scope="row">Shows exactly what was checked</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Made for Indian rules and COD</th><td class="c" data-m="p"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Knows your profit per sale</th><td class="c" data-m="p"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Same answer every time</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="y"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Says what's wrong, with the fix</th><td class="c" data-m="p"></td><td class="c" data-m="p"></td><td class="c" data-m="n"></td><td class="c" data-m="p"></td><td class="c col-us" data-m="y"></td></tr>
+          <tr><th scope="row">Every rule has a real source</th><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c" data-m="n"></td><td class="c col-us" data-m="y"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMISE ============ -->
+<section class="section" id="promise" style="padding-top:0">
+  <div class="wrap promise-grid">
+    <div>
+      <p class="kicker">Will I get results?</p>
+      <h2>No one can promise sales</h2>
+      <p class="lede">That's the honest answer. Anyone who guarantees sales is not being straight with you. Here's what AdSure does promise.</p>
+    </div>
+    <div class="plist">
+      <div class="pitem"><h3>See problems before you spend</h3><p>Find costly mistakes before the money is gone.</p></div>
+      <div class="pitem"><h3>Fewer rejected ads</h3><p>Catch the rule mistakes that commonly get ads rejected.</p></div>
+      <div class="pitem"><h3>Know your real profit</h3><p>See what each sale truly earns before you scale up.</p></div>
+      <div class="pitem"><h3>Clear fixes, no jargon</h3><p>Every problem explained in simple words, with its source.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Price</p>
+      <h2>One simple plan. Everything included.</h2>
+      <p class="lede">Founding-member price for the first 500 people who join the beta.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card on-ink">
+        <span class="price-tag">Founding member, first 500 only</span>
+        <div class="price">
+          <s id="regular-price" hidden></s>
+          <span class="amt" data-price>₹1,599</span>
+          <span class="per">per month</span>
+        </div>
+        <div class="perday">
+          <span class="eq" data-perday>₹53</span>
+          <p>a day. <b>₹1,599 ÷ 30 days = ₹<span data-perday-exact>53.30</span>.</b> That's what it costs to check every ad before you spend on it.</p>
+        </div>
+        <ul class="incl">
+          <li>Google Ads and Meta Ads (Facebook and Instagram)</li>
+          <li>Score out of 10 with exact fixes</li>
+          <li>All 248 checks, with sources</li>
+          <li>Indian rules built in</li>
+          <li>Profit maths with COD returns</li>
+          <li>Test ads without spending on the platform</li>
+        </ul>
+        <p class="addons"><b>Add when you need them:</b> creative review by an expert plus our AI, and one-on-one expert calls, paid by the hour.</p>
+        <a class="btn btn-lime" href="#join">Claim my seat</a>
+      </div>
+
+      <div class="seats" aria-live="polite">
+        <div class="seats-top"><span class="live-dot" aria-hidden="true"></span>Live seat count</div>
+        <p class="seat-count"><span data-seats-taken>0</span><small> / <span data-seats-total>500</span> taken</small></p>
+        <div class="meter" role="progressbar" aria-label="Beta seats taken" aria-valuemin="0" aria-valuemax="500" aria-valuenow="0"><i id="meter-fill"></i></div>
+        <p class="seat-left"><span data-seats-left>500</span> founding seats left</p>
+        <p>This number updates on its own as people join. When all 500 seats are taken, new sign-ups go on the waitlist.</p>
+        <div class="ticket" id="ticket" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOIN FORM ============ -->
+<section class="section" id="join">
+  <div class="wrap join-grid">
+    <div>
+      <p class="kicker">Early access</p>
+      <h2>Get your beta seat</h2>
+      <p class="lede">Takes 30 seconds. No payment now.</p>
+      <ol class="next">
+        <li><span>1</span><div><b>Join the list</b><p>Tell us a little about your business.</p></div></li>
+        <li><span>2</span><div><b>We reach out</b><p>By email or phone when your seat opens.</p></div></li>
+        <li><span>3</span><div><b>Check your first ad</b><p>See your score, the problems and the fixes.</p></div></li>
+      </ol>
+      <p class="contact-mini">Questions? Write to <a href="mailto:adsure@yahoo.com">adsure@yahoo.com</a> or call <a href="tel:+916386459941">+91 63864 59941</a>.</p>
+    </div>
+
+    <form class="card" id="form" novalidate>
+      <div id="form-fields" style="display:grid;gap:16px">
+        <div class="frow">
+          <div class="f"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required maxlength="80"><p class="err">Please enter your name.</p></div>
+          <div class="f"><label for="f-phone">Phone number</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="98765 43210" required maxlength="16"><p class="err">Enter a 10-digit Indian mobile number.</p></div>
+        </div>
+        <div class="f"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@business.com" required maxlength="120"><p class="err">Enter a valid email address.</p></div>
+        <div class="frow">
+          <div class="f"><label for="f-biz">Your business</label>
+            <select id="f-biz" name="business_type" required>
+              <option value="">Choose one</option>
+              <option>Online store (D2C)</option>
+              <option>Local shop or service</option>
+              <option>B2B business</option>
+              <option>Agency or freelancer</option>
+              <option>Something else</option>
+            </select><p class="err">Please choose one.</p></div>
+          <div class="f"><label for="f-spend">Monthly ad spend</label>
+            <select id="f-spend" name="monthly_ad_spend" required>
+              <option value="">Choose one</option>
+              <option>Not running ads yet</option>
+              <option>Under ₹25,000</option>
+              <option>₹25,000 to ₹1 lakh</option>
+              <option>₹1 lakh to ₹5 lakh</option>
+              <option>Above ₹5 lakh</option>
+            </select><p class="err">Please choose one.</p></div>
+        </div>
+        <div class="f"><span class="lbl" style="display:block;font-weight:600;font-size:.95rem;margin-bottom:8px">Where do you run ads?</span>
+          <div class="checks">
+            <label><input type="checkbox" name="platforms" value="Meta"> Meta (Facebook, Instagram)</label>
+            <label><input type="checkbox" name="platforms" value="Google"> Google</label>
+          </div>
+        </div>
+        <div class="f"><label for="f-prob">Your biggest problem right now</label>
+          <select id="f-prob" name="biggest_problem">
+            <option value="">Choose one (optional)</option>
+            <option>Bad leads</option>
+            <option>Fake or returned orders</option>
+            <option>Low return on ad spend</option>
+            <option>Ads getting rejected</option>
+            <option>Not sure what's wrong</option>
+          </select></div>
+        <input class="hp" type="text" name="company_site" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="f"><label class="consent"><input type="checkbox" id="f-consent" required> <span>I agree that AdSure can contact me by email, phone or WhatsApp about early access. You can ask us to delete your details anytime.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
+        <div class="form-msg" id="form-msg" role="alert"></div>
+        <button class="btn btn-lime" type="submit" id="submit-btn">Claim my beta seat</button>
+        <p class="fine"><span data-seats-left>500</span> of <span data-seats-total>500</span> seats left at ₹1,599 a month</p>
+      </div>
+      <div class="done" id="done">
+        <div class="tick"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+        <h3 id="done-title">You're on the list</h3>
+        <p id="done-text">We'll reach out by email or phone when your seat opens.</p>
+        <p class="seatno" id="done-seat"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div>
+      <p class="kicker">Questions</p>
+      <h2>Simple answers</h2>
+    </div>
+    <div>
+      <details><summary>Do I need to know marketing to use AdSure?</summary><p>No. If you can create an ad on Meta or Google, you can use AdSure. Every problem is explained in plain words, with the fix.</p></details>
+      <details><summary>Do I have to give you my ad account password?</summary><p>No. You set up your ad on AdSure's own screen, which works like Meta or Google Ads. You never share your ad account password with us.</p></details>
+      <details><summary>Will AdSure get me more sales?</summary><p>No one can honestly promise sales. AdSure helps you find costly mistakes before you spend, avoid common reasons ads get rejected, and know your real profit per sale.</p></details>
+      <details><summary>How is this different from Meta or Google's suggestions?</summary><p>Their suggestions mostly tune settings inside their own platform. AdSure also checks your website page, tracking links, creative quality, profit after COD returns and Indian ad rules, for both platforms in one place.</p></details>
+      <details><summary>How is this different from asking ChatGPT or another AI?</summary><p>Chatbots can give a different answer each time and can make up rules. AdSure's score comes from 248 fixed checks, each with a real source. Same ad, same score, every time.</p></details>
+      <details><summary>Do I pay anything now?</summary><p>No. Joining early access is free. You pay ₹1,599 a month only when your beta seat opens and you decide to start.</p></details>
+      <details><summary>What happens after 500 people join?</summary><p>The beta is limited to 500 members so we can give everyone proper attention. After that, new sign-ups go on the waitlist.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="section final">
+  <div class="wrap final-in">
+    <div>
+      <h2>Check your ad before you pay for it.</h2>
+      <p><span data-seats-left>500</span> founding seats left at ₹1,599 a month. That's ₹<span data-perday-exact>53.30</span> a day.</p>
+    </div>
+    <a class="btn btn-ink" href="#join">Get early access</a>
+  </div>
+</section>
+</main>
+
+<footer class="on-ink">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="assets/logo-light.png" alt="adsure" width="440" height="96">
+        <p>A health check-up for your ads, before you spend money on them.</p>
+        <p class="made">
+          <svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect width="30" height="6.67" fill="#FF9933"/><rect y="13.33" width="30" height="6.67" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".7"/></svg>
+          Made in India
+        </p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:adsure@yahoo.com">adsure@yahoo.com</a></li>
+          <li><a href="tel:+916386459941">+91 63864 59941</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>On this page</h4>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#calculator">Calculators</a></li>
+          <li><a href="#pricing">Price</a></li>
+          <li><a href="#join">Get early access</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© <span id="yr">2026</span> AdSure. All rights reserved.</span>
+      <span>Google Ads and Meta are trademarks of their owners. AdSure is independent and not affiliated with them.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mcta on-ink" id="mcta">
+  <div><small><span data-seats-left>500</span> seats left</small><b>₹1,599/month</b></div>
+  <a class="btn btn-lime" href="#join">Get early access</a>
+</div>
+
+<script>
+/* ================================================================
+   SETTINGS: edit these values
+   ================================================================ */
+const CONFIG = {
+  // Supabase: Project Settings > API. Leave empty until you set it up.
+  SUPABASE_URL: "",            // e.g. "https://abcdxyz.supabase.co"
+  SUPABASE_ANON_KEY: "",       // the "anon public" or "publishable" key (safe to put here)
+
+  TOTAL_SEATS: 500,
+  PRICE: 1599,                 // ₹ per month for founding members
+  REGULAR_PRICE: null,         // set e.g. 2499 ONLY if that will be your real later price; shows struck through
+
+  VIDEO_MAIN: "assets/adsure-explainer.mp4",   // your main explainer video file
+  VIDEO_MAIN_POSTER: "",                        // optional poster image, e.g. "assets/video-poster.jpg"
+  YOUTUBE_ID: "",                               // optional: use a YouTube video instead, e.g. "dQw4w9WgXcQ"
+  VIDEO_SHORT: "assets/adsure-short.mp4",       // optional vertical short video; hidden if the file isn't there
+
+  REFRESH_SECONDS: 20          // how often the live seat count refreshes
+};
+
+/* ================================================================ */
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const num = el => { const v = parseFloat(String(el.value).replace(/[^\d.]/g, "")); return isNaN(v) ? 0 : v; };
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---- price ---- */
+(function price(){
+  const perDay = CONFIG.PRICE / 30;
+  $$("[data-price]").forEach(e => e.textContent = inr(CONFIG.PRICE));
+  $$("[data-perday]").forEach(e => e.textContent = "₹" + Math.floor(perDay));
+  $$("[data-perday-exact]").forEach(e => e.textContent = perDay.toFixed(2));
+  if (CONFIG.REGULAR_PRICE) { const r = $("#regular-price"); r.textContent = inr(CONFIG.REGULAR_PRICE); r.hidden = false; }
+  $("#w-price").textContent = inr(CONFIG.PRICE);
+  $("#yr").textContent = new Date().getFullYear();
+})();
+
+/* ---- table marks ---- */
+(function marks(){
+  const svg = {
+    y:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#CBEF2F" stroke="#111014" stroke-width="1.5"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#111014" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    p:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor"/></svg>',
+    n:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'
+  };
+  const label = {y:"Yes", p:"Partly", n:"No"};
+  const cls = {y:"yes", p:"part", n:"no"};
+  $$("td[data-m]").forEach(td => {
+    const k = td.dataset.m;
+    td.innerHTML = `<span class="mk ${cls[k]}">${svg[k]}${k === "p" ? "Partly" : `<span class="sr">${label[k]}</span>`}</span>`;
+  });
+})();
+
+/* ---- score rings ---- */
+function fillRing(ring){
+  const arc = ring.querySelector(".arc"); const s = parseFloat(ring.dataset.score);
+  arc.style.transition = reduce ? "none" : "stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)";
+  arc.style.strokeDashoffset = 264 - 264 * (s / 10);
+}
+const ringObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ setTimeout(() => fillRing(e.target), 300); ringObs.unobserve(e.target);} }), {threshold:.4});
+$$(".ring[data-score]").forEach(r => ringObs.observe(r));
+
+/* ---- nav border + mobile CTA ---- */
+const nav = $("#nav"), mcta = $("#mcta"), join = $("#join");
+let joinVisible = false;
+new IntersectionObserver(es => es.forEach(e => { joinVisible = e.isIntersecting; onScroll(); }), {threshold:.1}).observe(join);
+function onScroll(){
+  nav.classList.toggle("scrolled", scrollY > 10);
+  mcta.classList.toggle("show", scrollY > 700 && !joinVisible);
+}
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+/* ---- tabs ---- */
+(function tabs(){
+  const list = $$(".tab");
+  function select(t){
+    list.forEach(x => { const on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; $("#" + x.getAttribute("aria-controls")).hidden = !on; });
+  }
+  list.forEach((t, i) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", e => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const n = list[(i + (e.key === "ArrowRight" ? 1 : list.length - 1)) % list.length]; select(n); n.focus();
+    });
+  });
+})();
+
+/* ---- money inputs: format with Indian commas ---- */
+$$(".money input").forEach(inp => {
+  const fmt = () => { const v = num(inp); inp.value = v ? Math.round(v).toLocaleString("en-IN") : ""; };
+  fmt();
+  inp.addEventListener("input", () => { const pos = inp.value.length - inp.selectionStart; fmt(); const p = Math.max(0, inp.value.length - pos); inp.setSelectionRange(p, p); calcAll(); });
+});
+$$("input[type=range]").forEach(r => r.addEventListener("input", calcAll));
+
+/* ---- COD toggle ---- */
+let cod = true;
+$$("#cod button").forEach(b => b.addEventListener("click", () => {
+  cod = b.dataset.v === "1";
+  $$("#cod button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  $("#rto-wrap").style.display = $("#rtoc-wrap").style.display = cod ? "" : "none";
+  calcAll();
+}));
+
+/* ---- calculators ---- */
+function calcAll(){
+  // 1. Profit per sale (same formulas as the AdSure engine: ECON_CPA_001, ECON_RTO_001, ECON_RTO_002)
+  const aov = num($("#aov")), m = +$("#margin").value / 100, cpa = num($("#cpa"));
+  const rto = cod ? +$("#rto").value / 100 : 0, rtoCost = cod ? num($("#rtoc")) : 0;
+  $("#margin-o").textContent = Math.round(m * 100) + "%";
+  $("#rto-o").textContent = Math.round(rto * 100) + "%";
+  const keep = aov * m;
+  const realCpa = rto < 1 ? cpa / (1 - rto) + (rto / (1 - rto)) * rtoCost : Infinity;
+  const per = keep - realCpa;
+  const maxCpa = rto < 1 ? Math.max(0, keep * (1 - rto) - rto * rtoCost) : 0;
+  const beRoas = m > 0 && rto < 1 ? 1 / (m * (1 - rto)) : 0;
+  $("#pr-keep").textContent = inr(keep);
+  $("#pr-real").textContent = isFinite(realCpa) ? inr(realCpa) : "—";
+  $("#pr-max").textContent = inr(maxCpa);
+  $("#pr-roas").textContent = beRoas ? beRoas.toFixed(2) + "x" : "—";
+  const big = $("#pr-big");
+  big.textContent = (per < 0 ? "lose " : "keep ") + inr(Math.abs(per));
+  big.className = "big " + (per < 0 ? "bad" : "good");
+  $("#pr-label").textContent = "On every delivered order, you";
+  let v;
+  if (!aov || !cpa) v = "Fill in your order value and ad cost to see your real profit.";
+  else if (per < 0) v = `Ads Manager shows ${inr(cpa)} per order, and it can look fine. But once ${cod ? "returns and " : ""}costs are counted, every delivered order loses ${inr(-per)}. More ad spend would mean more loss.`;
+  else if (per < keep * 0.2) v = `You're only just making money: ${inr(per)} per delivered order. A small rise in ad cost${cod ? " or returns" : ""} would push you into a loss.`;
+  else v = `You keep ${inr(per)} per delivered order after ads. Now check the other things that leak money: tracking, website speed and ad rules.`;
+  $("#pr-verdict").textContent = v;
+
+  // 2. Money lost to mistakes
+  const spend = num($("#spend")), wp = +$("#wpct").value / 100;
+  $("#wpct-o").textContent = Math.round(wp * 100) + "%";
+  const lostM = spend * wp;
+  $("#w-month").textContent = inr(lostM);
+  $("#w-year").textContent = inr(lostM * 12);
+  $("#w-net").textContent = inr(Math.max(0, lostM - CONFIG.PRICE));
+  const bePct = spend ? (CONFIG.PRICE / spend) * 100 : 0;
+  $("#w-verdict").textContent = spend
+    ? `AdSure pays for itself if it helps you save just ${bePct < 0.1 ? "0.1" : bePct.toFixed(1)}% of your ${inr(spend)} monthly ad spend.`
+    : "Enter your monthly ad spend.";
+
+  // 3. Agency vs AdSure
+  const fee = num($("#afee")), months = +$("#months").value;
+  $("#months-o").textContent = months;
+  const ag = fee * months, us = CONFIG.PRICE * months;
+  $("#a-agency").textContent = inr(ag);
+  $("#a-us").textContent = inr(us);
+  $("#a-save").textContent = inr(Math.max(0, ag - us));
+  const days = fee ? CONFIG.PRICE / (fee / 30) : 0;
+  $("#a-days").textContent = fee ? (days < 1 ? "less than 1 day" : `${days.toFixed(1)} days`) + " of agency fee" : "—";
+}
+calcAll();
+
+/* ================================================================
+   LIVE SEAT COUNT (real sign-ups from Supabase)
+   ================================================================ */
+const hasDB = CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY;
+const headers = hasDB ? { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: "Bearer " + CONFIG.SUPABASE_ANON_KEY, "Content-Type": "application/json" } : {};
+let shownTaken = 0, taken = 0;
+
+// build the seat grid (100 squares, each = 1% of seats)
+const ticket = $("#ticket");
+for (let i = 0; i < 100; i++) ticket.appendChild(document.createElement("i"));
+
+function renderSeats(target){
+  const total = CONFIG.TOTAL_SEATS;
+  const t = Math.min(target, total);
+  const from = shownTaken, start = performance.now(), dur = reduce ? 0 : 1200;
+  function frame(now){
+    const k = dur ? Math.min(1, (now - start) / dur) : 1;
+    const e = 1 - Math.pow(1 - k, 3);
+    const cur = Math.round(from + (t - from) * e);
+    $$("[data-seats-taken]").forEach(x => x.textContent = cur.toLocaleString("en-IN"));
+    $$("[data-seats-left]").forEach(x => x.textContent = (total - cur).toLocaleString("en-IN"));
+    if (k < 1) requestAnimationFrame(frame); else shownTaken = t;
+  }
+  requestAnimationFrame(frame);
+  $$("[data-seats-total]").forEach(x => x.textContent = total.toLocaleString("en-IN"));
+  $("#meter-fill").style.width = (t / total * 100) + "%";
+  document.querySelector(".meter").setAttribute("aria-valuenow", t);
+  const squares = Math.floor(t / (total / 100));
+  $$("#ticket i").forEach((s, i) => s.classList.toggle("on", i < squares));
+  if (t >= total) setFull();
+}
+function setFull(){
+  $("#submit-btn").textContent = "Join the waitlist";
+  $$(".price-tag").forEach(e => e.textContent = "All 500 founding seats are taken");
+}
+
+async function fetchSeats(){
+  if (!hasDB) { renderSeats(0); return; }
+  try {
+    const r = await fetch(CONFIG.SUPABASE_URL + "/rest/v1/rpc/seats_taken", { method: "POST", headers, body: "{}" });
+    if (!r.ok) throw new Error(r.status);
+    taken = Number(await r.json()) || 0;
+    renderSeats(taken);
+  } catch (e) { console.warn("Seat count unavailable:", e); }
+}
+fetchSeats();
+setInterval(() => { if (!document.hidden) fetchSeats(); }, CONFIG.REFRESH_SECONDS * 1000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchSeats(); });
+
+/* ================================================================
+   EARLY ACCESS FORM
+   ================================================================ */
+const form = $("#form"), msg = $("#form-msg"), btn = $("#submit-btn");
+function showMsg(text, ok){ msg.textContent = text; msg.className = "form-msg show " + (ok ? "ok" : "no"); }
+function setBad(input, bad){ const f = input.closest(".f"); f.classList.toggle("bad", bad); input.setAttribute("aria-invalid", bad); }
+
+function cleanPhone(v){
+  let d = v.replace(/\D/g, "");
+  if (d.length === 12 && d.startsWith("91")) d = d.slice(2);
+  if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+  return d;
+}
+function validate(){
+  let ok = true;
+  const name = $("#f-name"), email = $("#f-email"), phone = $("#f-phone"), biz = $("#f-biz"), spend = $("#f-spend"), consent = $("#f-consent");
+  const checks = [
+    [name, name.value.trim().length >= 2],
+    [email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())],
+    [phone, /^[6-9]\d{9}$/.test(cleanPhone(phone.value))],
+    [biz, !!biz.value], [spend, !!spend.value], [consent, consent.checked]
+  ];
+  let first = null;
+  checks.forEach(([el, good]) => { setBad(el, !good); if (!good) { ok = false; first = first || el; } });
+  if (first) first.focus();
+  return ok;
+}
+form.addEventListener("input", e => { if (e.target.closest(".f.bad")) setBad(e.target, false); });
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  msg.className = "form-msg";
+  if (form.company_site.value) return;           // bot trap
+  if (!validate()) return;
+  if (!hasDB) { showMsg("The form isn't connected yet. Add your Supabase URL and key in the settings at the bottom of index.html.", false); return; }
+
+  const data = {
+    name: $("#f-name").value.trim(),
+    email: $("#f-email").value.trim().toLowerCase(),
+    phone: "+91" + cleanPhone($("#f-phone").value),
+    business_type: $("#f-biz").value,
+    monthly_ad_spend: $("#f-spend").value,
+    platforms: $$("input[name=platforms]:checked").map(x => x.value),
+    biggest_problem: $("#f-prob").value || null,
+    consent: true,
+    source: (new URLSearchParams(location.search).get("utm_source") || document.referrer || "direct").slice(0, 200)
+  };
+
+  btn.disabled = true; const label = btn.textContent; btn.textContent = "Saving your seat…";
+  try {
+    const r = await fetch(CONFIG.SUPABASE_URL + "/rest/v1/early_access", {
+      method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(data)
+    });
+    if (r.status === 409) { showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
+    if (!r.ok) throw new Error(await r.text());
+    await fetchSeats();
+    const position = taken;
+    const inBeta = position > 0 && position <= CONFIG.TOTAL_SEATS;
+    $("#form-fields").style.display = "none";
+    $("#done").classList.add("show");
+    if (inBeta) {
+      $("#done-title").textContent = "Your seat is saved";
+      $("#done-seat").textContent = `You're founding member #${position.toLocaleString("en-IN")} of ${CONFIG.TOTAL_SEATS}`;
+    } else if (position > CONFIG.TOTAL_SEATS) {
+      $("#done-title").textContent = "You're on the waitlist";
+      $("#done-text").textContent = "All 500 beta seats are taken. We'll reach out as soon as a spot opens.";
+    }
+    $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
+  } catch (err) {
+    console.error(err);
+    showMsg("Something went wrong and your details weren't saved. Please try again, or email adsure@yahoo.com.", false);
+  } finally { btn.disabled = false; btn.textContent = label; }
+});
+
+/* ================================================================
+   VIDEO
+   ================================================================ */
+(function video(){
+  const main = document.querySelector('[data-video="main"]');
+  const v = main.querySelector("video"), cover = main.querySelector(".vcover");
+  if (CONFIG.YOUTUBE_ID) {
+    cover.addEventListener("click", () => {
+      main.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(CONFIG.YOUTUBE_ID)}?autoplay=1&rel=0" title="AdSure video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    });
+  } else {
+    if (CONFIG.VIDEO_MAIN_POSTER) v.poster = CONFIG.VIDEO_MAIN_POSTER;
+    v.src = CONFIG.VIDEO_MAIN;
+    v.addEventListener("error", () => main.classList.add("is-missing"));
+    cover.addEventListener("click", () => { main.classList.add("hidden-cover"); v.controls = true; v.play().catch(() => {}); });
+  }
+  const shorts = $("#shorts"), sv = shorts.querySelector("video");
+  if (CONFIG.VIDEO_SHORT) {
+    sv.addEventListener("loadedmetadata", () => shorts.classList.add("show"));
+    sv.src = CONFIG.VIDEO_SHORT;
+  }
+})();
+</script>
+</body>
+</html>
