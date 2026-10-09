@@ -1383,6 +1383,29 @@ function onScroll(){
 }
 addEventListener("scroll", onScroll, {passive:true}); onScroll();
 
+/* ---- in-page links: scroll smoothly without adding #section to the address bar ---- */
+(function cleanLinks(){
+  const go = id => {
+    const el = document.getElementById(id);
+    if (!el) return false;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    return true;
+  };
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = a.getAttribute("href").slice(1);
+    if (!id) return;
+    if (go(id)) e.preventDefault();
+  });
+  // Someone opened a link like adsure.in/#pricing: scroll there, then tidy the address
+  if (location.hash) {
+    const id = decodeURIComponent(location.hash.slice(1));
+    history.replaceState(null, "", location.pathname + location.search);
+    addEventListener("load", () => go(id));
+  }
+})();
+
 /* ---- tabs ---- */
 (function tabs(){
   const list = $$(".tab");
