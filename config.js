@@ -36,5 +36,5 @@ window.ADSURE_CONFIG = {
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
   POPUP_DELAY_SECONDS: 10,       // seconds before it appears
-  POPUP_REPEAT_DAYS: 3           // after someone closes it, wait this many days before showing again
+  POPUP_REPEAT_DAYS: 0           // after someone closes it, wait this many days before showing again
 };
