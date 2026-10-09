@@ -4,8 +4,8 @@
 window.ADSURE_CONFIG = {
 
   // Supabase (Project Settings > Data API / API Keys). Paste your values here.
-  SUPABASE_URL: "https://zzfldryjluevajwbitra.supabase.co",              // e.g. "https://abcdxyz.supabase.co"
-  SUPABASE_ANON_KEY: "sb_publishable_Osib6-_IbK-Wi5Xs8OOlng_9s-z4S4h",         // the publishable or anon key, NOT the secret key
+  SUPABASE_URL: "https://zzfldryjluevajwbitra.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_Osib6-_IbK-Wi5Xs8OOlng_9s-z4S4h",   // publishable key, NOT the secret key
 
   TOTAL_SEATS: 500,
   PRICE: 1599,                   // ₹ per month for founding members
