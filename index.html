@@ -1135,7 +1135,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
         <li><span>2</span><div><b>We reach out</b><p>By email or phone when your seat opens.</p></div></li>
         <li><span>3</span><div><b>Check your first ad</b><p>See your score, the problems and the fixes.</p></div></li>
       </ol>
-      <p class="contact-mini">Questions? Write to <a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a>.</p>
+      <p class="contact-mini">Questions? Write to <a href="mailto:hi@adsure.in">hi@adsure.in</a>.</p>
     </div>
 
     <form class="card" id="form" novalidate>
@@ -1241,7 +1241,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
       <div>
         <h4>Contact</h4>
         <ul>
-          <li><a href="mailto:adsure@myyahoo.com">adsure@myyahoo.com</a></li>
+          <li><a href="mailto:hi@adsure.in">hi@adsure.in</a></li>
         </ul>
       </div>
       <div>
@@ -1618,7 +1618,7 @@ form.addEventListener("submit", async e => {
     $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
   } catch (err) {
     console.error("AdSure form error:", err.status, err.code, err.message);
-    showMsg("Something went wrong and your details weren't saved. Please try again, or email adsure@myyahoo.com.", false);
+    showMsg("Something went wrong and your details weren't saved. Please try again, or email hi@adsure.in.", false);
     const d = document.createElement("small");
     d.style.cssText = "display:block;margin-top:6px;opacity:.75";
     d.textContent = whyFailed(err);
@@ -1698,7 +1698,7 @@ form.addEventListener("submit", async e => {
       $("#pop-done").querySelector("button").focus();
     } catch (err) {
       console.error("AdSure popup error:", err.status, err.code, err.message);
-      pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or email adsure@myyahoo.com.";
+      pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or email hi@adsure.in.";
       const d = document.createElement("small"); d.style.cssText = "display:block;margin-top:6px;opacity:.75"; d.textContent = whyFailed(err); pmsg.appendChild(d);
       pmsg.className = "form-msg show no";
     } finally { pbtn.disabled = false; pbtn.textContent = label; }
