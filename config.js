@@ -4,8 +4,8 @@
 window.ADSURE_CONFIG = {
 
   // Supabase (Project Settings > Data API / API Keys). Paste your values here.
-  SUPABASE_URL: "https://zzfldryjluevajwbitra.supabase.co",              // e.g. "https://abcdxyz.supabase.co"
-  SUPABASE_ANON_KEY: "sb_publishable_Osib6-_IbK-Wi5Xs8OOlng_9s-z4S4h",         // the publishable or anon key, NOT the secret key
+  SUPABASE_URL: "",              // e.g. "https://abcdxyz.supabase.co"
+  SUPABASE_ANON_KEY: "",         // the publishable or anon key, NOT the secret key
 
   TOTAL_SEATS: 500,
   PRICE: 1599,                   // ₹ per month for founding members
@@ -31,5 +31,10 @@ window.ADSURE_CONFIG = {
     }
   ],
 
-  REFRESH_SECONDS: 20            // how often the live seat count refreshes
+  REFRESH_SECONDS: 20,           // how often the live seat count refreshes
+
+  // Sign-up popup
+  POPUP_ENABLED: true,           // false = never show the popup
+  POPUP_DELAY_SECONDS: 10,       // seconds before it appears
+  POPUP_REPEAT_DAYS: 3           // after someone closes it, wait this many days before showing again
 };
