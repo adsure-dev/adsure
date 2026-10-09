@@ -1305,8 +1305,8 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 
 <script src="config.js"></script>
 <script>
-/* Settings live in config.js. These defaults are used for anything missing there. */
-const CONFIG = Object.assign({
+/* Settings live in config.js. These defaults are used for anything missing or left empty there. */
+const CONFIG_DEFAULTS = {
   SUPABASE_URL: "https://zzfldryjluevajwbitra.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_Osib6-_IbK-Wi5Xs8OOlng_9s-z4S4h",
   TOTAL_SEATS: 500,
@@ -1317,7 +1317,10 @@ const CONFIG = Object.assign({
   POPUP_ENABLED: true,
   POPUP_DELAY_SECONDS: 10,
   POPUP_REPEAT_DAYS: 3
-}, window.ADSURE_CONFIG || {});
+};
+// An empty value in config.js (like SUPABASE_URL: "") never wipes out a default above
+const CONFIG = { ...CONFIG_DEFAULTS };
+Object.entries(window.ADSURE_CONFIG || {}).forEach(([k, v]) => { if (v !== "" && v !== undefined) CONFIG[k] = v; });
 CONFIG.SUPABASE_URL = String(CONFIG.SUPABASE_URL || "").trim().replace(/\/+$/, "");
 CONFIG.SUPABASE_ANON_KEY = String(CONFIG.SUPABASE_ANON_KEY || "").trim();
 
