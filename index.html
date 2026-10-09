@@ -441,6 +441,62 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .mcta .btn{padding:12px 18px;font-size:.95rem;box-shadow:none}
 @media (max-width:760px){.mcta{display:flex}}
 
+/* ---------- Popup ---------- */
+.pop{padding:0;border:0;background:transparent;max-width:min(780px,calc(100% - 32px));width:100%;color:var(--ink);overflow:visible}
+.pop::backdrop{background:rgba(17,16,20,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.pop[open]{animation:popIn .35s cubic-bezier(.2,.9,.25,1.15)}
+.pop[open]::backdrop{animation:fadeIn .3s ease}
+.pop.closing{animation:popOut .18s ease forwards}
+.pop.closing::backdrop{animation:fadeOut .18s ease forwards}
+@keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes popOut{to{opacity:0;transform:translateY(10px) scale(.98)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes fadeOut{to{opacity:0}}
+.pop-card:focus{outline:none}
+.pop-card{position:relative;display:grid;grid-template-columns:.85fr 1.15fr;border-radius:28px;overflow:hidden;background:var(--paper);box-shadow:0 40px 100px -30px rgba(0,0,0,.55);border:2px solid var(--ink)}
+.pop-side{background:var(--lime);padding:30px 26px;display:flex;flex-direction:column;gap:16px;border-right:2px solid var(--ink);position:relative;overflow:hidden}
+.pop-side::after{content:"";position:absolute;right:-60px;bottom:-60px;width:200px;height:200px;border-radius:50%;border:2px solid rgba(17,16,20,.14)}
+.pop-logo{height:26px;width:auto;align-self:flex-start}
+.pop-live{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.95rem}
+.pop-big{font-family:var(--head);font-weight:800;font-size:3.6rem;letter-spacing:-.05em;line-height:.85}
+.pop-big small{display:block;font-size:.95rem;letter-spacing:-.01em;font-weight:700;margin-top:8px}
+.pop-meter{height:12px;border-radius:12px;background:rgba(255,253,248,.7);box-shadow:inset 0 0 0 1.5px var(--ink);overflow:hidden}
+.pop-meter i{display:block;height:100%;width:0;background:var(--ink);transition:width 1s ease}
+.pop-perks{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:8px;font-size:.93rem;font-weight:500}
+.pop-perks li{display:flex;gap:9px;align-items:flex-start;line-height:1.35}
+.pop-perks li::before{content:"";width:18px;height:18px;flex:none;border-radius:50%;margin-top:1px;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CBEF2F' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/11px no-repeat}
+.pop-price{margin-top:auto;font-size:.95rem}
+.pop-price b{font-family:var(--head);font-size:1.5rem;letter-spacing:-.03em}
+.pop-main{padding:30px 28px 24px;display:flex;flex-direction:column}
+.pop-main h2{font-size:clamp(1.7rem,3.2vw,2.2rem);max-width:15ch;padding-right:30px}
+.pop-main .sub{color:var(--muted);margin-top:8px;font-size:.98rem}
+.pop-form{display:grid;gap:12px;margin-top:20px}
+.pop-form .f input[type=text],.pop-form .f input[type=email],.pop-form .f input[type=tel]{padding:12px 14px}
+.pop-form .btn{width:100%;padding:16px;margin-top:2px}
+.pop-form .consent{font-size:.82rem}
+.pop-later{display:block;background:none;border:0;color:var(--muted);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin:12px auto 0;padding:6px}
+.pop-x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);display:grid;place-items:center;cursor:pointer}
+.pop-x:hover{background:var(--line)}
+.pop-done{display:none;text-align:center;padding:30px 6px 10px}
+.pop-done.show{display:block}
+.pop-done .tick{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:var(--lime);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--ink)}
+.pop-done h3{font-size:1.7rem}
+.pop-done p{color:var(--muted);margin-top:8px}
+.pop-done .seatno{font-family:var(--head);font-weight:800;color:var(--ink);font-size:1.15rem;margin-top:12px}
+@media (max-width:700px){
+  .pop{max-width:100%;margin:auto 0 0;max-height:calc(100% - 24px)}
+  .pop-card{grid-template-columns:1fr;border-radius:26px 26px 0 0;border-width:2px 0 0;max-height:calc(100dvh - 24px);overflow-y:auto}
+  .pop-side{border-right:0;border-bottom:2px solid var(--ink);padding:20px 22px;gap:10px}
+  .pop-side::after,.pop-perks,.pop-logo{display:none}
+  .pop-big{font-size:2.6rem}
+  .pop-price{margin-top:0}
+  .pop-main{padding:22px 22px calc(18px + env(safe-area-inset-bottom,0px))}
+  .pop[open]{animation:sheetIn .35s cubic-bezier(.2,.9,.25,1)}
+  .pop.closing{animation:sheetOut .2s ease forwards}
+  @keyframes sheetIn{from{transform:translateY(100%)}to{transform:none}}
+  @keyframes sheetOut{to{transform:translateY(100%)}}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .finds li{opacity:1;transform:none}
@@ -1198,6 +1254,50 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   </div>
 </footer>
 
+<!-- ============ POPUP ============ -->
+<dialog class="pop" id="pop" aria-labelledby="pop-title">
+  <div class="pop-card" tabindex="-1" autofocus>
+    <button class="pop-x" type="button" aria-label="Close" data-close>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="pop-side">
+      <img class="pop-logo" src="assets/logo-dark.png" alt="adsure" width="440" height="96">
+      <p class="pop-live"><span class="live-dot" aria-hidden="true"></span>Live seat count</p>
+      <p class="pop-big"><span data-seats-left>500</span><small>founding seats left of <span data-seats-total>500</span></small></p>
+      <div class="pop-meter" aria-hidden="true"><i id="pop-meter"></i></div>
+      <ul class="pop-perks">
+        <li>248 checks for Meta and Google Ads</li>
+        <li>Indian ad rules and COD returns built in</li>
+        <li>Plain-word fixes, every result with a source</li>
+      </ul>
+      <p class="pop-price"><b data-price>₹1,599</b>/month, only ₹<span data-perday-exact>53.30</span> a day</p>
+    </div>
+    <div class="pop-main">
+      <div id="pop-body">
+        <h2 id="pop-title">Get your beta seat in 20 seconds</h2>
+        <p class="sub">The founding price is only for the first 500 members. No payment now.</p>
+        <form class="pop-form" id="pop-form" novalidate>
+          <div class="f"><label for="p-name">Your name</label><input id="p-name" type="text" autocomplete="name" maxlength="80"><p class="err">Please enter your name.</p></div>
+          <div class="f"><label for="p-phone">Phone number</label><input id="p-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" maxlength="16"><p class="err">Enter a 10-digit Indian mobile number.</p></div>
+          <div class="f"><label for="p-email">Email</label><input id="p-email" type="email" autocomplete="email" placeholder="you@business.com" maxlength="120"><p class="err">Enter a valid email address.</p></div>
+          <input class="hp" type="text" id="p-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="f"><label class="consent"><input type="checkbox" id="p-consent"> <span>AdSure can contact me by email, phone or WhatsApp about early access.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
+          <div class="form-msg" id="pop-msg" role="alert"></div>
+          <button class="btn btn-lime" type="submit" id="pop-btn">Claim my seat</button>
+        </form>
+        <button class="pop-later" type="button" data-close>Maybe later</button>
+      </div>
+      <div class="pop-done" id="pop-done">
+        <div class="tick"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+        <h3 id="pop-done-title">Your seat is saved</h3>
+        <p id="pop-done-text">We'll reach out by email or phone when your seat opens.</p>
+        <p class="seatno" id="pop-done-seat"></p>
+        <button class="btn btn-ink" type="button" data-close style="margin-top:20px">Keep exploring</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <div class="mcta on-ink" id="mcta">
   <div><small><span data-seats-left>500</span> seats left</small><b>₹1,599/month</b></div>
   <a class="btn btn-lime" href="#join">Get early access</a>
@@ -1213,7 +1313,10 @@ const CONFIG = Object.assign({
   PRICE: 1599,
   REGULAR_PRICE: null,
   VIDEOS: [{ title: "How AdSure works", text: "", file: "assets/adsure-explainer.mp4" }],
-  REFRESH_SECONDS: 20
+  REFRESH_SECONDS: 20,
+  POPUP_ENABLED: true,
+  POPUP_DELAY_SECONDS: 10,
+  POPUP_REPEAT_DAYS: 3
 }, window.ADSURE_CONFIG || {});
 CONFIG.SUPABASE_URL = String(CONFIG.SUPABASE_URL || "").trim().replace(/\/+$/, "");
 CONFIG.SUPABASE_ANON_KEY = String(CONFIG.SUPABASE_ANON_KEY || "").trim();
@@ -1379,6 +1482,7 @@ function renderSeats(target){
   requestAnimationFrame(frame);
   $$("[data-seats-total]").forEach(x => x.textContent = total.toLocaleString("en-IN"));
   $("#meter-fill").style.width = (t / total * 100) + "%";
+  const pm = $("#pop-meter"); if (pm) pm.style.width = (t / total * 100) + "%";
   document.querySelector(".meter").setAttribute("aria-valuenow", t);
   const squares = Math.floor(t / (total / 100));
   $$("#ticket i").forEach((s, i) => s.classList.toggle("on", i < squares));
@@ -1387,6 +1491,8 @@ function renderSeats(target){
 function setFull(){
   $("#submit-btn").textContent = "Join the waitlist";
   $$(".price-tag").forEach(e => e.textContent = "All 500 founding seats are taken");
+  const pt = $("#pop-title"); if (pt) pt.textContent = "Join the waitlist";
+  const pb = $("#pop-btn"); if (pb) pb.textContent = "Join the waitlist";
 }
 
 async function fetchSeats(){
@@ -1405,6 +1511,50 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) fetc
 /* ================================================================
    EARLY ACCESS FORM
    ================================================================ */
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch (_) { return null; } },
+  set(k, v){ try { localStorage.setItem(k, v); } catch (_) {} }
+};
+// Shows the "you're in" state in the main form (used by the form and the popup)
+function markJoined(position){
+  store.set("adsure_joined", "1");
+  const inBeta = position > 0 && position <= CONFIG.TOTAL_SEATS;
+  $("#form-fields").style.display = "none";
+  $("#done").classList.add("show");
+  if (inBeta) {
+    $("#done-title").textContent = "Your seat is saved";
+    $("#done-seat").textContent = `You're founding member #${position.toLocaleString("en-IN")} of ${CONFIG.TOTAL_SEATS}`;
+  } else if (position > CONFIG.TOTAL_SEATS) {
+    $("#done-title").textContent = "You're on the waitlist";
+    $("#done-text").textContent = "All 500 beta seats are taken. We'll reach out as soon as a spot opens.";
+  }
+  return inBeta;
+}
+// Saves one sign-up to Supabase. Returns "ok" or "exists", throws on error.
+async function saveSignup(data){
+  const r = await fetch(CONFIG.SUPABASE_URL + "/rest/v1/early_access", {
+    method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(data)
+  });
+  if (r.status === 409) return "exists";
+  if (!r.ok) {
+    const body = await r.text(); let j = {}; try { j = JSON.parse(body); } catch (_) {}
+    const e = new Error(j.message || body || ("HTTP " + r.status)); e.status = r.status; e.code = j.code || ""; throw e;
+  }
+  return "ok";
+}
+// Short reason for the site owner when a save fails
+function whyFailed(err){
+  const m = String(err.message || ""), st = err.status, c = err.code;
+  let why;
+  if (err instanceof TypeError) why = "Can't reach Supabase. Check SUPABASE_URL (no slash at the end).";
+  else if (c === "42501" || /permission|row-level security/i.test(m)) why = "Supabase blocked the save (permissions). Run the fix SQL.";
+  else if (st === 401 || /api key|jwt/i.test(m)) why = "Supabase rejected the key. Check SUPABASE_ANON_KEY.";
+  else if (st === 404 || c === "PGRST205" || c === "42P01") why = "The early_access table wasn't found. Run the SQL in Supabase.";
+  else if (c === "23514" || c === "23502") why = "A detail didn't match the table rules.";
+  else why = m.slice(0, 160);
+  return "Reason: " + why + (c ? " (code " + c + ")" : st ? " (status " + st + ")" : "");
+}
+const trafficSource = () => (new URLSearchParams(location.search).get("utm_source") || document.referrer || "direct").slice(0, 180);
 const form = $("#form"), msg = $("#form-msg"), btn = $("#submit-btn");
 function showMsg(text, ok){ msg.textContent = text; msg.className = "form-msg show " + (ok ? "ok" : "no"); }
 function setBad(input, bad){ const f = input.closest(".f"); f.classList.toggle("bad", bad); input.setAttribute("aria-invalid", bad); }
@@ -1447,50 +1597,103 @@ form.addEventListener("submit", async e => {
     platforms: $$("input[name=platforms]:checked").map(x => x.value),
     biggest_problem: $("#f-prob").value || null,
     consent: true,
-    source: (new URLSearchParams(location.search).get("utm_source") || document.referrer || "direct").slice(0, 200)
+    source: trafficSource()
   };
 
   btn.disabled = true; const label = btn.textContent; btn.textContent = "Saving your seat…";
   try {
-    const r = await fetch(CONFIG.SUPABASE_URL + "/rest/v1/early_access", {
-      method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(data)
-    });
-    if (r.status === 409) { showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
-    if (!r.ok) {
-      const body = await r.text(); let j = {}; try { j = JSON.parse(body); } catch (_) {}
-      const e = new Error(j.message || body || ("HTTP " + r.status)); e.status = r.status; e.code = j.code || ""; throw e;
-    }
+    if (await saveSignup(data) === "exists") { store.set("adsure_joined", "1"); showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
     await fetchSeats();
-    const position = taken;
-    const inBeta = position > 0 && position <= CONFIG.TOTAL_SEATS;
-    $("#form-fields").style.display = "none";
-    $("#done").classList.add("show");
-    if (inBeta) {
-      $("#done-title").textContent = "Your seat is saved";
-      $("#done-seat").textContent = `You're founding member #${position.toLocaleString("en-IN")} of ${CONFIG.TOTAL_SEATS}`;
-    } else if (position > CONFIG.TOTAL_SEATS) {
-      $("#done-title").textContent = "You're on the waitlist";
-      $("#done-text").textContent = "All 500 beta seats are taken. We'll reach out as soon as a spot opens.";
-    }
+    markJoined(taken);
     $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
   } catch (err) {
     console.error("AdSure form error:", err.status, err.code, err.message);
     showMsg("Something went wrong and your details weren't saved. Please try again, or call +91 63864 59941.", false);
-    // Short reason for the site owner (also printed in the browser console)
-    const m = String(err.message || ""), st = err.status, c = err.code;
-    let why;
-    if (err instanceof TypeError) why = "Can't reach Supabase. Check SUPABASE_URL (no slash at the end).";
-    else if (c === "42501" || /permission|row-level security/i.test(m)) why = "Supabase blocked the save (permissions). Run the fix SQL.";
-    else if (st === 401 || /api key|jwt/i.test(m)) why = "Supabase rejected the key. Check SUPABASE_ANON_KEY.";
-    else if (st === 404 || c === "PGRST205" || c === "42P01") why = "The early_access table wasn't found. Run the SQL in Supabase.";
-    else if (c === "23514" || c === "23502") why = "A detail didn't match the table rules.";
-    else why = m.slice(0, 160);
     const d = document.createElement("small");
     d.style.cssText = "display:block;margin-top:6px;opacity:.75";
-    d.textContent = "Reason: " + why + (c ? " (code " + c + ")" : st ? " (status " + st + ")" : "");
+    d.textContent = whyFailed(err);
     msg.appendChild(d);
   } finally { btn.disabled = false; btn.textContent = label; }
 });
+
+/* ================================================================
+   POPUP (opens once after a few seconds; settings in config.js)
+   ================================================================ */
+(function popup(){
+  const pop = $("#pop");
+  if (!CONFIG.POPUP_ENABLED || !pop || typeof pop.showModal !== "function") return;
+  if (store.get("adsure_joined")) return;                                   // already signed up
+  const seen = +store.get("adsure_popup_seen") || 0;
+  if (Date.now() - seen < CONFIG.POPUP_REPEAT_DAYS * 864e5) return;         // shown recently
+
+  // Don't interrupt someone who is filling the main form, at the form, or watching a video
+  const busy = () => {
+    const a = document.activeElement, v = $("#vid");
+    return document.hidden || joinVisible || (a && $("#form").contains(a)) || (v && !v.paused) || !!document.querySelector("#vframe iframe");
+  };
+  function tryOpen(){ if (busy()) { setTimeout(tryOpen, 5000); return; } open(); }
+  setTimeout(tryOpen, Math.max(0, CONFIG.POPUP_DELAY_SECONDS) * 1000);
+
+  function open(){
+    store.set("adsure_popup_seen", String(Date.now()));
+    pop.showModal(); document.documentElement.style.overflow = "hidden";
+    pop.querySelector(".pop-card").focus();
+  }
+  function close(){
+    if (!pop.open) return;
+    if (reduce) { pop.close(); return; }
+    pop.classList.add("closing");
+    setTimeout(() => { pop.classList.remove("closing"); pop.close(); }, 190);
+  }
+  pop.addEventListener("close", () => { document.documentElement.style.overflow = ""; });
+  pop.addEventListener("cancel", e => { e.preventDefault(); close(); });                 // Esc key
+  pop.addEventListener("click", e => { if (e.target === pop) close(); });                // click outside
+  $$("#pop [data-close]").forEach(b => b.addEventListener("click", close));
+
+  // quick form
+  const pf = $("#pop-form"), pmsg = $("#pop-msg"), pbtn = $("#pop-btn");
+  pf.addEventListener("input", e => { if (e.target.closest(".f.bad")) setBad(e.target, false); });
+  pf.addEventListener("submit", async e => {
+    e.preventDefault(); pmsg.className = "form-msg";
+    if ($("#p-hp").value) return;
+    const name = $("#p-name"), phone = $("#p-phone"), email = $("#p-email"), consent = $("#p-consent");
+    const checks = [
+      [name, name.value.trim().length >= 2],
+      [phone, /^[6-9]\d{9}$/.test(cleanPhone(phone.value))],
+      [email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())],
+      [consent, consent.checked]
+    ];
+    let first = null;
+    checks.forEach(([el, ok]) => { setBad(el, !ok); if (!ok && !first) first = el; });
+    if (first) { first.focus(); return; }
+    if (!hasDB) { pmsg.textContent = "The form isn't connected yet. Add your Supabase URL and key in config.js."; pmsg.className = "form-msg show no"; return; }
+
+    const label = pbtn.textContent; pbtn.disabled = true; pbtn.textContent = "Saving your seat…";
+    try {
+      const res = await saveSignup({
+        name: name.value.trim(), email: email.value.trim().toLowerCase(), phone: "+91" + cleanPhone(phone.value),
+        consent: true, source: ("popup | " + trafficSource()).slice(0, 200)
+      });
+      $("#pop-body").style.display = "none"; $("#pop-done").classList.add("show");
+      if (res === "exists") {
+        store.set("adsure_joined", "1");
+        $("#pop-done-title").textContent = "You're already on the list";
+        $("#pop-done-text").textContent = "We'll be in touch soon.";
+      } else {
+        await fetchSeats();
+        const inBeta = markJoined(taken);
+        if (inBeta) $("#pop-done-seat").textContent = `You're founding member #${taken.toLocaleString("en-IN")} of ${CONFIG.TOTAL_SEATS}`;
+        else if (taken > CONFIG.TOTAL_SEATS) { $("#pop-done-title").textContent = "You're on the waitlist"; $("#pop-done-text").textContent = "All 500 beta seats are taken. We'll reach out as soon as a spot opens."; }
+      }
+      $("#pop-done").querySelector("button").focus();
+    } catch (err) {
+      console.error("AdSure popup error:", err.status, err.code, err.message);
+      pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or call +91 63864 59941.";
+      const d = document.createElement("small"); d.style.cssText = "display:block;margin-top:6px;opacity:.75"; d.textContent = whyFailed(err); pmsg.appendChild(d);
+      pmsg.className = "form-msg show no";
+    } finally { pbtn.disabled = false; pbtn.textContent = label; }
+  });
+})();
 
 /* ================================================================
    VIDEO PLAYER (switch between videos with the buttons)
