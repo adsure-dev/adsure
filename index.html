@@ -150,6 +150,8 @@
   --head:"Outfit", "Segoe UI", system-ui, -apple-system, sans-serif;
   --body:"DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --wrap:1180px;
+  --g-scale:1.6;   /* Google Ads logo zoom (hero + forms) */
+  --m-scale:2.2;   /* Meta logo zoom (hero + forms) */
   --r-lg:28px; --r-md:18px; --r-sm:12px;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -210,8 +212,8 @@ p{margin:0}
 .works-logos{display:flex;align-items:center;gap:14px}
 .plat{display:inline-flex;align-items:center;justify-content:center;background:var(--paper);border:1px solid var(--line);border-radius:999px;height:64px;width:150px;padding:0 18px;overflow:hidden}
 .plat img{display:block;height:44px;width:auto;max-width:none;transform-origin:center}
-.plat-google img{transform:scale(1.6)}   /* bigger Google logo: raise 1.6 */
-.plat-meta img{transform:scale(2.2)}     /* bigger Meta logo: raise 2.2 */
+.plat-google img{transform:scale(var(--g-scale))}
+.plat-meta img{transform:scale(var(--m-scale))}
 
 .seat-strip{display:flex;align-items:center;gap:14px;margin-top:22px;font-size:.98rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;max-width:460px}
 .live-dot{width:10px;height:10px;border-radius:50%;background:#2DB55D;flex:none;position:relative}
@@ -511,6 +513,22 @@ form.card{background:var(--paper);border:1px solid var(--line);border-radius:var
 .checks label{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:600;cursor:pointer;margin:0;background:var(--cream)}
 .checks input{accent-color:var(--ink);width:18px;height:18px}
 .checks label:has(input:checked){border-color:var(--ink);background:var(--lime)}
+.picks{display:flex;gap:12px;flex-wrap:wrap}
+.pick{position:relative;cursor:pointer;margin:0!important;display:block}
+.pick input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.pick .pk{display:flex;align-items:center;justify-content:center;width:150px;height:58px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);overflow:hidden;transition:border-color .15s, box-shadow .15s}
+.pick:hover .pk{border-color:#BDB6A6}
+.pick img{display:block;height:40px;width:auto;max-width:none}
+.pick-google img{transform:scale(var(--g-scale))}
+.pick-meta img{transform:scale(var(--m-scale))}
+.pick .fb{display:none;font-weight:700;font-size:.95rem}
+.pick .pk.noimg img{display:none}
+.pick .pk.noimg .fb{display:block}
+.pick input:checked + .pk{border-color:var(--ink);box-shadow:0 0 0 3px var(--lime)}
+.pick input:focus-visible + .pk{outline:3px solid var(--ink);outline-offset:3px}
+.pick .tk{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 2px var(--ink);display:none;place-items:center}
+.pick input:checked ~ .tk{display:grid}
+.f .lbl{display:block;font-weight:600;font-size:.95rem;margin-bottom:8px}
 .f label.consent{display:flex;font-weight:400;margin:0}
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);line-height:1.45}
 .consent input{accent-color:var(--ink);width:18px;height:18px;margin-top:2px;flex:none}
@@ -567,7 +585,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 @media (max-width:760px){.mcta{display:flex}}
 
 /* ---------- Popup ---------- */
-.pop{padding:0;border:0;background:transparent;max-width:min(780px,calc(100% - 32px));width:100%;color:var(--ink);overflow:visible}
+.pop{padding:0;border:0;background:transparent;max-width:min(880px,calc(100% - 32px));max-height:calc(100dvh - 32px);width:100%;color:var(--ink);overflow:visible}
 .pop::backdrop{background:rgba(17,16,20,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 .pop[open]{animation:popIn .35s cubic-bezier(.2,.9,.25,1.15)}
 .pop[open]::backdrop{animation:fadeIn .3s ease}
@@ -578,7 +596,7 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 @keyframes fadeIn{from{opacity:0}}
 @keyframes fadeOut{to{opacity:0}}
 .pop-card:focus{outline:none}
-.pop-card{position:relative;display:grid;grid-template-columns:.85fr 1.15fr;border-radius:28px;overflow:hidden;background:var(--paper);box-shadow:0 40px 100px -30px rgba(0,0,0,.55);border:2px solid var(--ink)}
+.pop-card{position:relative;display:grid;grid-template-columns:.75fr 1.25fr;grid-template-rows:minmax(0,1fr);max-height:calc(100dvh - 32px);border-radius:28px;overflow:hidden;background:var(--paper);box-shadow:0 40px 100px -30px rgba(0,0,0,.55);border:2px solid var(--ink)}
 .pop-side{background:var(--lime);padding:30px 26px;display:flex;flex-direction:column;gap:16px;border-right:2px solid var(--ink);position:relative;overflow:hidden}
 .pop-side::after{content:"";position:absolute;right:-60px;bottom:-60px;width:200px;height:200px;border-radius:50%;border:2px solid rgba(17,16,20,.14)}
 .pop-logo{height:26px;width:auto;align-self:flex-start}
@@ -592,10 +610,12 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .pop-perks li::before{content:"";width:18px;height:18px;flex:none;border-radius:50%;margin-top:1px;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CBEF2F' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/11px no-repeat}
 .pop-price{margin-top:auto;font-size:.95rem}
 .pop-price b{font-family:var(--head);font-size:1.5rem;letter-spacing:-.03em}
-.pop-main{padding:30px 28px 24px;display:flex;flex-direction:column}
-.pop-main h2{font-size:clamp(1.7rem,3.2vw,2.2rem);max-width:15ch;padding-right:30px}
+.pop-main{padding:30px 28px 24px;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.pop-main h2{font-size:clamp(1.6rem,3vw,2rem);max-width:15ch;padding-right:30px}
 .pop-main .sub{color:var(--muted);margin-top:8px;font-size:.98rem}
-.pop-form{display:grid;gap:12px;margin-top:20px}
+.pop-form{display:grid;gap:14px;margin-top:18px}
+.pop-form .frow{gap:12px}
+.pop-form .f select{padding:12px 40px 12px 14px}
 .pop-form .f input[type=text],.pop-form .f input[type=email],.pop-form .f input[type=tel]{padding:12px 14px}
 .pop-form .btn{width:100%;padding:16px;margin-top:2px}
 .pop-form .consent{font-size:.82rem}
@@ -610,21 +630,38 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .pop-done .seatno{font-family:var(--head);font-weight:800;color:var(--ink);font-size:1.15rem;margin-top:12px}
 @media (max-width:700px){
   .pop{max-width:100%;margin:auto 0 0;max-height:calc(100% - 24px)}
-  .pop-card{grid-template-columns:1fr;border-radius:26px 26px 0 0;border-width:2px 0 0;max-height:calc(100dvh - 24px);overflow-y:auto}
+  .pop-card{grid-template-columns:1fr;grid-template-rows:auto;border-radius:26px 26px 0 0;border-width:2px 0 0;max-height:calc(100dvh - 24px);overflow-y:auto}
   .pop-side{border-right:0;border-bottom:2px solid var(--ink);padding:20px 22px;gap:10px}
   .pop-side::after,.pop-perks,.pop-logo{display:none}
   .pop-big{font-size:2.6rem}
   .pop-price{margin-top:0}
-  .pop-main{padding:22px 22px calc(18px + env(safe-area-inset-bottom,0px))}
+  .pop-main{padding:22px 22px calc(18px + env(safe-area-inset-bottom,0px));overflow:visible}
   .pop[open]{animation:sheetIn .35s cubic-bezier(.2,.9,.25,1)}
   .pop.closing{animation:sheetOut .2s ease forwards}
   @keyframes sheetIn{from{transform:translateY(100%)}to{transform:none}}
   @keyframes sheetOut{to{transform:translateY(100%)}}
 }
 
+/* ---------- Floating "Get early access" button ---------- */
+.fab{position:fixed;right:22px;bottom:22px;z-index:55;width:112px;height:112px;border:0;padding:0;border-radius:50%;background:var(--ink);cursor:pointer;display:grid;place-items:center;box-shadow:0 18px 40px -14px rgba(17,16,20,.55);transition:transform .2s ease, bottom .25s ease;animation:fabIn .5s 1s cubic-bezier(.2,.9,.25,1.2) backwards}
+.fab:hover{transform:scale(1.06)}
+.fab:focus-visible{outline:3px solid var(--lime);outline-offset:4px}
+.fab-ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 14s linear infinite}
+.fab-ring text{font-family:var(--head);font-weight:700;font-size:10.5px;letter-spacing:.06em;fill:var(--cream)}
+.fab-core{position:relative;width:54px;height:54px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--lime)}
+.fab-core img{width:100%;height:100%;object-fit:cover;transform:scale(1.18)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fabIn{from{opacity:0;transform:scale(.5)}}
+@media (max-width:760px){
+  .fab{width:92px;height:92px;right:14px;bottom:14px}
+  .fab-core{width:44px;height:44px}
+  body.mcta-on .fab{bottom:86px}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .finds li,.pin{opacity:1;transform:none}
+  .fab-ring{animation:none}
 }
 </style>
 </head>
@@ -1282,10 +1319,10 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
               <option>Above ₹5 lakh</option>
             </select><p class="err">Please choose one.</p></div>
         </div>
-        <div class="f"><span class="lbl" style="display:block;font-weight:600;font-size:.95rem;margin-bottom:8px">Where do you run ads?</span>
-          <div class="checks">
-            <label><input type="checkbox" name="platforms" value="Meta"> Meta (Facebook, Instagram)</label>
-            <label><input type="checkbox" name="platforms" value="Google"> Google</label>
+        <div class="f" role="group" aria-labelledby="f-plat-l"><span class="lbl" id="f-plat-l">Where do you run ads?</span>
+          <div class="picks">
+            <label class="pick pick-meta"><input type="checkbox" name="platforms" value="Meta"><span class="pk"><img src="assets/meta-logo.svg" alt="Meta (Facebook, Instagram)" onerror="this.parentNode.classList.add('noimg')"><span class="fb">Meta</span></span><span class="tk" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></label>
+            <label class="pick pick-google"><input type="checkbox" name="platforms" value="Google"><span class="pk"><img src="assets/google-ads-logo.svg" alt="Google Ads" onerror="this.parentNode.classList.add('noimg')"><span class="fb">Google Ads</span></span><span class="tk" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></label>
           </div>
         </div>
         <div class="f"><label for="f-prob">Your biggest problem right now</label>
@@ -1398,14 +1435,51 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
     </div>
     <div class="pop-main">
       <div id="pop-body">
-        <h2 id="pop-title">Get your beta seat in 20 seconds</h2>
-        <p class="sub">The founding price is only for the first 500 members. No payment now.</p>
+        <h2 id="pop-title">Get your beta seat</h2>
+        <p class="sub">Takes 30 seconds. The founding price is only for the first 500 members. No payment now.</p>
         <form class="pop-form" id="pop-form" novalidate>
-          <div class="f"><label for="p-name">Your name</label><input id="p-name" type="text" autocomplete="name" maxlength="80"><p class="err">Please enter your name.</p></div>
-          <div class="f"><label for="p-phone">Phone number</label><input id="p-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" maxlength="16"><p class="err">Enter a 10-digit Indian mobile number.</p></div>
+          <div class="frow">
+            <div class="f"><label for="p-name">Your name</label><input id="p-name" type="text" autocomplete="name" maxlength="80"><p class="err">Please enter your name.</p></div>
+            <div class="f"><label for="p-phone">Phone number</label><input id="p-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" maxlength="16"><p class="err">Enter a 10-digit Indian mobile number.</p></div>
+          </div>
           <div class="f"><label for="p-email">Email</label><input id="p-email" type="email" autocomplete="email" placeholder="you@business.com" maxlength="120"><p class="err">Enter a valid email address.</p></div>
+          <div class="frow">
+            <div class="f"><label for="p-biz">Your business</label>
+              <select id="p-biz">
+                <option value="">Choose one</option>
+                <option>Online store (D2C)</option>
+                <option>Local shop or service</option>
+                <option>B2B business</option>
+                <option>Agency or freelancer</option>
+                <option>Something else</option>
+              </select><p class="err">Please choose one.</p></div>
+            <div class="f"><label for="p-spend">Monthly ad spend</label>
+              <select id="p-spend">
+                <option value="">Choose one</option>
+                <option>Not running ads yet</option>
+                <option>Under ₹25,000</option>
+                <option>₹25,000 to ₹1 lakh</option>
+                <option>₹1 lakh to ₹5 lakh</option>
+                <option>Above ₹5 lakh</option>
+              </select><p class="err">Please choose one.</p></div>
+          </div>
+          <div class="f" role="group" aria-labelledby="p-plat-l"><span class="lbl" id="p-plat-l">Where do you run ads?</span>
+          <div class="picks">
+            <label class="pick pick-meta"><input type="checkbox" name="p-platforms" value="Meta"><span class="pk"><img src="assets/meta-logo.svg" alt="Meta (Facebook, Instagram)" onerror="this.parentNode.classList.add('noimg')"><span class="fb">Meta</span></span><span class="tk" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></label>
+            <label class="pick pick-google"><input type="checkbox" name="p-platforms" value="Google"><span class="pk"><img src="assets/google-ads-logo.svg" alt="Google Ads" onerror="this.parentNode.classList.add('noimg')"><span class="fb">Google Ads</span></span><span class="tk" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></label>
+          </div>
+          </div>
+          <div class="f"><label for="p-prob">Your biggest problem right now</label>
+            <select id="p-prob">
+              <option value="">Choose one (optional)</option>
+              <option>Bad leads</option>
+              <option>Fake or returned orders</option>
+              <option>Low return on ad spend</option>
+              <option>Ads getting rejected</option>
+              <option>Not sure what's wrong</option>
+            </select></div>
           <input class="hp" type="text" id="p-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="f"><label class="consent"><input type="checkbox" id="p-consent"> <span>AdSure can contact me by email, phone or WhatsApp about early access.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
+          <div class="f"><label class="consent"><input type="checkbox" id="p-consent"> <span>I agree that AdSure can contact me by email, phone or WhatsApp about early access. You can ask us to delete your details anytime.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
           <div class="form-msg" id="pop-msg" role="alert"></div>
           <button class="btn btn-lime" type="submit" id="pop-btn">Claim my seat</button>
         </form>
@@ -1421,6 +1495,15 @@ footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
     </div>
   </div>
 </dialog>
+
+<!-- ============ FLOATING BUTTON ============ -->
+<button class="fab" id="fab" type="button" aria-label="Get early access">
+  <svg class="fab-ring" viewBox="0 0 112 112" aria-hidden="true">
+    <defs><path id="fab-circle" d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs>
+    <text><textPath href="#fab-circle" textLength="263.5" lengthAdjust="spacing">GET EARLY ACCESS • GET EARLY ACCESS • </textPath></text>
+  </svg>
+  <span class="fab-core"><img src="assets/favicon.png" alt="" width="54" height="54"></span>
+</button>
 
 <div class="mcta on-ink" id="mcta">
   <div><small><span data-seats-left>500</span> seats left</small><b>₹1,599/month</b></div>
@@ -1497,6 +1580,7 @@ new IntersectionObserver(es => es.forEach(e => { joinVisible = e.isIntersecting;
 function onScroll(){
   nav.classList.toggle("scrolled", scrollY > 10);
   mcta.classList.toggle("show", scrollY > 700 && !joinVisible);
+  document.body.classList.toggle("mcta-on", mcta.classList.contains("show"));
 }
 addEventListener("scroll", onScroll, {passive:true}); onScroll();
 
@@ -1513,6 +1597,7 @@ addEventListener("scroll", onScroll, {passive:true}); onScroll();
     if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
     const id = a.getAttribute("href").slice(1);
     if (!id) return;
+    if (id === "join" && window.openSignup) { e.preventDefault(); window.openSignup("button"); return; }
     if (go(id)) e.preventDefault();
   });
   // Someone opened a link like adsure.in/#pricing: scroll there, then tidy the address
@@ -1767,28 +1852,29 @@ form.addEventListener("submit", async e => {
 });
 
 /* ================================================================
-   POPUP (opens once after a few seconds; settings in config.js)
+   POPUP: opens from every "Get early access" button, the floating
+   button, and once automatically after a few seconds (settings in config.js)
    ================================================================ */
 (function popup(){
   const pop = $("#pop");
-  if (!CONFIG.POPUP_ENABLED || !pop || typeof pop.showModal !== "function") return;
-  if (store.get("adsure_joined")) return;                                   // already signed up
-  const seen = +store.get("adsure_popup_seen") || 0;
-  if (Date.now() - seen < CONFIG.POPUP_REPEAT_DAYS * 864e5) return;         // shown recently
+  if (!pop || typeof pop.showModal !== "function") {               // very old browser: fall back to scrolling
+    window.openSignup = null;
+    $("#fab").addEventListener("click", () => $("#join").scrollIntoView({ behavior: "smooth" }));
+    return;
+  }
+  let openedBy = "popup";
 
-  // Don't interrupt someone who is filling the main form, at the form, or watching a video
-  const busy = () => {
-    const a = document.activeElement, v = $("#vid");
-    return document.hidden || joinVisible || (a && $("#form").contains(a)) || (v && !v.paused) || !!document.querySelector("#vframe iframe");
-  };
-  function tryOpen(){ if (busy()) { setTimeout(tryOpen, 5000); return; } open(); }
-  setTimeout(tryOpen, Math.max(0, CONFIG.POPUP_DELAY_SECONDS) * 1000);
-
-  function open(){
+  function open(by){
+    if (pop.open) return;
+    openedBy = by || "popup";
     store.set("adsure_popup_seen", String(Date.now()));
     pop.showModal(); document.documentElement.style.overflow = "hidden";
     pop.querySelector(".pop-card").focus();
+    $(".pop-main").scrollTop = 0;
   }
+  window.openSignup = open;
+  $("#fab").addEventListener("click", () => open("float-button"));
+
   function close(){
     if (!pop.open) return;
     if (reduce) { pop.close(); return; }
@@ -1800,17 +1886,38 @@ form.addEventListener("submit", async e => {
   pop.addEventListener("click", e => { if (e.target === pop) close(); });                // click outside
   $$("#pop [data-close]").forEach(b => b.addEventListener("click", close));
 
-  // quick form
+  // Automatic opening: once after the delay, never for people who already signed up
+  (function auto(){
+    if (!CONFIG.POPUP_ENABLED || store.get("adsure_joined")) return;
+    const seen = +store.get("adsure_popup_seen") || 0;
+    if (Date.now() - seen < CONFIG.POPUP_REPEAT_DAYS * 864e5) return;
+    const busy = () => {
+      const a = document.activeElement, v = $("#vid");
+      return document.hidden || joinVisible || (a && $("#form").contains(a)) || (v && !v.paused) || !!document.querySelector("#vframe iframe");
+    };
+    const startedAt = Date.now();
+    function tryOpen(){
+      if (pop.open || (+store.get("adsure_popup_seen") || 0) > startedAt) return;   // already opened by a button
+      if (busy()) { setTimeout(tryOpen, 5000); return; }
+      open("popup");
+    }
+    setTimeout(tryOpen, Math.max(0, CONFIG.POPUP_DELAY_SECONDS) * 1000);
+  })();
+
+  // The form (same details as the main form)
   const pf = $("#pop-form"), pmsg = $("#pop-msg"), pbtn = $("#pop-btn");
   pf.addEventListener("input", e => { if (e.target.closest(".f.bad")) setBad(e.target, false); });
+  pf.addEventListener("change", e => { if (e.target.closest(".f.bad")) setBad(e.target, false); });
   pf.addEventListener("submit", async e => {
     e.preventDefault(); pmsg.className = "form-msg";
     if ($("#p-hp").value) return;
-    const name = $("#p-name"), phone = $("#p-phone"), email = $("#p-email"), consent = $("#p-consent");
+    const name = $("#p-name"), phone = $("#p-phone"), email = $("#p-email"),
+          biz = $("#p-biz"), spend = $("#p-spend"), consent = $("#p-consent");
     const checks = [
       [name, name.value.trim().length >= 2],
       [phone, /^[6-9]\d{9}$/.test(cleanPhone(phone.value))],
       [email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())],
+      [biz, !!biz.value], [spend, !!spend.value],
       [consent, consent.checked]
     ];
     let first = null;
@@ -1821,8 +1928,15 @@ form.addEventListener("submit", async e => {
     const label = pbtn.textContent; pbtn.disabled = true; pbtn.textContent = "Saving your seat…";
     try {
       const res = await saveSignup({
-        name: name.value.trim(), email: email.value.trim().toLowerCase(), phone: "+91" + cleanPhone(phone.value),
-        consent: true, source: ("popup | " + trafficSource()).slice(0, 200)
+        name: name.value.trim(),
+        email: email.value.trim().toLowerCase(),
+        phone: "+91" + cleanPhone(phone.value),
+        business_type: biz.value,
+        monthly_ad_spend: spend.value,
+        platforms: $$("input[name=p-platforms]:checked").map(x => x.value),
+        biggest_problem: $("#p-prob").value || null,
+        consent: true,
+        source: (openedBy + " | " + trafficSource()).slice(0, 200)
       });
       $("#pop-body").style.display = "none"; $("#pop-done").classList.add("show");
       if (res === "exists") {
