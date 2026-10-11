@@ -32,6 +32,7 @@ window.ADSURE_CONFIG = {
   ],
 
   REFRESH_SECONDS: 20,           // how often the live seat count refreshes
+  SHOW_SEATS_FROM: 50,           // hide the live seat number until this many real people have joined
 
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
