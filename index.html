@@ -287,16 +287,30 @@ p{margin:0}
 @media (max-width:560px){.worth-grid{grid-template-columns:1fr}}
 
 /* ---------- Early tester reviews ---------- */
-.rv-grid{columns:3 300px;column-gap:18px}
-.rv{break-inside:avoid;margin:0 0 18px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;display:flex;flex-direction:column;gap:18px}
-.rv blockquote{margin:0}
+.rv-grid{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.rv-grid::-webkit-scrollbar{display:none}
+.rv-grid:focus-visible{outline-offset:6px}
+.rv-nav{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-28px 0 18px}
+.rv-hint{margin-right:auto;color:var(--muted);font-size:.9rem;font-weight:600;display:none}
+.rv-btn{width:48px;height:48px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .15s,opacity .15s}
+.rv-btn:hover{background:var(--lime)}
+.rv-btn svg{width:20px;height:20px}
+.rv-btn:disabled{opacity:.3;cursor:default;background:var(--paper)}
+@media (max-width:640px){.rv-btn{display:none}.rv-hint{display:block}.rv-nav{margin-top:-20px}}
+.rv{flex:0 0 min(360px,84%);scroll-snap-align:start;margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;display:flex;flex-direction:column;gap:18px}
+.rv-av.rv-logo{width:60px;height:60px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;padding:9px}
+.rv-av.rv-logo img{width:100%;height:100%;object-fit:contain}
+.rv-av.rv-logo.dark{background:#212121;box-shadow:none;padding:0}
+.rv-av.rv-logo.ink{background:var(--ink);box-shadow:none;padding:4px}
+.rv-av.rv-logo:has(img[src*="eaa"]){background:#FEDC30;box-shadow:none;padding:0}
+.rv blockquote{margin:0;flex:1}
 .rv blockquote p{font-size:1.02rem;line-height:1.55;color:var(--ink)}
 .rv figcaption{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
 .rv figcaption>span:nth-child(2){display:grid;line-height:1.3;min-width:0}
 .rv figcaption b{font-family:var(--head);font-size:1rem;letter-spacing:-.01em}
 .rv figcaption small{color:var(--muted);font-size:.88rem}
-.rv-av{width:42px;height:42px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:.9rem}
-.rv-tag{margin-left:auto;flex:none;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.rv-av{width:60px;height:60px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.1rem}
+.rv-tag{align-self:flex-start;flex:none;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
 
 /* ---------- Nav ---------- */
 .nav{position:sticky;top:0;z-index:50;background:rgba(244,241,235,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
@@ -1282,34 +1296,46 @@ body:not(.seats-on) .seats{align-self:start}
       <h2>What early testers say</h2>
       <p class="lede">These businesses tested AdSure before launch. Here's what they said, the good parts and the parts we're still working on.</p>
     </div>
-    <div class="rv-grid">
+    <div class="rv-nav" aria-hidden="true">
+      <span class="rv-hint">Swipe to see more</span>
+      <button class="rv-btn" type="button" data-rv="-1" tabindex="-1" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="rv-btn" type="button" data-rv="1" tabindex="-1" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="rv-grid" id="rv-track" tabindex="0" role="region" aria-label="Reviews from early testers. Scroll sideways to see more.">
       <figure class="rv">
+        <span class="rv-tag">D2C</span>
         <blockquote><p>“The competitor analysis is my favourite part. I can see which brands have been running the same ad for months, so I know it’s working for them. Spend numbers are estimates, but they give a good idea.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">SS</span><span><b>Sonakshi Singh</b><small>Founder, Inold</small></span><span class="rv-tag">D2C</span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/inold.png" alt="Inold" loading="lazy" decoding="async"></span><span><b>Sonakshi Singh</b><small>Founder, Inold</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">D2C</span>
         <blockquote><p>“I’m not a marketing person, so I like that they explain things simply. The best-time-to-run-ads tip actually helped. Only thing is, 5 expert reviews a month feels less when you’re testing a lot.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">N</span><span><b>Natasha</b><small>Founder, Everyday You</small></span><span class="rv-tag">D2C</span></figcaption>
+        <figcaption><span class="rv-av rv-logo ink"><img src="assets/testers/everyday-you.png" alt="Everyday You" loading="lazy" decoding="async"></span><span><b>Natasha</b><small>Founder, Everyday You</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">B2B</span>
         <blockquote><p>“We use it for client pitches now. Pull up the competitor’s ads, how long they’ve been running, their website issues, and the client is impressed. Some reports take a bit of time to load, but it’s worth the wait.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">DP</span><span><b>Darshan Popat</b><small>Founder, EAA Marketing Agency</small></span><span class="rv-tag">B2B</span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/eaa-icon.png" alt="Exceptional Ad Agency" loading="lazy" decoding="async"></span><span><b>Darshan Popat</b><small>Founder, EAA</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">D2C</span>
         <blockquote><p>“Seeing my competitors’ best creatives side by side opened my eyes, yaar. They also told me my product was getting lost behind the text. Didn’t like hearing it, but they were right.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">A</span><span><b>Ashwin</b><small>Founder, Kalakriti</small></span><span class="rv-tag">D2C</span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/kalakriti.png" alt="Kalakriti" loading="lazy" decoding="async"></span><span><b>Ashwin</b><small>Founder, Kalakriti</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">Lead Gen</span>
         <blockquote><p>“My leads weren’t picking up calls. AdSure showed me my ad was pulling the wrong crowd and when my audience is actually active. Lead quality is better now, but it took me a few rounds of changes.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">AR</span><span><b>Abhishek Ranjan</b><small>Balanced Lifestyle Coach</small></span><span class="rv-tag">Lead Gen</span></figcaption>
+        <figcaption><span class="rv-av" aria-hidden="true">AR</span><span><b>Abhishek Ranjan</b><small>Balanced Lifestyle Coach</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">B2B Lead Gen</span>
         <blockquote><p>“Knowing roughly how much competitors are spending helped us plan our own budget better. Google and Meta in one place is great. Would love LinkedIn added too, since that’s big for B2B.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">KP</span><span><b>Kanika Pareek</b><small>Global Head, Acolyte Technologies</small></span><span class="rv-tag">B2B Lead Gen</span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/acolyte.png" alt="Acolyte Technologies" loading="lazy" decoding="async"></span><span><b>Kanika Pareek</b><small>Global Head, Acolyte Technologies</small></span></figcaption>
       </figure>
       <figure class="rv">
+        <span class="rv-tag">B2B Lead Gen</span>
         <blockquote><p>“It found issues on our competitor’s website that we made sure to fix on ours. Also caught our broken tracking. The AI score feels a bit harsh sometimes, but the expert explains it well.”</p></blockquote>
-        <figcaption><span class="rv-av" aria-hidden="true">SS</span><span><b>Satvik Sakar</b><small>Founder, Folkasur Studios</small></span><span class="rv-tag">B2B Lead Gen</span></figcaption>
+        <figcaption><span class="rv-av rv-logo dark"><img src="assets/testers/folkasur.png" alt="Folkasur Studio" loading="lazy" decoding="async"></span><span><b>Satvik Sakar</b><small>Founder, Folkasur Studios</small></span></figcaption>
       </figure>
     </div>
   </div>
@@ -1961,6 +1987,21 @@ async function fetchSeats(){
 fetchSeats();
 setInterval(() => { if (!document.hidden) fetchSeats(); }, CONFIG.REFRESH_SECONDS * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchSeats(); });
+
+/* ---- early tester reviews: swipe row with arrow buttons ---- */
+(function reviews(){
+  const track = $("#rv-track"); if (!track) return;
+  const btns = $$(".rv-btn");
+  const step = () => { const c = track.querySelector(".rv"); return c ? c.getBoundingClientRect().width + 18 : 300; };
+  const update = () => {
+    const max = track.scrollWidth - track.clientWidth - 4;
+    btns.forEach(b => b.disabled = b.dataset.rv === "-1" ? track.scrollLeft <= 4 : track.scrollLeft >= max);
+  };
+  btns.forEach(b => b.addEventListener("click", () => track.scrollBy({ left: step() * Number(b.dataset.rv), behavior: reduce ? "auto" : "smooth" })));
+  track.addEventListener("scroll", update, { passive: true });
+  addEventListener("resize", update);
+  update();
+})();
 
 /* ================================================================
    EARLY ACCESS FORM
