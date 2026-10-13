@@ -298,18 +298,17 @@ p{margin:0}
 .rv-btn:disabled{opacity:.3;cursor:default;background:var(--paper)}
 @media (max-width:640px){.rv-btn{display:none}.rv-hint{display:block}.rv-nav{margin-top:-20px}}
 .rv{flex:0 0 min(360px,84%);scroll-snap-align:start;margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;display:flex;flex-direction:column;gap:18px}
-.rv-logo{flex:none;height:44px;max-width:132px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;overflow:hidden}
-.rv-logo img{height:100%;width:auto;max-width:100%;object-fit:contain}
-.rv-logo.ink{background:var(--ink);border-color:var(--ink)}
-.rv-logo img[src*="eaa"]{border-radius:4px}
-.rv-logo:has(img[src*="eaa"]){background:#FEDC30;border-color:#FEDC30;padding:4px 8px}
+.rv-av.rv-logo{width:60px;height:60px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;padding:9px}
+.rv-av.rv-logo img{width:100%;height:100%;object-fit:contain}
+.rv-av.rv-logo.ink{background:var(--ink);box-shadow:none;padding:4px}
+.rv-av.rv-logo:has(img[src*="eaa"]){background:#FEDC30;box-shadow:none;padding:0}
 .rv blockquote{margin:0;flex:1}
 .rv blockquote p{font-size:1.02rem;line-height:1.55;color:var(--ink)}
 .rv figcaption{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
 .rv figcaption>span:nth-child(2){display:grid;line-height:1.3;min-width:0}
 .rv figcaption b{font-family:var(--head);font-size:1rem;letter-spacing:-.01em}
 .rv figcaption small{color:var(--muted);font-size:.88rem}
-.rv-av{width:42px;height:42px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:.9rem}
+.rv-av{width:60px;height:60px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.1rem}
 .rv-tag{align-self:flex-start;flex:none;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
 
 /* ---------- Nav ---------- */
@@ -1310,17 +1309,17 @@ body:not(.seats-on) .seats{align-self:start}
       <figure class="rv">
         <span class="rv-tag">D2C</span>
         <blockquote><p>“I’m not a marketing person, so I like that they explain things simply. The best-time-to-run-ads tip actually helped. Only thing is, 5 expert reviews a month feels less when you’re testing a lot.”</p></blockquote>
-        <figcaption><span class="rv-logo ink"><img src="assets/testers/everyday-you.png" alt="Everyday You" loading="lazy" decoding="async"></span><span><b>Natasha</b><small>Founder, Everyday You</small></span></figcaption>
+        <figcaption><span class="rv-av rv-logo ink"><img src="assets/testers/everyday-you.png" alt="Everyday You" loading="lazy" decoding="async"></span><span><b>Natasha</b><small>Founder, Everyday You</small></span></figcaption>
       </figure>
       <figure class="rv">
         <span class="rv-tag">B2B</span>
         <blockquote><p>“We use it for client pitches now. Pull up the competitor’s ads, how long they’ve been running, their website issues, and the client is impressed. Some reports take a bit of time to load, but it’s worth the wait.”</p></blockquote>
-        <figcaption><span class="rv-logo"><img src="assets/testers/eaa.png" alt="Exceptional Ad Agency" loading="lazy" decoding="async"></span><span><b>Darshan Popat</b><small>Founder, EAA</small></span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/eaa-icon.png" alt="Exceptional Ad Agency" loading="lazy" decoding="async"></span><span><b>Darshan Popat</b><small>Founder, EAA</small></span></figcaption>
       </figure>
       <figure class="rv">
         <span class="rv-tag">D2C</span>
         <blockquote><p>“Seeing my competitors’ best creatives side by side opened my eyes, yaar. They also told me my product was getting lost behind the text. Didn’t like hearing it, but they were right.”</p></blockquote>
-        <figcaption><span class="rv-logo"><img src="assets/testers/kalakriti.png" alt="Kalakriti" loading="lazy" decoding="async"></span><span><b>Ashwin</b><small>Founder, Kalakriti</small></span></figcaption>
+        <figcaption><span class="rv-av rv-logo"><img src="assets/testers/kalakriti.png" alt="Kalakriti" loading="lazy" decoding="async"></span><span><b>Ashwin</b><small>Founder, Kalakriti</small></span></figcaption>
       </figure>
       <figure class="rv">
         <span class="rv-tag">Lead Gen</span>
