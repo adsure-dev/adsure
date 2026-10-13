@@ -24,11 +24,34 @@ assets/
    SUPABASE_URL: "https://yourproject.supabase.co",
    SUPABASE_ANON_KEY: "your-anon-or-publishable-key",
    ```
-   This key is safe to put in a public page. The table only allows adding a sign-up; nobody can read the list with it.
+   This key is safe to put in a public page: nobody can read the list with it (and after step 1b, nobody can add rows with it either).
 
 To see sign-ups: Supabase > **Table Editor** > `early_access`. You can export to CSV from there.
 
 The seat counter shows the real number of sign-ups and refreshes every 20 seconds. On launch day it shows 0 taken, 500 left. After 500, the form changes to a waitlist automatically.
+
+## 1b. Stop bots from filling the form (Cloudflare Turnstile, free)
+
+Sign-ups go through `api/signup.mjs`, which asks Cloudflare whether a real person sent the form, then saves
+it with the secret key. Most people see nothing; a tick box appears only when Cloudflare isn't sure.
+
+1. **dash.cloudflare.com → Turnstile → Add widget.** Name: AdSure website. Hostnames: `adsure.in` and `www.adsure.in`.
+   Widget mode: **Managed**. Create it, then copy the **Site key** and the **Secret key**.
+2. **config.js:** paste the Site key into `TURNSTILE_SITE_KEY` (the site key is meant to be public).
+3. **Vercel → this website's project → Settings → Environment Variables**, add for Production:
+   - `TURNSTILE_SECRET_KEY` = the Turnstile Secret key
+   - `SUPABASE_SECRET_KEY` = the website Supabase project's **secret** key (Project Settings → API Keys)
+   Then **Deployments → ⋯ → Redeploy**.
+4. Send one test sign-up from www.adsure.in and check it shows in Supabase → Table Editor → `early_access`.
+5. **Only then**, lock direct saves: Supabase → SQL Editor, run:
+   ```sql
+   drop policy if exists "Website can add sign-ups" on public.early_access;
+   revoke insert, update, delete, select on public.early_access from anon, authenticated;
+   grant select, insert on public.early_access to service_role;
+   ```
+   Before step 3 the form still saves the old way, so nothing breaks while you set this up.
+
+Never put the Secret key or the Supabase secret key in `config.js` or `index.html`.
 
 ## 2. Add your videos
 
