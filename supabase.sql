@@ -17,14 +17,15 @@ create table if not exists public.early_access (
 -- one sign-up per email
 create unique index if not exists early_access_email_key on public.early_access (lower(email));
 
--- Row Level Security: the public website can ADD a sign-up but can never READ the list
+-- Row Level Security: the public key can never READ the list.
 alter table public.early_access enable row level security;
 
+-- Sign-ups are saved by /api/signup on the server (secret key) after Cloudflare Turnstile confirms a real person.
+-- So the public key can't add rows either; bots can't fill the form by calling Supabase directly.
+-- (Only run this part after TURNSTILE_SECRET_KEY and SUPABASE_SECRET_KEY are set in Vercel, see README.)
 drop policy if exists "Website can add sign-ups" on public.early_access;
-create policy "Website can add sign-ups"
-  on public.early_access for insert
-  to anon
-  with check (true);
+revoke insert, update, delete, select on public.early_access from anon, authenticated;
+grant select, insert on public.early_access to service_role;
 
 -- The live seat counter: returns only the number of sign-ups, no personal data
 create or replace function public.seats_taken()

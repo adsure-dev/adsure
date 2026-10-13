@@ -550,6 +550,7 @@ form.card{background:var(--paper);border:1px solid var(--line);border-radius:var
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);line-height:1.45}
 .consent input{accent-color:var(--ink);width:18px;height:18px;margin-top:2px;flex:none}
 .hp{position:absolute;left:-9999px}
+.ts-box:empty{display:none}.ts-box{margin:4px 0 2px}
 form .btn{width:100%;padding:18px}
 .form-msg{border-radius:14px;padding:14px 16px;font-size:.96rem;display:none}
 .form-msg.show{display:block}
@@ -1329,6 +1330,7 @@ body:not(.seats-on) .seats{align-self:start}
           </select></div>
         <input class="hp" type="text" name="company_site" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="f"><label class="consent"><input type="checkbox" id="f-consent" required> <span>I agree that AdSure can contact me by email, phone or WhatsApp about early access. You can ask us to delete your details anytime.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
+        <div class="ts-box" id="ts-main"></div>
         <div class="form-msg" id="form-msg" role="alert"></div>
         <button class="btn btn-lime" type="submit" id="submit-btn">Claim my beta seat</button>
         <p class="fine"><span class="seat-n"><span data-seats-left>500</span> of <span data-seats-total>500</span> seats left at</span><span class="seat-alt">Founding price for the first 500 members:</span> ₹1,599 a month</p>
@@ -1480,6 +1482,7 @@ body:not(.seats-on) .seats{align-self:start}
             </select></div>
           <input class="hp" type="text" id="p-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="f"><label class="consent"><input type="checkbox" id="p-consent"> <span>I agree that AdSure can contact me by email, phone or WhatsApp about early access. You can ask us to delete your details anytime.</span></label><p class="err">Please tick this box so we can contact you.</p></div>
+          <div class="ts-box" id="ts-pop"></div>
           <div class="form-msg" id="pop-msg" role="alert"></div>
           <button class="btn btn-lime" type="submit" id="pop-btn">Claim my seat</button>
         </form>
@@ -1524,7 +1527,8 @@ const CONFIG_DEFAULTS = {
   SHOW_SEATS_FROM: 50,
   POPUP_ENABLED: true,
   POPUP_DELAY_SECONDS: 10,
-  POPUP_REPEAT_DAYS: 3
+  POPUP_REPEAT_DAYS: 3,
+  TURNSTILE_SITE_KEY: ""
 };
 // An empty value in config.js (like SUPABASE_URL: "") never wipes out a default above
 const CONFIG = { ...CONFIG_DEFAULTS };
@@ -1740,8 +1744,61 @@ function markJoined(position){
   }
   return inBeta;
 }
-// Saves one sign-up to Supabase. Returns "ok" or "exists", throws on error.
-async function saveSignup(data){
+/* Cloudflare Turnstile: proves a real person sent the form (no puzzle for most people; a tick box only if
+   Cloudflare isn't sure). Set TURNSTILE_SITE_KEY in config.js; empty = off. Loaded only when someone starts a form. */
+const TS_KEY = String(CONFIG.TURNSTILE_SITE_KEY || "").trim();
+let tsLib = null;
+function loadTurnstile(){
+  if (!TS_KEY) return Promise.resolve(null);
+  if (!tsLib) tsLib = new Promise(res => {
+    window.__adsureTs = () => res(window.turnstile || null);
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__adsureTs";
+    s.async = true; s.onerror = () => res(null);
+    document.head.appendChild(s);
+    setTimeout(() => res(window.turnstile || null), 15000);
+  });
+  return tsLib;
+}
+const tsIds = {};
+async function humanToken(box){
+  const ts = await loadTurnstile();
+  if (!ts) return "";
+  return new Promise(resolve => {
+    let settled = false;
+    const done = t => { if (!settled) { settled = true; resolve(t || ""); } };
+    try {
+      if (tsIds[box] !== undefined) { try { ts.remove(tsIds[box]); } catch (_) {} }
+      tsIds[box] = ts.render("#" + box, {
+        sitekey: TS_KEY, action: "signup", execution: "execute", appearance: "interaction-only", theme: "light",
+        callback: done, "error-callback": () => { done(""); return true; }, "timeout-callback": () => done("")
+      });
+      ts.execute("#" + box);
+    } catch (e) { console.warn("Turnstile:", e); done(""); }
+    setTimeout(() => done(""), 60000);
+  });
+}
+["#form", "#pop-form"].forEach(sel => { const f = document.querySelector(sel); if (f) f.addEventListener("focusin", loadTurnstile, { once: true }); });
+
+// Saves one sign-up. Returns "ok" or "exists", throws on error.
+// First through /api/signup (Turnstile check + secret key on the server). If that isn't switched on yet
+// (no keys in Vercel, or not on Vercel), it saves straight to Supabase like before.
+async function saveSignup(data, box){
+  let r = null;
+  try {
+    const turnstile = await humanToken(box);
+    r = await fetch("/api/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...data, turnstile }) });
+  } catch (_) { r = null; }
+  let j = null;
+  if (r) { try { j = await r.json(); } catch (_) { j = null; } }
+  if (j && r.ok && j.ok) { if (j.exists) return "exists"; if (window.clarity) window.clarity("event", "signup"); return "ok"; }
+  if (j && j.error && !j.fallback) {                          // our function answered with a real problem
+    const e = new Error(j.message || j.error); e.status = r.status; e.code = j.code || "";
+    e.friendly = j.error === "human_check" || j.error === "invalid"; throw e;
+  }
+  return saveDirect(data);                                    // function not switched on (or not on Vercel)
+}
+async function saveDirect(data){
   const r = await fetch(CONFIG.SUPABASE_URL + "/rest/v1/early_access", {
     method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(data)
   });
@@ -1813,12 +1870,13 @@ form.addEventListener("submit", async e => {
 
   btn.disabled = true; const label = btn.textContent; btn.textContent = "Saving your seat…";
   try {
-    if (await saveSignup(data) === "exists") { store.set("adsure_joined", "1"); showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
+    if (await saveSignup(data, "ts-main") === "exists") { store.set("adsure_joined", "1"); showMsg("This email is already on the list. We'll be in touch soon.", true); return; }
     await fetchSeats();
     markJoined(taken);
     $("#done").setAttribute("tabindex", "-1"); $("#done").focus();
   } catch (err) {
     console.error("AdSure form error:", err.status, err.code, err.message);
+    if (err.friendly) { showMsg(err.message, false); return; }
     showMsg("Something went wrong and your details weren't saved. Please try again, or email hi@adsure.in.", false);
     const d = document.createElement("small");
     d.style.cssText = "display:block;margin-top:6px;opacity:.75";
@@ -1849,6 +1907,7 @@ form.addEventListener("submit", async e => {
     $(".pop-main").scrollTop = 0;
   }
   window.openSignup = open;
+  pop.addEventListener("focusin", loadTurnstile, { once: true });
   $("#fab").addEventListener("click", () => open("float-button"));
 
   function close(){
@@ -1913,7 +1972,7 @@ form.addEventListener("submit", async e => {
         biggest_problem: $("#p-prob").value || null,
         consent: true,
         source: (openedBy + " | " + trafficSource()).slice(0, 200)
-      });
+      }, "ts-pop");
       $("#pop-body").style.display = "none"; $("#pop-done").classList.add("show");
       if (res === "exists") {
         store.set("adsure_joined", "1");
@@ -1928,6 +1987,7 @@ form.addEventListener("submit", async e => {
       $("#pop-done").querySelector("button").focus();
     } catch (err) {
       console.error("AdSure popup error:", err.status, err.code, err.message);
+      if (err.friendly) { pmsg.textContent = err.message; pmsg.className = "form-msg show no"; return; }
       pmsg.textContent = "Something went wrong and your details weren't saved. Please try again, or email hi@adsure.in.";
       const d = document.createElement("small"); d.style.cssText = "display:block;margin-top:6px;opacity:.75"; d.textContent = whyFailed(err); pmsg.appendChild(d);
       pmsg.className = "form-msg show no";
