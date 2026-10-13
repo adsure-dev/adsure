@@ -43,6 +43,9 @@ window.ADSURE_CONFIG = {
   // Leave empty ("") to turn it off.
   TURNSTILE_SITE_KEY: "0x4AAAAAAFV5nyxoa_sKJbFT",
 
+  // Shopify Partners badge under "Works with" and in the footer. false = hide it everywhere.
+  SHOPIFY_PARTNER: true,
+
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
   POPUP_DELAY_SECONDS: 10,       // seconds before it appears

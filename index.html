@@ -231,6 +231,10 @@ p{margin:0}
 .plat img{display:block;height:44px;width:auto;max-width:none;transform-origin:center}
 .plat-google img{transform:scale(var(--g-scale))}
 .plat-meta img{transform:scale(var(--m-scale))}
+.partner-badge{margin-top:18px}
+.partner-badge img{display:block;height:30px;width:auto}
+.foot-partner{margin:14px 0 0}
+.foot-partner img{display:block;height:26px;width:auto;opacity:.9}
 
 .seat-strip{display:flex;align-items:center;gap:14px;margin-top:22px;font-size:.98rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;max-width:460px}
 .live-dot{width:10px;height:10px;border-radius:50%;background:#2DB55D;flex:none;position:relative}
@@ -738,6 +742,9 @@ body:not(.seats-on) .seats{align-self:start}
           <span class="plat plat-google"><img src="assets/google-ads-logo.svg" alt="Google Ads"></span>
           <span class="plat plat-meta"><img src="assets/meta-logo.svg" alt="Meta"></span>
         </div>
+      </div>
+      <div class="partner-badge" data-shopify-partner>
+        <img src="assets/shopify-partners.png" alt="Shopify Partners" width="577" height="96" decoding="async">
       </div>
     </div>
 
@@ -1389,6 +1396,7 @@ body:not(.seats-on) .seats{align-self:start}
           <svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect width="30" height="6.67" fill="#FF9933"/><rect y="13.33" width="30" height="6.67" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".7"/></svg>
           Made in India
         </p>
+        <p class="foot-partner" data-shopify-partner><img src="assets/shopify-partners-light.png" alt="Shopify Partners" width="577" height="96" loading="lazy" decoding="async"></p>
       </div>
       <div>
         <h4>Contact</h4>
@@ -1528,13 +1536,17 @@ const CONFIG_DEFAULTS = {
   POPUP_ENABLED: true,
   POPUP_DELAY_SECONDS: 10,
   POPUP_REPEAT_DAYS: 3,
-  TURNSTILE_SITE_KEY: ""
+  TURNSTILE_SITE_KEY: "",
+  SHOPIFY_PARTNER: true
 };
 // An empty value in config.js (like SUPABASE_URL: "") never wipes out a default above
 const CONFIG = { ...CONFIG_DEFAULTS };
 Object.entries(window.ADSURE_CONFIG || {}).forEach(([k, v]) => { if (v !== "" && v !== undefined) CONFIG[k] = v; });
 CONFIG.SUPABASE_URL = String(CONFIG.SUPABASE_URL || "").trim().replace(/\/+$/, "");
 CONFIG.SUPABASE_ANON_KEY = String(CONFIG.SUPABASE_ANON_KEY || "").trim();
+
+/* Shopify Partners badge (hero and footer): SHOPIFY_PARTNER: false in config.js hides it. */
+if (CONFIG.SHOPIFY_PARTNER === false) document.querySelectorAll("[data-shopify-partner]").forEach(el => el.remove());
 
 /* Microsoft Clarity: session recordings and heatmaps (free). Set CLARITY_ID in config.js; leave it empty to turn it off.
    Form fields are masked (data-clarity-mask), so names, emails and phone numbers are never recorded. */
