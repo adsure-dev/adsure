@@ -36,7 +36,7 @@ window.ADSURE_CONFIG = {
 
   // Microsoft Clarity (free session recordings + heatmaps): paste the project ID from clarity.microsoft.com → Settings → Overview.
   // Leave empty ("") to turn it off.
-  CLARITY_ID: "",
+  CLARITY_ID: "ywwfnusejn",
 
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
