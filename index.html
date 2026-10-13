@@ -820,6 +820,8 @@ footer .tagline{font-family:var(--head);font-weight:700;font-size:1.15rem;color:
 .seat-n,.seat-n-b{display:none}
 .seats-on .seat-n{display:inline}.seats-on .seat-n-b{display:block}
 .seats-on .seat-alt,.seats-on .seat-alt-b{display:none}
+body:not(.seats-on) .seats{display:none}
+body:not(.seats-on) .price-grid{grid-template-columns:1fr}
 body:not(.seats-on) .seats{align-self:start}
 </style>
 </head>
@@ -1494,11 +1496,6 @@ body:not(.seats-on) .seats{align-self:start}
 
       <div class="seats" aria-live="polite">
         <div class="seat-n-b" data-seat="pricing"></div>
-        <div class="seat-alt-b">
-          <div class="seats-top"><span class="live-dot" aria-hidden="true"></span>Founding members</div>
-          <p class="seat-count">500<small> seats only</small></p>
-          <p>The founding price is only for the first 500 members, so we can give every ad proper attention. After that, new sign-ups go on the waitlist.</p>
-        </div>
       </div>
     </div>
     <div class="worth">
