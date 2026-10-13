@@ -287,30 +287,44 @@ p{margin:0}
 @media (max-width:560px){.worth-grid{grid-template-columns:1fr}}
 
 /* ---------- Early tester reviews ---------- */
-.rv-grid{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+#reviews{overflow-x:clip}
+.rv-viewport{position:relative;margin-inline:calc(50% - 50vw)}
+.rv-viewport::before,.rv-viewport::after{content:"";position:absolute;top:0;bottom:0;width:clamp(36px,9vw,170px);z-index:2;pointer-events:none;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.rv-viewport::before{left:0;background:linear-gradient(90deg,var(--cream) 18%,rgba(244,241,235,0));-webkit-mask-image:linear-gradient(90deg,#000 35%,transparent);mask-image:linear-gradient(90deg,#000 35%,transparent)}
+.rv-viewport::after{right:0;background:linear-gradient(270deg,var(--cream) 18%,rgba(244,241,235,0));-webkit-mask-image:linear-gradient(270deg,#000 35%,transparent);mask-image:linear-gradient(270deg,#000 35%,transparent)}
+.rv-grid{display:flex;gap:20px;overflow-x:auto;padding:16px max(20px,calc((100vw - 1180px) / 2)) 26px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;cursor:grab}
 .rv-grid::-webkit-scrollbar{display:none}
-.rv-grid:focus-visible{outline-offset:6px}
-.rv-nav{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-28px 0 18px}
-.rv-hint{margin-right:auto;color:var(--muted);font-size:.9rem;font-weight:600;display:none}
-.rv-btn{width:48px;height:48px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .15s,opacity .15s}
+.rv-grid:active{cursor:grabbing}
+.rv-grid:focus-visible{outline:none}
+.rv-grid:focus-visible .rv{box-shadow:0 0 0 3px var(--ink)}
+.rv-nav{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-30px 0 6px}
+.rv-btn{width:48px;height:48px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .15s,transform .15s}
 .rv-btn:hover{background:var(--lime)}
+.rv-btn:active{transform:scale(.94)}
 .rv-btn svg{width:20px;height:20px}
-.rv-btn:disabled{opacity:.3;cursor:default;background:var(--paper)}
-@media (max-width:640px){.rv-btn{display:none}.rv-hint{display:block}.rv-nav{margin-top:-20px}}
-.rv{flex:0 0 min(360px,84%);scroll-snap-align:start;margin:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;display:flex;flex-direction:column;gap:18px}
-.rv-av.rv-logo{width:60px;height:60px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;padding:9px}
-.rv-av.rv-logo img{width:100%;height:100%;object-fit:contain}
+.rv-play{width:auto;padding:0 16px 0 12px;border-radius:999px;gap:8px;display:inline-flex;align-items:center;font-family:var(--head);font-weight:700;font-size:.9rem;margin-right:auto;box-shadow:none;background:transparent;color:var(--muted)}
+.rv-play:hover{background:rgba(17,16,20,.06);color:var(--ink)}
+.rv-play svg{width:16px;height:16px}
+.rv-play .i-play,.rv-play[aria-pressed="true"] .i-pause{display:none}
+.rv-play[aria-pressed="true"] .i-play{display:block}
+.rv{position:relative;flex:0 0 min(380px,82vw);margin:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:26px 26px 22px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(17,16,20,.04);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s;user-select:none;-webkit-user-select:none}
+.rv:hover{transform:translateY(-4px);border-color:#CFC8B8;box-shadow:0 18px 40px -22px rgba(17,16,20,.35)}
+.rv::before{content:"";position:absolute;top:22px;right:24px;width:44px;height:37px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 40'%3E%3Cpath d='M4 38V24C4 11 10 4 20 2l2 6c-6 2-8 6-8 12h7v18zm24 0V24c0-13 6-20 16-22l2 6c-6 2-8 6-8 12h7v18z' fill='%23CBEF2F' stroke='%23111014' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}
+.rv blockquote{margin:0;flex:1}
+.rv blockquote p{font-size:1.04rem;line-height:1.6;color:var(--ink)}
+.rv figcaption{display:flex;align-items:center;gap:14px;padding-top:18px;border-top:1px dashed var(--line)}
+.rv figcaption>span:nth-child(2){display:grid;line-height:1.3;min-width:0}
+.rv figcaption b{font-family:var(--head);font-size:1.02rem;letter-spacing:-.01em}
+.rv figcaption small{color:var(--muted);font-size:.88rem}
+.rv-av{width:56px;height:56px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.05rem}
+.rv-av.rv-logo{background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);overflow:hidden;padding:8px}
+.rv-av.rv-logo img{width:100%;height:100%;object-fit:contain;pointer-events:none}
 .rv-av.rv-logo.dark{background:#212121;box-shadow:none;padding:0}
 .rv-av.rv-logo.ink{background:var(--ink);box-shadow:none;padding:4px}
 .rv-av.rv-logo:has(img[src*="eaa"]){background:#FEDC30;box-shadow:none;padding:0}
-.rv blockquote{margin:0;flex:1}
-.rv blockquote p{font-size:1.02rem;line-height:1.55;color:var(--ink)}
-.rv figcaption{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
-.rv figcaption>span:nth-child(2){display:grid;line-height:1.3;min-width:0}
-.rv figcaption b{font-family:var(--head);font-size:1rem;letter-spacing:-.01em}
-.rv figcaption small{color:var(--muted);font-size:.88rem}
-.rv-av{width:60px;height:60px;flex:none;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.1rem}
-.rv-tag{align-self:flex-start;flex:none;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.rv-tag{align-self:flex-start;flex:none;background:var(--lime-soft);border:1px solid #DCE8A6;border-radius:999px;padding:5px 11px;font-size:.76rem;font-weight:700;letter-spacing:.02em;color:var(--ink);white-space:nowrap}
+@media (max-width:640px){.rv-btn:not(.rv-play){display:none}.rv-nav{margin-top:-24px}.rv::before{width:36px;height:30px}}
+@media (prefers-reduced-motion:reduce){.rv,.rv:hover{transition:none;transform:none}}
 
 /* ---------- Nav ---------- */
 .nav{position:sticky;top:0;z-index:50;background:rgba(244,241,235,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
@@ -1296,11 +1310,12 @@ body:not(.seats-on) .seats{align-self:start}
       <h2>What early testers say</h2>
       <p class="lede">These businesses tested AdSure before launch. Here's what they said, the good parts and the parts we're still working on.</p>
     </div>
-    <div class="rv-nav" aria-hidden="true">
-      <span class="rv-hint">Swipe to see more</span>
-      <button class="rv-btn" type="button" data-rv="-1" tabindex="-1" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <button class="rv-btn" type="button" data-rv="1" tabindex="-1" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <div class="rv-nav">
+      <button class="rv-btn rv-play" type="button" id="rv-play" aria-pressed="false" aria-controls="rv-track"><svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span>Pause</span></button>
+      <button class="rv-btn" type="button" data-rv="-1" aria-controls="rv-track" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="rv-btn" type="button" data-rv="1" aria-controls="rv-track" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
+    <div class="rv-viewport">
     <div class="rv-grid" id="rv-track" tabindex="0" role="region" aria-label="Reviews from early testers. Scroll sideways to see more.">
       <figure class="rv">
         <span class="rv-tag">D2C</span>
@@ -1337,6 +1352,7 @@ body:not(.seats-on) .seats{align-self:start}
         <blockquote><p>“It found issues on our competitor’s website that we made sure to fix on ours. Also caught our broken tracking. The AI score feels a bit harsh sometimes, but the expert explains it well.”</p></blockquote>
         <figcaption><span class="rv-av rv-logo dark"><img src="assets/testers/folkasur.png" alt="Folkasur Studio" loading="lazy" decoding="async"></span><span><b>Satvik Sakar</b><small>Founder, Folkasur Studios</small></span></figcaption>
       </figure>
+    </div>
     </div>
   </div>
 </section>
@@ -1988,19 +2004,71 @@ fetchSeats();
 setInterval(() => { if (!document.hidden) fetchSeats(); }, CONFIG.REFRESH_SECONDS * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchSeats(); });
 
-/* ---- early tester reviews: swipe row with arrow buttons ---- */
+/* ---- early tester reviews: endless row that drifts on its own ----
+   Cards are copied once by script (copies are hidden from screen readers), so the row loops
+   forever. It pauses while hovered, touched or focused, when off screen, and for people who
+   prefer reduced motion. Arrows move one card; the Pause button stops the drift. */
 (function reviews(){
   const track = $("#rv-track"); if (!track) return;
-  const btns = $$(".rv-btn");
-  const step = () => { const c = track.querySelector(".rv"); return c ? c.getBoundingClientRect().width + 18 : 300; };
-  const update = () => {
-    const max = track.scrollWidth - track.clientWidth - 4;
-    btns.forEach(b => b.disabled = b.dataset.rv === "-1" ? track.scrollLeft <= 4 : track.scrollLeft >= max);
+  const originals = Array.from(track.children);
+  originals.forEach(c => { const k = c.cloneNode(true); k.setAttribute("aria-hidden", "true"); k.inert = true; k.querySelectorAll("img").forEach(i => i.alt = ""); track.appendChild(k); });
+  const setW = () => track.children[originals.length].offsetLeft - originals[0].offsetLeft;
+  const step = () => originals[0].getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 20);
+  const playBtn = $("#rv-play");
+  let pos = 0, last = 0, hover = false, holdUntil = 0, onScreen = false, anim = null, ours = false;
+  let auto = !reduce;
+  const SPEED = 0.032; // pixels per millisecond (about 32 px a second)
+  const wrap = () => { const w = setW(); if (w > 0) { while (pos >= w) pos -= w; while (pos < 0) pos += w; } };
+  const apply = () => { ours = true; track.scrollLeft = pos; };
+  const hold = ms => { holdUntil = performance.now() + ms; };
+  const setPlay = on => {
+    auto = on;
+    playBtn.setAttribute("aria-pressed", on ? "false" : "true");
+    playBtn.querySelector("span").textContent = on ? "Pause" : "Play";
   };
-  btns.forEach(b => b.addEventListener("click", () => track.scrollBy({ left: step() * Number(b.dataset.rv), behavior: reduce ? "auto" : "smooth" })));
-  track.addEventListener("scroll", update, { passive: true });
-  addEventListener("resize", update);
-  update();
+  setPlay(auto);
+  playBtn.addEventListener("click", () => setPlay(!auto));
+
+  track.addEventListener("scroll", () => {
+    if (ours) { ours = false; return; }
+    pos = track.scrollLeft;                         // someone swiped or scrolled by hand
+    const w = setW();
+    if (pos >= w || pos <= 0) { wrap(); if (pos === 0) pos = w; apply(); }
+  }, { passive: true });
+
+  ["pointerdown", "wheel", "touchstart", "keydown"].forEach(ev => track.addEventListener(ev, () => { hold(4000); anim = null; }, { passive: true }));
+  track.addEventListener("mouseenter", () => hover = true);
+  track.addEventListener("mouseleave", () => { hover = false; hold(600); });
+  track.addEventListener("focusin", () => hold(8000));
+
+  // drag to scroll with a mouse (touch already scrolls natively)
+  let drag = null;
+  track.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button) return; drag = { x: e.clientX, p: pos }; });
+  addEventListener("pointermove", e => { if (!drag) return; pos = drag.p - (e.clientX - drag.x); wrap(); apply(); hold(4000); });
+  addEventListener("pointerup", () => { drag = null; });
+
+  $$(".rv-btn[data-rv]").forEach(btn => btn.addEventListener("click", () => {
+    const dir = Number(btn.dataset.rv);
+    if (dir < 0 && pos < step()) { pos += setW(); apply(); }
+    const from = pos, to = pos + step() * dir, start = performance.now(), dur = reduce ? 0 : 520;
+    anim = now => {
+      const k = dur ? Math.min(1, (now - start) / dur) : 1;
+      pos = from + (to - from) * (1 - Math.pow(1 - k, 3));
+      if (k >= 1) { anim = null; wrap(); }
+      apply();
+    };
+    hold(5000);
+  }));
+
+  new IntersectionObserver(es => es.forEach(e => onScreen = e.isIntersecting), { threshold: 0.15 }).observe(track);
+
+  function tick(now){
+    const dt = last ? Math.min(64, now - last) : 16; last = now;
+    if (anim) anim(now);
+    else if (auto && onScreen && !hover && !drag && now > holdUntil && !document.hidden) { pos += dt * SPEED; wrap(); apply(); }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
 
 /* ================================================================
