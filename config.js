@@ -41,7 +41,7 @@ window.ADSURE_CONFIG = {
   // Cloudflare Turnstile (stops bots from filling the sign-up form): paste the SITE key from
   // dash.cloudflare.com → Turnstile → your widget. The SECRET key goes in Vercel, never here (see README).
   // Leave empty ("") to turn it off.
-  TURNSTILE_SITE_KEY: "",
+  TURNSTILE_SITE_KEY: "0x4AAAAAAFV5nyxoa_sKJbFT",
 
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
