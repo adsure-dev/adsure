@@ -1285,7 +1285,7 @@ body:not(.seats-on) .seats{align-self:start}
       <p class="contact-mini">Questions? Write to <a href="mailto:hi@adsure.in">hi@adsure.in</a>.</p>
     </div>
 
-    <form class="card" id="form" novalidate>
+    <form class="card" id="form" novalidate data-clarity-mask="true">
       <div id="form-fields" style="display:grid;gap:16px">
         <div class="frow">
           <div class="f"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required maxlength="80"><p class="err">Please enter your name.</p></div>
@@ -1437,7 +1437,7 @@ body:not(.seats-on) .seats{align-self:start}
       <div id="pop-body">
         <h2 id="pop-title">Get your beta seat</h2>
         <p class="sub">Takes 30 seconds. The founding price is only for the first 500 members. No payment now.</p>
-        <form class="pop-form" id="pop-form" novalidate>
+        <form class="pop-form" id="pop-form" novalidate data-clarity-mask="true">
           <div class="frow">
             <div class="f"><label for="p-name">Your name</label><input id="p-name" type="text" autocomplete="name" maxlength="80"><p class="err">Please enter your name.</p></div>
             <div class="f"><label for="p-phone">Phone number</label><input id="p-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" maxlength="16"><p class="err">Enter a 10-digit Indian mobile number.</p></div>
@@ -1531,6 +1531,12 @@ const CONFIG = { ...CONFIG_DEFAULTS };
 Object.entries(window.ADSURE_CONFIG || {}).forEach(([k, v]) => { if (v !== "" && v !== undefined) CONFIG[k] = v; });
 CONFIG.SUPABASE_URL = String(CONFIG.SUPABASE_URL || "").trim().replace(/\/+$/, "");
 CONFIG.SUPABASE_ANON_KEY = String(CONFIG.SUPABASE_ANON_KEY || "").trim();
+
+/* Microsoft Clarity: session recordings and heatmaps (free). Set CLARITY_ID in config.js; leave it empty to turn it off.
+   Form fields are masked (data-clarity-mask), so names, emails and phone numbers are never recorded. */
+if (/^[a-z0-9]{6,16}$/i.test(String(CONFIG.CLARITY_ID || ""))) {
+  (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", CONFIG.CLARITY_ID);
+}
 
 /* ================================================================ */
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
@@ -1744,6 +1750,7 @@ async function saveSignup(data){
     const body = await r.text(); let j = {}; try { j = JSON.parse(body); } catch (_) {}
     const e = new Error(j.message || body || ("HTTP " + r.status)); e.status = r.status; e.code = j.code || ""; throw e;
   }
+  if (window.clarity) window.clarity("event", "signup");
   return "ok";
 }
 // Short reason for the site owner when a save fails

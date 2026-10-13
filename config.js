@@ -34,6 +34,10 @@ window.ADSURE_CONFIG = {
   REFRESH_SECONDS: 20,           // how often the live seat count refreshes
   SHOW_SEATS_FROM: 50,           // hide the live seat number until this many real people have joined
 
+  // Microsoft Clarity (free session recordings + heatmaps): paste the project ID from clarity.microsoft.com → Settings → Overview.
+  // Leave empty ("") to turn it off.
+  CLARITY_ID: "",
+
   // Sign-up popup
   POPUP_ENABLED: true,           // false = never show the popup
   POPUP_DELAY_SECONDS: 10,       // seconds before it appears
