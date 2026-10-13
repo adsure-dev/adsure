@@ -4,6 +4,8 @@ One page, no build step. Upload this folder to GitHub and it works.
 
 ```
 index.html          the whole page (HTML, CSS and JavaScript)
+terms.html, privacy.html, refund-policy.html   policy pages (styles in assets/legal.css)
+vercel.json         clean links: /terms, /privacy, /refund-policy
 supabase.sql        run once in Supabase to create the sign-up table and live counter
 assets/
   logo-dark.png     black logo (used on cream)
