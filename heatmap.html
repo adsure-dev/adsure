@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free Ad Attention Heatmap: See What People Notice First | AdSure</title>
+<meta name="description" content="Free, no sign-up. Add your Meta or Google ad image or video and see where eyes land first, what gets skipped, and what to change. Your ad never leaves your device.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.adsure.in/heatmap">
+<meta name="theme-color" content="#F4F1EB">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AdSure">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content="https://www.adsure.in/heatmap">
+<meta property="og:title" content="Free Ad Attention Heatmap | AdSure">
+<meta property="og:description" content="See where eyes land first on your ad, before you spend on it. Free, no sign-up, and your ad never leaves your device.">
+<meta property="og:image" content="https://www.adsure.in/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Ad Attention Heatmap | AdSure">
+<meta name="twitter:description" content="See where eyes land first on your ad, before you spend on it. Free, no sign-up.">
+<meta name="twitter:image" content="https://www.adsure.in/assets/og-image.png">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/legal.css">
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AdSure Ad Attention Heatmap",
+  "url": "https://www.adsure.in/heatmap",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "description": "See where people look first on your ad image or video. Free, no sign-up, runs in your browser.",
+  "publisher": { "@type": "Organization", "name": "AdSure", "url": "https://www.adsure.in/" }
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+   { "@type": "Question", "name": "Is the ad heatmap really free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. No sign-up, no limit on how many ads you check." } },
+   { "@type": "Question", "name": "Is my ad uploaded anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it." } },
+   { "@type": "Question", "name": "How accurate is an attention heatmap?", "acceptedAnswer": { "@type": "Answer", "text": "It is a prediction based on what the human eye is drawn to: contrast, colour, faces, text and position. It is good at showing what stands out and what gets lost. It is not eye-tracking, and it cannot tell you whether people will click or buy." } },
+   { "@type": "Question", "name": "Does it work for video ads?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. For a video, it checks the opening frame, the one people see while they scroll and decide whether to stop." } }
+  ]
+ }
+]
+</script>
+<style>
+  .btn-lime{background:var(--lime);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+  .btn-lime:hover{background:#d8f55c}
+  .btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+  .btn-ghost:hover{background:rgba(17,16,20,.06)}
+  .btn-big{padding:15px 26px;font-size:1.05rem}
+  .btn-sm{padding:8px 14px;font-size:.88rem}
+  .on-ink .btn-ghost{color:var(--cream);box-shadow:inset 0 0 0 2px var(--cream)}
+  .on-ink .btn-ghost:hover{background:rgba(255,255,255,.08)}
+  button.btn{border:0;cursor:pointer}
+
+  .tool{padding:clamp(36px,6vw,72px) 0 clamp(40px,6vw,72px)}
+  .tool h1{font-size:clamp(2.3rem,5.4vw,4rem);font-weight:800;max-width:17ch}
+  .lede{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--muted);max-width:60ch;margin:18px 0 0}
+  .pills{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;padding:0;list-style:none}
+  .pills li{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px 8px 10px;font-weight:600;font-size:.92rem}
+  .pills li::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111014' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/11px no-repeat;box-shadow:inset 0 0 0 1.5px var(--ink)}
+
+  .drop{margin-top:30px;display:grid;place-items:center;text-align:center;gap:10px;background:var(--paper);border:2px dashed #BDB6A6;border-radius:var(--r-lg,28px);padding:clamp(28px,5vw,52px) 20px;cursor:pointer;transition:border-color .15s,background .15s}
+  .drop:hover,.drop.over{border-color:var(--ink);background:#fff}
+  .drop:focus-within{outline:3px solid var(--ink);outline-offset:3px}
+  .drop b{font-family:var(--head);font-size:1.3rem;letter-spacing:-.02em}
+  .drop .small{color:var(--muted);font-size:.9rem}
+  .drop input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .drop-ic{width:64px;height:64px;border-radius:20px;background:var(--lime);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--ink)}
+  .status{margin-top:14px;font-weight:600;min-height:1.6em}
+  .status.err{color:#B3261E}
+
+  .results{display:grid;gap:22px;margin-top:22px}
+  .res{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(18px,3vw,34px);background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg,28px);padding:clamp(16px,2.6vw,26px)}
+  .res-media{background:var(--ink);border-radius:18px;overflow:hidden;display:grid;place-items:center;align-self:start}
+  .res-media canvas{display:block;width:100%;height:auto;max-height:640px;object-fit:contain}
+  .res-name{font-size:.86rem;color:var(--muted);margin:0 0 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seg{display:inline-flex;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px;gap:2px}
+  .seg button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font:600 .88rem var(--body);color:var(--muted);cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+  .verdict{display:inline-flex;align-items:center;gap:8px;margin-top:16px;border-radius:999px;padding:7px 14px 7px 10px;font-family:var(--head);font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+  .verdict::before{content:"";width:12px;height:12px;border-radius:50%;background:currentColor}
+  .verdict.good{background:var(--lime);color:var(--ink)}
+  .verdict.good::before{background:var(--ink)}
+  .verdict.mid{background:#FFE9B8;color:#7A4B00}
+  .verdict.bad{background:#FBE3DF;color:#A3281C}
+  .res-line{margin:12px 0 0;font-size:1.02rem}
+  .res h3{font-size:1.05rem;margin:20px 0 8px}
+  .spots{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .spots li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:var(--cream);border-radius:12px;padding:9px 12px;font-size:.95rem}
+  .spots i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink);display:grid;place-items:center;font:800 .8rem var(--head)}
+  .spots small{color:var(--muted);font-weight:600}
+  .tips{margin:0;padding-left:20px;display:grid;gap:6px;font-size:.96rem}
+  .res-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .compare{background:var(--ink);color:var(--cream);border-radius:var(--r-lg,28px);padding:clamp(18px,3vw,28px)}
+  .compare h2{font-size:1.4rem}
+  .compare p{color:var(--muted-on-ink);margin:8px 0 0}
+  .compare b{color:var(--lime)}
+
+  .sec{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line)}
+  .sec h2{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;max-width:22ch}
+  .qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:26px}
+  .q{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .q b{font-family:var(--head);font-size:1.08rem;letter-spacing:-.015em;display:block;line-height:1.25}
+  .q p{margin:8px 0 0;color:var(--muted);font-size:.95rem}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,32px);margin-top:26px}
+  .box{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .box h3{font-size:1.15rem;margin-bottom:10px}
+  .box ul{margin:0;padding-left:20px;display:grid;gap:6px}
+  .cta{background:var(--ink);color:var(--cream);border-radius:var(--r-lg,28px);padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
+  .cta h2{color:var(--cream);max-width:18ch}
+  .cta p{color:var(--muted-on-ink);margin:14px 0 0;max-width:52ch}
+  .cta .btns{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .cta .tagline{margin:0 0 6px}
+  .faq{margin-top:22px;display:grid;gap:12px;max-width:820px}
+  .faq details{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 20px}
+  .faq summary{cursor:pointer;font-family:var(--head);font-weight:700;font-size:1.06rem;letter-spacing:-.01em}
+  .faq p{margin:10px 0 0;color:var(--muted)}
+  .nav-in .nav-r{display:flex;gap:10px;align-items:center}
+  @media (max-width:860px){.res,.cta,.two{grid-template-columns:1fr}.nav-in .btn-ghost{display:none}}
+  @media print{.drop,.res-actions,.seg,.cta,.sec{display:none}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="nav-logo" href="/" aria-label="AdSure home"><img src="/assets/logo-dark.png" alt="AdSure" width="440" height="96"></a>
+    <div class="nav-r">
+      <a class="btn btn-ghost btn-sm" href="/">What AdSure does</a>
+      <a class="btn" href="/#join">Get early access</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="tool">
+    <div class="wrap">
+      <p class="kicker">Free tool · No sign-up</p>
+      <h1>See where eyes land on your ad.</h1>
+      <p class="lede">Add your ad image or video. In a few seconds you'll see what people notice first, what they skip, and whether your product and offer get seen, before you spend a rupee on it.</p>
+      <ul class="pills" aria-label="About this tool">
+        <li>Free, no limit</li>
+        <li>No sign-up</li>
+        <li>Your ad never leaves your device</li>
+      </ul>
+
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" multiple>
+        <span class="drop-ic" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#111014" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></span>
+        <b>Choose your ad, or drop it here</b>
+        <span class="small">Image (JPG, PNG, WebP) or video (MP4, MOV) · up to 4 at once to compare versions</span>
+        <span class="btn btn-lime btn-big" aria-hidden="true">Choose ad</span>
+      </label>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <div class="results" id="results"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="kicker">Reading your heatmap</p>
+      <h2>Four questions to ask about spots 1, 2 and 3.</h2>
+      <div class="qgrid">
+        <div class="q"><b>Is spot 1 your product or offer?</b><p>If the first look goes to a background, a pattern or a logo, people scroll past before they know what you sell.</p></div>
+        <div class="q"><b>Is the price or deal seen early?</b><p>For sale and discount ads, the offer should sit in spot 1 or 2. Buried deals don't stop the scroll.</p></div>
+        <div class="q"><b>Is a face helping or stealing?</b><p>Faces win the first look. That's good if the person looks at, holds or uses the product. It's bad if they lead eyes away from it.</p></div>
+        <div class="q"><b>Is it safe at the edges?</b><p>On Instagram and Facebook, captions, buttons and profile names cover the top and bottom. Keep key words away from the edges.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="kicker">Be honest about what it is</p>
+      <h2>A heatmap shows attention. Not sales.</h2>
+      <div class="two">
+        <div class="box"><h3>What it's good at</h3><ul><li>Showing what stands out first and what gets lost</li><li>Catching ads where everything shouts and nothing is seen</li><li>Comparing two versions of the same creative</li><li>Spotting text that's too small or too much to read on a phone</li></ul></div>
+        <div class="box"><h3>What it can't tell you</h3><ul><li>Whether people will click, buy or fill a form</li><li>Whether your offer or message makes sense to them</li><li>Whether the ad breaks Meta, Google or Indian ad rules</li><li>Whether your landing page or targeting will waste money</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="cta on-ink">
+        <div>
+          <p class="tagline">Be Sure with Adsure.</p>
+          <h2>Attention is step one. Will the ad actually sell?</h2>
+          <p>AdSure's ad experts and AI review your creative, ad text, landing page and targeting, and tell you exactly what to fix before you spend. We never touch your ad account.</p>
+        </div>
+        <div class="btns">
+          <a class="btn btn-lime btn-big" href="/#join">Get early access</a>
+          <a class="btn btn-ghost btn-big" href="https://app.adsure.in">I'm already in. Open AdSure</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="kicker">Questions</p>
+      <h2>Good to know</h2>
+      <div class="faq">
+        <details><summary>Is it really free?</summary><p>Yes. No sign-up, no limit on how many ads you check.</p></details>
+        <details><summary>Is my ad uploaded anywhere?</summary><p>No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it. Close the tab and it's gone.</p></details>
+        <details><summary>How does it predict where people look?</summary><p>It uses what the human eye is naturally drawn to: strong contrast, colours that stand out, faces, text and fine detail, and the upper middle of a phone screen where people start looking. It's a prediction, not eye-tracking with real people.</p></details>
+        <details><summary>Does it work for video ads?</summary><p>Yes. For a video, it checks the opening frame, the one people see while they scroll and decide whether to stop.</p></details>
+        <details><summary>Which ad sizes work?</summary><p>Any. Square (1:1), portrait (4:5), stories and reels (9:16) and landscape all work.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="/assets/logo-light.png" alt="AdSure" width="440" height="96" loading="lazy" decoding="async">
+        <p class="tagline">Be Sure with Adsure.</p>
+        <p>Find out what's wrong with your ad, before you spend on it.</p>
+        <p class="made">
+          <svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect width="30" height="6.67" fill="#FF9933"/><rect y="13.33" width="30" height="6.67" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".7"/></svg>
+          Made in India
+        </p>
+      </div>
+      <div>
+        <h4>AdSure</h4>
+        <ul><li><a href="/">www.adsure.in</a></li><li><a href="/heatmap">Free ad heatmap</a></li><li><a href="mailto:hi@adsure.in">hi@adsure.in</a></li></ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/refund-policy">Refund and Cancellation</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 AdSure. All rights reserved.</span>
+      <span>AdSure is a Shopify Partner. Google Ads, Meta and Shopify are trademarks of their owners. AdSure is independent and not affiliated with Google or Meta.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/heatmap.js?v=20261014"></script>
+<script>
+(function () {
+  "use strict";
+  var HM = window.AdSureHeatmap, MAX_FILES = 4, MAX_MB = 60, SHOW = 1080;
+  var drop = document.getElementById("drop"), input = document.getElementById("file"), statusEl = document.getElementById("status"), out = document.getElementById("results");
+  var items = [];
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function say(msg, err) { statusEl.textContent = msg || ""; statusEl.className = "status" + (err ? " err" : ""); }
+
+  /* Faces pull the eye hardest. The face finder runs in the browser too; if it can't load, the heatmap still works. */
+  var faceP = null, faceOn = null;
+  function goodNet() {   /* the face finder is a big download (~4 MB), so skip it on slow or data-saver connections */
+    var c = navigator.connection || {};
+    return !c.saveData && !/(^|-)2g|3g/.test(c.effectiveType || "");
+  }
+  function faceFinder() {
+    if (faceP) return faceP;
+    if (!goodNet()) { faceOn = false; return (faceP = Promise.resolve(null)); }
+    var BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.0";
+    var load = import(BASE + "/vision_bundle.mjs").then(function (m) {
+      return m.FilesetResolver.forVisionTasks(BASE + "/wasm").then(function (fs) {
+        return m.FaceDetector.createFromOptions(fs, { baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite", delegate: "CPU" }, runningMode: "IMAGE", minDetectionConfidence: 0.55 });
+      });
+    });
+    faceP = Promise.race([load, new Promise(function (_, no) { setTimeout(function () { no(new Error("slow")); }, 12000); })])
+      .then(function (fd) { faceOn = !!fd; return fd; }, function () { faceOn = false; return null; });
+    return faceP;
+  }
+  function findFaces(canvas) {
+    return faceFinder().then(function (fd) {
+      if (!fd) return [];
+      try {
+        return (fd.detect(canvas).detections || []).filter(function (d) { return d.boundingBox && d.categories && d.categories[0] && d.categories[0].score >= 0.55; }).slice(0, 4).map(function (d) {
+          var b = d.boundingBox; return { x: b.originX / canvas.width, y: b.originY / canvas.height, w: b.width / canvas.width, h: b.height / canvas.height };
+        });
+      } catch (e) { return []; }
+    });
+  }
+
+  function loadImage(file) {
+    return new Promise(function (ok, no) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { ok({ el: img, w: img.naturalWidth, h: img.naturalHeight, done: function () { URL.revokeObjectURL(url); } }); };
+      img.onerror = function () { URL.revokeObjectURL(url); no(new Error("We couldn't open this image.")); };
+      img.src = url;
+    });
+  }
+  function loadVideoFrame(file) {
+    return new Promise(function (ok, no) {
+      var url = URL.createObjectURL(file), v = document.createElement("video"), t;
+      v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
+      function fail() { clearTimeout(t); URL.revokeObjectURL(url); no(new Error("We couldn't read this video. Try an MP4, or a screenshot of its first frame.")); }
+      t = setTimeout(fail, 15000);
+      v.onerror = fail;
+      v.onloadedmetadata = function () { v.currentTime = Math.min(0.3, (v.duration || 1) / 4); };
+      v.onseeked = function () { clearTimeout(t); ok({ el: v, w: v.videoWidth, h: v.videoHeight, video: true, done: function () { URL.revokeObjectURL(url); v.removeAttribute("src"); v.load(); } }); };
+    });
+  }
+
+  function analyseFile(file, idx) {
+    var isVideo = /^video\//.test(file.type);
+    if (!/^(image\/(jpeg|png|webp)|video\/)/.test(file.type)) return Promise.reject(new Error(file.name + ": please use a JPG, PNG, WebP or MP4 file."));
+    if (file.size > MAX_MB * 1024 * 1024) return Promise.reject(new Error(file.name + " is over " + MAX_MB + " MB."));
+    return (isVideo ? loadVideoFrame(file) : loadImage(file)).then(function (src) {
+      if (!src.w || !src.h) throw new Error("We couldn't read the size of " + file.name + ".");
+      var s = Math.min(1, SHOW / Math.max(src.w, src.h)), W = Math.round(src.w * s), H = Math.round(src.h * s);
+      var base = document.createElement("canvas"); base.width = W; base.height = H;
+      base.getContext("2d").drawImage(src.el, 0, 0, W, H);
+      src.done();
+      var g = HM.GRID / Math.max(W, H), gw = Math.max(8, Math.round(W * g)), gh = Math.max(8, Math.round(H * g));
+      var grid = document.createElement("canvas"); grid.width = gw; grid.height = gh;
+      var gctx = grid.getContext("2d"); gctx.imageSmoothingQuality = "high"; gctx.drawImage(base, 0, 0, gw, gh);
+      return findFaces(base).then(function (faces) {
+        var res = HM.analyze(gctx.getImageData(0, 0, gw, gh), faces);
+        return { name: file.name, video: !!src.video, base: base, res: res, mode: "heat", idx: idx, faceChecked: faceOn === true };
+      });
+    });
+  }
+
+  var LABELS = { heat: "Heatmap", spot: "Spotlight", original: "Original" };
+  function card(it, i) {
+    var r = it.res, v = r.verdict;
+    var spots = r.peaks.length ? r.peaks.map(function (p) {
+      return '<li><i>' + p.n + '</i><span>' + (p.n === 1 ? "First look: " : "") + esc(p.where.charAt(0).toUpperCase() + p.where.slice(1)) + (p.face ? " (a face)" : "") + '</span><small>' + (p.strength >= 85 ? "Strong" : p.strength >= 55 ? "Medium" : "Weak") + '</small></li>';
+    }).join("") : '<li><i>–</i><span>No spot stands out</span><small></small></li>';
+    return '<article class="res" data-i="' + i + '">' +
+      '<div class="res-media"><canvas aria-label="Attention heatmap for ' + esc(it.name) + ': ' + esc(v.label) + '"></canvas></div>' +
+      '<div class="res-body">' +
+        '<p class="res-name">' + (items.length > 1 ? "Version " + (i + 1) + " · " : "") + esc(it.name) + (it.video ? " · opening frame" : "") + '</p>' +
+        '<div class="seg" role="group" aria-label="View">' + ["heat", "spot", "original"].map(function (m) { return '<button type="button" data-mode="' + m + '" aria-pressed="' + (it.mode === m) + '">' + LABELS[m] + '</button>'; }).join("") + '</div>' +
+        '<div><span class="verdict ' + v.tone + '">' + esc(v.label) + '</span></div>' +
+        '<p class="res-line">' + esc(v.line) + '</p>' +
+        '<h3>Where eyes go</h3><ol class="spots">' + spots + '</ol>' +
+        (it.faceChecked ? "" : '<p class="small" style="color:var(--muted);margin:10px 0 0">Faces weren\'t checked on this connection. If your ad has a face, it usually takes the first look.</p>') +
+        '<h3>What to change</h3><ul class="tips">' + v.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>' +
+        '<div class="res-actions"><button type="button" class="btn btn-ink btn-sm" data-save>Save heatmap</button><a class="btn btn-ghost btn-sm" href="/#join">Get the full ad review</a></div>' +
+      '</div></article>';
+  }
+  function draw(el, it, stamp) {
+    var c = el.querySelector ? el.querySelector("canvas") : el;
+    c.width = it.base.width; c.height = it.base.height;
+    HM.render(c, it.base, it.res, it.mode, { stamp: !!stamp });
+    return c;
+  }
+  var RANK = { clear: 0, split: 1, busy: 2 };
+  function compareHTML() {
+    if (items.length < 2) return "";
+    var best = items.slice().sort(function (a, b) { return (RANK[a.res.verdict.key] - RANK[b.res.verdict.key]) || (b.res.focus - a.res.focus); })[0];
+    var allSame = items.every(function (x) { return x.res.verdict.key === best.res.verdict.key && Math.abs(x.res.focus - best.res.focus) < 0.04; });
+    return '<div class="compare on-ink"><h2>' + (allSame ? "These versions are about the same." : "Version " + (items.indexOf(best) + 1) + " has the clearest focus.") + '</h2>' +
+      '<p>' + (allSame ? "None of them pulls the eye much better than the others. Change the layout more boldly to see a difference." : "<b>" + esc(best.name) + "</b> gets the first look most clearly. Check that its spot 1 is your product or offer before you pick it.") + '</p></div>';
+  }
+  function paint() {
+    out.innerHTML = compareHTML() + items.map(card).join("");
+    Array.prototype.forEach.call(out.querySelectorAll(".res"), function (el) { draw(el, items[+el.getAttribute("data-i")]); });
+  }
+
+  function handle(files) {
+    files = Array.prototype.slice.call(files || []);
+    if (!files.length) return;
+    if (files.length > MAX_FILES) { say("Up to " + MAX_FILES + " ads at a time. We've taken the first " + MAX_FILES + ".", true); files = files.slice(0, MAX_FILES); }
+    else say(files.length > 1 ? "Checking " + files.length + " ads…" : "Checking your ad…");
+    items = [];
+    out.innerHTML = "";
+    var errors = [], i = 0;
+    (function next() {
+      if (i >= files.length) {
+        items.sort(function (a, b) { return a.idx - b.idx; });
+        paint();
+        if (errors.length) say(errors.join(" "), true); else say(items.length ? "Done. Your ad stayed on this device." : "");
+        if (items.length) out.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      var f = files[i], idx = i++;
+      analyseFile(f, idx).then(function (it) { items.push(it); }, function (e) { errors.push(e.message || String(e)); }).then(function () {
+        say(i < files.length ? "Checking ad " + (i + 1) + " of " + files.length + "…" : "Almost done…");
+        setTimeout(next, 16);
+      });
+    })();
+  }
+
+  input.addEventListener("change", function () { handle(input.files); input.value = ""; });
+  ["dragenter", "dragover"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
+  ["dragleave", "drop"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
+  drop.addEventListener("drop", function (e) { if (e.dataTransfer) handle(e.dataTransfer.files); });
+
+  out.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var el = b.closest(".res"), it = el && items[+el.getAttribute("data-i")]; if (!it) return;
+    if (b.hasAttribute("data-mode")) {
+      it.mode = b.getAttribute("data-mode");
+      Array.prototype.forEach.call(el.querySelectorAll(".seg button"), function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      draw(el, it);
+    } else if (b.hasAttribute("data-save")) {
+      var c = document.createElement("canvas");
+      draw(c, { base: it.base, res: it.res, mode: it.mode === "original" ? "heat" : it.mode }, true);
+      var a = document.createElement("a");
+      a.download = it.name.replace(/\.[a-z0-9]+$/i, "") + "-adsure-heatmap.png";
+      a.href = c.toDataURL("image/png");
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+  });
+
+  /* Start loading the face finder as soon as someone shows they're about to add an ad, so the check is quick. */
+  ["pointerenter", "focusin", "touchstart"].forEach(function (ev) { drop.addEventListener(ev, function () { faceFinder(); }, { once: true, passive: true }); });
+})();
+</script>
+</body>
+</html>
