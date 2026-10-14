@@ -64,7 +64,7 @@
       t = setTimeout(fail, 25000);
       v.onerror = fail;
       v.onloadedmetadata = function () {
-        var d = isFinite(v.duration) ? v.duration : 1;
+        var d = isFinite(v.duration) && v.duration > 0 ? v.duration : 99;   /* some WebM files report no length */
         times = [0.1, 1, 2, 3].filter(function (x, i) { return i === 0 || x < d - 0.05; });
         v.currentTime = times[0];
       };
