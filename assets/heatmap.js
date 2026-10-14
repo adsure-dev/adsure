@@ -13,6 +13,7 @@
   "use strict";
 
   var GRID = 128;   /* long side of the working grid */
+  var MODEL_GAMMA = 0.6;   /* the model's map is very peaky; this spreads it so second and third looks show */
 
   function blur(src, w, h, sigma) {
     /* three box blurs ≈ a gaussian blur */
@@ -57,9 +58,49 @@
   function lin(c) { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
   function fLab(t) { return t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; }
 
+  /* Resize a float map (bilinear). */
+  function resample(src, sw, sh, w, h) {
+    var out = new Float32Array(w * h);
+    for (var y = 0; y < h; y++) {
+      var fy = Math.min(sh - 1, Math.max(0, (y + 0.5) * sh / h - 0.5)), y0 = Math.floor(fy), y1 = Math.min(sh - 1, y0 + 1), ty = fy - y0;
+      for (var x = 0; x < w; x++) {
+        var fx = Math.min(sw - 1, Math.max(0, (x + 0.5) * sw / w - 0.5)), x0 = Math.floor(fx), x1 = Math.min(sw - 1, x0 + 1), tx = fx - x0;
+        out[y * w + x] = (src[y0 * sw + x0] * (1 - tx) + src[y0 * sw + x1] * tx) * (1 - ty) + (src[y1 * sw + x0] * (1 - tx) + src[y1 * sw + x1] * tx) * ty;
+      }
+    }
+    return out;
+  }
+
+  /* The trained eye-tracking model (UNISAL, fine-tuned on the MIT1003 eye-tracking study) takes a
+     (32·n1)×(32·n2) image with n1·n2 between 100 and 120. This picks the size closest to the ad's shape. */
+  function modelSize(width, height) {
+    var ar = height / width, best = null;
+    for (var n1 = 7; n1 < 14; n1++) for (var n2 = 7; n2 < 14; n2++) {
+      if (n1 * n2 < 100 || n1 * n2 > 120) continue;
+      var r = Math.min(ar, n1 / n2) / Math.max(ar, n1 / n2);
+      if (!best || r > best.r) best = { r: r, h: n1 * 32, w: n2 * 32 };
+    }
+    return { w: best.w, h: best.h };
+  }
+  /* RGBA bytes → normalised float tensor data, [1,3,h,w] */
+  function modelInput(rgba, w, h) {
+    var n = w * h, out = new Float32Array(3 * n), M = [0.485, 0.456, 0.406], SD = [0.229, 0.224, 0.225];
+    for (var i = 0; i < n; i++) for (var c = 0; c < 3; c++) out[c * n + i] = (rgba[i * 4 + c] / 255 - M[c]) / SD[c];
+    return out;
+  }
+  /* Model output (log of where-people-look density) → 0–1 map */
+  function modelMap(logd, w, h) {
+    var mx = -Infinity, i, out = new Float32Array(w * h);
+    for (i = 0; i < out.length; i++) if (logd[i] > mx) mx = logd[i];
+    for (i = 0; i < out.length; i++) out[i] = Math.exp(logd[i] - mx);
+    return { data: out, w: w, h: h };
+  }
+
   /* img: { data: RGBA bytes, width, height } already scaled to the working grid.
-     faces: [{ x, y, w, h }] in 0–1 units of the image (optional). */
-  function analyze(img, faces) {
+     faces: [{ x, y, w, h }] in 0–1 units of the image (optional).
+     opts.model: { data, w, h } from modelMap() — when given, the trained model decides where people look,
+     and the rules below are only used for the text/detail check. */
+  function analyze(img, faces, opts) {
     var w = img.width, h = img.height, n = w * h, d = img.data, i;
     var L = new Float32Array(n), A = new Float32Array(n), B = new Float32Array(n);
     for (i = 0; i < n; i++) {
@@ -95,6 +136,7 @@
 
     var U = norm(unique), Cn = norm(contrast), D = norm(detail);
 
+
     /* 4. Faces */
     var F = new Float32Array(n), hasFace = false;
     (faces || []).forEach(function (f) {
@@ -122,13 +164,22 @@
     for (i = 0; i < n; i++) { if (S[i] > mx) mx = S[i]; if (S[i] < mn) mn = S[i]; }
     for (i = 0; i < n; i++) S[i] = Math.pow((S[i] - mn) / ((mx - mn) || 1), 1.7);
 
-    return summarise(S, w, h, D, hasFace, faces || []);
+    if (opts && opts.model) {
+      /* Trained model first; a quarter from the rules so plain-coloured products and offers aren't missed. */
+      var M = resample(opts.model.data, opts.model.w, opts.model.h, w, h), top = 0, j, t2 = 0;
+      M = blur(M, w, h, 0.012 * long);
+      for (j = 0; j < n; j++) if (M[j] > top) top = M[j];
+      for (j = 0; j < n; j++) { M[j] = 0.75 * Math.pow(M[j] / (top || 1), MODEL_GAMMA) + 0.25 * S[j]; if (M[j] > t2) t2 = M[j]; }
+      for (j = 0; j < n; j++) M[j] /= (t2 || 1);
+      return summarise(M, w, h, D, hasFace, faces || [], "model");
+    }
+    return summarise(S, w, h, D, hasFace, faces || [], "rules");
   }
 
   var SPOT = [["top left", "top", "top right"], ["left", "middle", "right"], ["bottom left", "bottom", "bottom right"]];
   function where(x, y) { return SPOT[Math.min(2, Math.floor(y * 3))][Math.min(2, Math.floor(x * 3))]; }
 
-  function summarise(S, w, h, D, hasFace, faces) {
+  function summarise(S, w, h, D, hasFace, faces, source) {
     var n = w * h, i, total = 0;
     for (i = 0; i < n; i++) total += S[i];
 
@@ -174,14 +225,14 @@
     var dsum = 0; for (i = 0; i < n; i++) dsum += D[i];
     var busy = dsum / n;   /* average detail, 0–1 */
 
-    return { map: S, w: w, h: h, focus: Math.round(focus * 100) / 100, coverage: Math.round(coverage * 100) / 100, peaks: peaks, strongSpots: strong, busy: Math.round(busy * 100) / 100, faces: faces.length, verdict: verdictOf(focus, coverage, busy, peaks, faces.length) };
+    return { map: S, w: w, h: h, focus: Math.round(focus * 100) / 100, coverage: Math.round(coverage * 100) / 100, peaks: peaks, strongSpots: strong, busy: Math.round(busy * 100) / 100, faces: faces.length, source: source, score: Math.round(focusScore(focus, source) * (busy < 0.03 ? 0 : peaks[1] && peaks[1].strength >= 80 ? 0.7 : 1)), verdict: verdictOf(focus, coverage, busy, peaks, faces.length) };
   }
 
   /* One plain verdict and what to do about it. */
   function verdictOf(focus, coverage, busy, peaks, faceCount) {
     var first = peaks[0], tips = [], v;
     var rival = peaks[1] && peaks[1].strength >= 80;   /* a second spot almost as strong as the first */
-    if (!first || coverage > 0.34 || focus < 0.2 || (busy > 0.5 && peaks.length >= 3 && peaks[2].strength >= 60)) {
+    if (!first || busy < 0.03 || coverage > 0.34 || focus < 0.2 || (busy > 0.5 && peaks.length >= 3 && peaks[2].strength >= 60)) {
       v = { key: "busy", label: "Nothing stands out", tone: "bad", line: "Attention is spread across the whole ad, so nothing gets noticed first. On a fast scroll, that usually means nothing gets noticed at all." };
       tips.push("Cut the number of elements. One product, one line of text and one offer is often enough.");
     } else if (!rival) {
@@ -241,6 +292,12 @@
     }
   }
 
-  var api = { analyze: analyze, render: render, GRID: GRID, verdictOf: verdictOf };
+  /* Focus score 0–100: how strongly attention gathers in one place, versus being spread thin. */
+  function focusScore(focus, source) {
+    var lo = 0.14, hi = source === "model" ? 0.5 : 0.62;
+    return Math.round(100 * Math.max(0, Math.min(1, (focus - lo) / (hi - lo))));
+  }
+
+  var api = { analyze: analyze, render: render, GRID: GRID, verdictOf: verdictOf, resample: resample, modelSize: modelSize, modelInput: modelInput, modelMap: modelMap };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.AdSureHeatmap = api;
 })(this);

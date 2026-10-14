@@ -45,8 +45,8 @@
   "mainEntity": [
    { "@type": "Question", "name": "Is the ad heatmap really free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. No sign-up, no limit on how many ads you check." } },
    { "@type": "Question", "name": "Is my ad uploaded anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it." } },
-   { "@type": "Question", "name": "How accurate is an attention heatmap?", "acceptedAnswer": { "@type": "Answer", "text": "It is a prediction based on what the human eye is drawn to: contrast, colour, faces, text and position. It is good at showing what stands out and what gets lost. It is not eye-tracking, and it cannot tell you whether people will click or buy." } },
-   { "@type": "Question", "name": "Does it work for video ads?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. For a video, it checks the opening frame, the one people see while they scroll and decide whether to stop." } }
+   { "@type": "Question", "name": "How accurate is an attention heatmap?", "acceptedAnswer": { "@type": "Answer", "text": "It uses a model trained on real eye-tracking studies, so it is good at showing what stands out first and what gets lost. It is a prediction, not a new eye-tracking study of your ad, and it cannot tell you whether people will click or buy." } },
+   { "@type": "Question", "name": "Does it work for video ads?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It checks the opening frame and one frame for each of the first 3 seconds." } }
   ]
  }
 ]
@@ -126,6 +126,44 @@
   .faq summary{cursor:pointer;font-family:var(--head);font-weight:700;font-size:1.06rem;letter-spacing:-.01em}
   .faq p{margin:10px 0 0;color:var(--muted)}
   .nav-in .nav-r{display:flex;gap:10px;align-items:center}
+  .muted{color:var(--muted)}
+  .small{font-size:.88rem}
+  .head-row{display:flex;align-items:center;gap:14px}
+  .head-row .verdict{margin-top:0}
+  .sc{position:relative;width:64px;height:64px;flex:none;display:grid;place-items:center}
+  .sc svg{position:absolute;inset:0;width:100%;height:100%}
+  .sc b{font-family:var(--head);font-weight:800;font-size:1.25rem;letter-spacing:-.03em;color:var(--ink)}
+  .sc.good{color:#8DB31A}.sc.mid{color:#E2A23B}.sc.bad{color:#D9483B}
+  .res .seg{margin-top:14px}
+  .res-left{display:grid;gap:14px;align-self:start}
+  .strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+  .strip button{border:0;background:var(--cream);border-radius:12px;padding:6px;display:grid;gap:4px;cursor:pointer;box-shadow:inset 0 0 0 1.5px var(--line);flex:none}
+  .strip button[aria-pressed="true"]{box-shadow:inset 0 0 0 2.5px var(--ink)}
+  .strip canvas{display:block;width:auto;height:90px;border-radius:8px}
+  .strip small{font-weight:700;font-size:.78rem}
+  .marks{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+  .marks li{display:grid;grid-template-columns:minmax(90px,auto) 1fr auto auto;gap:10px;align-items:center;background:var(--cream);border-radius:12px;padding:8px 10px;font-size:.92rem}
+  .marks .bar{height:8px;border-radius:8px;background:#E7E2D6;overflow:hidden}
+  .marks .bar span{display:block;height:100%;background:var(--ink);border-radius:8px}
+  .marks .x{border:0;background:transparent;font-size:1.2rem;line-height:1;cursor:pointer;color:var(--muted);padding:0 4px}
+  .mark-btns{display:flex;flex-wrap:wrap;gap:6px}
+  .mark-btns button{border:0;border-radius:999px;padding:6px 11px;font:600 .82rem var(--body);background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;color:var(--ink)}
+  .mark-btns button:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+  .mark-btns button[aria-pressed="true"]{background:var(--lime);box-shadow:inset 0 0 0 2px var(--ink)}
+  .mark-hint{margin:8px 0 0;font-weight:700;color:var(--ink);background:var(--lime-soft);border-radius:10px;padding:8px 12px}
+  .chk{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:.92rem;font-weight:600;cursor:pointer}
+  .chk input{margin-top:4px;accent-color:#111014}
+  .phones{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .phones figure{margin:0;display:grid;gap:6px;justify-items:center}
+  .phones figcaption{font-size:.8rem;color:var(--muted);text-align:center}
+  .phone{width:100%;max-width:220px;background:#fff;border-radius:22px;padding:10px 0 12px;box-shadow:0 0 0 6px var(--ink),0 18px 40px -18px rgba(17,16,20,.5);overflow:hidden}
+  .ph-top{display:flex;align-items:center;gap:6px;padding:0 10px 8px;font-size:.66rem}
+  .ph-top .av{width:18px;height:18px;border-radius:50%;background:#ddd}
+  .ph-top small{color:#888;margin-left:auto}
+  .ph-ad img{display:block;width:100%;height:auto}
+  .ph-cta{display:flex;justify-content:space-between;padding:7px 10px;background:#F2F2F2;font-size:.68rem;font-weight:700}
+  .ph-cap{height:8px;margin:8px 10px 0;border-radius:4px;background:#EEE}
+  .phone.glance .ph-ad img{filter:blur(3px) saturate(.9);transform:scale(1.02)}
   @media (max-width:860px){.res,.cta,.two{grid-template-columns:1fr}.nav-in .btn-ghost{display:none}}
   @media print{.drop,.res-actions,.seg,.cta,.sec{display:none}}
 </style>
@@ -147,10 +185,10 @@
     <div class="wrap">
       <p class="kicker">Free tool · No sign-up</p>
       <h1>See where eyes land on your ad.</h1>
-      <p class="lede">Add your ad image or video. In a few seconds you'll see what people notice first, what they skip, and whether your product and offer get seen, before you spend a rupee on it.</p>
+      <p class="lede">Add your ad image or video. In a few seconds you'll see what people notice first, how much attention your product and offer get, and what Instagram's buttons will cover, before you spend a rupee on it.</p>
       <ul class="pills" aria-label="About this tool">
-        <li>Free, no limit</li>
-        <li>No sign-up</li>
+        <li>Trained on real eye-tracking data</li>
+        <li>Free, no sign-up</li>
         <li>Your ad never leaves your device</li>
       </ul>
 
@@ -184,7 +222,7 @@
       <p class="kicker">Be honest about what it is</p>
       <h2>A heatmap shows attention. Not sales.</h2>
       <div class="two">
-        <div class="box"><h3>What it's good at</h3><ul><li>Showing what stands out first and what gets lost</li><li>Catching ads where everything shouts and nothing is seen</li><li>Comparing two versions of the same creative</li><li>Spotting text that's too small or too much to read on a phone</li></ul></div>
+        <div class="box"><h3>What it's good at</h3><ul><li>Showing what stands out first and what gets lost</li><li>Telling you whether your product and offer actually get seen</li><li>Catching key words hidden under Reels and Stories buttons</li><li>Comparing versions with one focus score out of 100</li></ul></div>
         <div class="box"><h3>What it can't tell you</h3><ul><li>Whether people will click, buy or fill a form</li><li>Whether your offer or message makes sense to them</li><li>Whether the ad breaks Meta, Google or Indian ad rules</li><li>Whether your landing page or targeting will waste money</li></ul></div>
       </div>
     </div>
@@ -213,8 +251,9 @@
       <div class="faq">
         <details><summary>Is it really free?</summary><p>Yes. No sign-up, no limit on how many ads you check.</p></details>
         <details><summary>Is my ad uploaded anywhere?</summary><p>No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it. Close the tab and it's gone.</p></details>
-        <details><summary>How does it predict where people look?</summary><p>It uses what the human eye is naturally drawn to: strong contrast, colours that stand out, faces, text and fine detail, and the upper middle of a phone screen where people start looking. It's a prediction, not eye-tracking with real people.</p></details>
-        <details><summary>Does it work for video ads?</summary><p>Yes. For a video, it checks the opening frame, the one people see while they scroll and decide whether to stop.</p></details>
+        <details><summary>How does it predict where people look?</summary><p>It uses a model trained on real eye-tracking studies, where cameras recorded exactly where people looked at over a thousand images. The model learned what pulls the eye: faces, text, contrast and position. On slow connections we use a lighter, instant model instead, and the result says which one was used. It's a prediction, not a new eye-tracking study of your ad.</p></details>
+        <details><summary>What does "Is your product seen?" do?</summary><p>Draw a box around your product, offer, logo or button. We show what share of attention each one gets and the order people see them in, so you know whether the thing you're paying to show actually gets noticed.</p></details>
+        <details><summary>Does it work for video ads?</summary><p>Yes. It checks the opening frame, the one people see while they scroll, and one frame for each of the first 3 seconds, where most people decide to stay or scroll on.</p></details>
         <details><summary>Which ad sizes work?</summary><p>Any. Square (1:1), portrait (4:5), stories and reels (9:16) and landscape all work.</p></details>
       </div>
     </div>
@@ -248,179 +287,12 @@
     </div>
     <div class="legal">
       <span>© 2026 AdSure. All rights reserved.</span>
-      <span>AdSure is a Shopify Partner. Google Ads, Meta and Shopify are trademarks of their owners. AdSure is independent and not affiliated with Google or Meta.</span>
+      <span>AdSure is a Shopify Partner. Google Ads, Meta and Shopify are trademarks of their owners. AdSure is independent and not affiliated with Google or Meta. Heatmaps use the open-source UNISAL model (Droste, Jiao and Noble, ECCV 2020), Apache 2.0.</span>
     </div>
   </div>
 </footer>
 
-<script src="/assets/heatmap.js?v=20261014b"></script>
-<script>
-(function () {
-  "use strict";
-  var HM = window.AdSureHeatmap, MAX_FILES = 4, MAX_MB = 60, SHOW = 1080;
-  var drop = document.getElementById("drop"), input = document.getElementById("file"), statusEl = document.getElementById("status"), out = document.getElementById("results");
-  var items = [];
-
-  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-  function say(msg, err) { statusEl.textContent = msg || ""; statusEl.className = "status" + (err ? " err" : ""); }
-
-  /* Faces pull the eye hardest. The face finder runs in the browser too; if it can't load, the heatmap still works. */
-  var faceP = null, faceOn = null;
-  function goodNet() {   /* the face finder is a big download (~4 MB), so skip it on slow or data-saver connections */
-    var c = navigator.connection || {};
-    return !c.saveData && !/(^|-)2g|3g/.test(c.effectiveType || "");
-  }
-  function faceFinder() {
-    if (faceP) return faceP;
-    if (!goodNet()) { faceOn = false; return (faceP = Promise.resolve(null)); }
-    var BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.0";
-    var load = import(BASE + "/vision_bundle.mjs").then(function (m) {
-      return m.FilesetResolver.forVisionTasks(BASE + "/wasm").then(function (fs) {
-        return m.FaceDetector.createFromOptions(fs, { baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite", delegate: "CPU" }, runningMode: "IMAGE", minDetectionConfidence: 0.55 });
-      });
-    });
-    faceP = Promise.race([load, new Promise(function (_, no) { setTimeout(function () { no(new Error("slow")); }, 12000); })])
-      .then(function (fd) { faceOn = !!fd; return fd; }, function () { faceOn = false; return null; });
-    return faceP;
-  }
-  function findFaces(canvas) {
-    return faceFinder().then(function (fd) {
-      if (!fd) return [];
-      try {
-        return (fd.detect(canvas).detections || []).filter(function (d) { return d.boundingBox && d.categories && d.categories[0] && d.categories[0].score >= 0.55; }).slice(0, 4).map(function (d) {
-          var b = d.boundingBox; return { x: b.originX / canvas.width, y: b.originY / canvas.height, w: b.width / canvas.width, h: b.height / canvas.height };
-        });
-      } catch (e) { return []; }
-    });
-  }
-
-  function loadImage(file) {
-    return new Promise(function (ok, no) {
-      var url = URL.createObjectURL(file), img = new Image();
-      img.onload = function () { ok({ el: img, w: img.naturalWidth, h: img.naturalHeight, done: function () { URL.revokeObjectURL(url); } }); };
-      img.onerror = function () { URL.revokeObjectURL(url); no(new Error("We couldn't open this image.")); };
-      img.src = url;
-    });
-  }
-  function loadVideoFrame(file) {
-    return new Promise(function (ok, no) {
-      var url = URL.createObjectURL(file), v = document.createElement("video"), t;
-      v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
-      function fail() { clearTimeout(t); URL.revokeObjectURL(url); no(new Error("We couldn't read this video. Try an MP4, or a screenshot of its first frame.")); }
-      t = setTimeout(fail, 15000);
-      v.onerror = fail;
-      v.onloadedmetadata = function () { v.currentTime = Math.min(0.3, (v.duration || 1) / 4); };
-      v.onseeked = function () { clearTimeout(t); ok({ el: v, w: v.videoWidth, h: v.videoHeight, video: true, done: function () { URL.revokeObjectURL(url); v.removeAttribute("src"); v.load(); } }); };
-    });
-  }
-
-  function analyseFile(file, idx) {
-    var isVideo = /^video\//.test(file.type);
-    if (!/^(image\/(jpeg|png|webp)|video\/)/.test(file.type)) return Promise.reject(new Error(file.name + ": please use a JPG, PNG, WebP or MP4 file."));
-    if (file.size > MAX_MB * 1024 * 1024) return Promise.reject(new Error(file.name + " is over " + MAX_MB + " MB."));
-    return (isVideo ? loadVideoFrame(file) : loadImage(file)).then(function (src) {
-      if (!src.w || !src.h) throw new Error("We couldn't read the size of " + file.name + ".");
-      var s = Math.min(1, SHOW / Math.max(src.w, src.h)), W = Math.round(src.w * s), H = Math.round(src.h * s);
-      var base = document.createElement("canvas"); base.width = W; base.height = H;
-      base.getContext("2d").drawImage(src.el, 0, 0, W, H);
-      src.done();
-      var g = HM.GRID / Math.max(W, H), gw = Math.max(8, Math.round(W * g)), gh = Math.max(8, Math.round(H * g));
-      var grid = document.createElement("canvas"); grid.width = gw; grid.height = gh;
-      var gctx = grid.getContext("2d"); gctx.imageSmoothingQuality = "high"; gctx.drawImage(base, 0, 0, gw, gh);
-      return findFaces(base).then(function (faces) {
-        var res = HM.analyze(gctx.getImageData(0, 0, gw, gh), faces);
-        return { name: file.name, video: !!src.video, base: base, res: res, mode: "heat", idx: idx, faceChecked: faceOn === true };
-      });
-    });
-  }
-
-  var LABELS = { heat: "Heatmap", spot: "Spotlight", original: "Original" };
-  function card(it, i) {
-    var r = it.res, v = r.verdict;
-    var spots = r.peaks.length ? r.peaks.map(function (p) {
-      return '<li><i>' + p.n + '</i><span>' + (p.n === 1 ? "First look: " : "") + esc(p.where.charAt(0).toUpperCase() + p.where.slice(1)) + (p.face ? " (a face)" : "") + '</span><small>' + (p.strength >= 85 ? "Strong" : p.strength >= 55 ? "Medium" : "Weak") + '</small></li>';
-    }).join("") : '<li><i>–</i><span>No spot stands out</span><small></small></li>';
-    return '<article class="res" data-i="' + i + '">' +
-      '<div class="res-media"><canvas aria-label="Attention heatmap for ' + esc(it.name) + ': ' + esc(v.label) + '"></canvas></div>' +
-      '<div class="res-body">' +
-        '<p class="res-name">' + (items.length > 1 ? "Version " + (i + 1) + " · " : "") + esc(it.name) + (it.video ? " · opening frame" : "") + '</p>' +
-        '<div class="seg" role="group" aria-label="View">' + ["heat", "spot", "original"].map(function (m) { return '<button type="button" data-mode="' + m + '" aria-pressed="' + (it.mode === m) + '">' + LABELS[m] + '</button>'; }).join("") + '</div>' +
-        '<div><span class="verdict ' + v.tone + '">' + esc(v.label) + '</span></div>' +
-        '<p class="res-line">' + esc(v.line) + '</p>' +
-        '<h3>Where eyes go</h3><ol class="spots">' + spots + '</ol>' +
-        (it.faceChecked ? "" : '<p class="small" style="color:var(--muted);margin:10px 0 0">Faces weren\'t checked on this connection. If your ad has a face, it usually takes the first look.</p>') +
-        '<h3>What to change</h3><ul class="tips">' + v.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>' +
-        '<div class="res-actions"><button type="button" class="btn btn-ink btn-sm" data-save>Save heatmap</button><a class="btn btn-ghost btn-sm" href="/#join">Get the full ad review</a></div>' +
-      '</div></article>';
-  }
-  function draw(el, it, stamp) {
-    var c = el.querySelector ? el.querySelector("canvas") : el;
-    c.width = it.base.width; c.height = it.base.height;
-    HM.render(c, it.base, it.res, it.mode, { stamp: !!stamp });
-    return c;
-  }
-  var RANK = { clear: 0, split: 1, busy: 2 };
-  function compareHTML() {
-    if (items.length < 2) return "";
-    var best = items.slice().sort(function (a, b) { return (RANK[a.res.verdict.key] - RANK[b.res.verdict.key]) || (b.res.focus - a.res.focus); })[0];
-    var allSame = items.every(function (x) { return x.res.verdict.key === best.res.verdict.key && Math.abs(x.res.focus - best.res.focus) < 0.04; });
-    return '<div class="compare on-ink"><h2>' + (allSame ? "These versions are about the same." : "Version " + (items.indexOf(best) + 1) + " has the clearest focus.") + '</h2>' +
-      '<p>' + (allSame ? "None of them pulls the eye much better than the others. Change the layout more boldly to see a difference." : "<b>" + esc(best.name) + "</b> gets the first look most clearly. Check that its spot 1 is your product or offer before you pick it.") + '</p></div>';
-  }
-  function paint() {
-    out.innerHTML = compareHTML() + items.map(card).join("");
-    Array.prototype.forEach.call(out.querySelectorAll(".res"), function (el) { draw(el, items[+el.getAttribute("data-i")]); });
-  }
-
-  function handle(files) {
-    files = Array.prototype.slice.call(files || []);
-    if (!files.length) return;
-    if (files.length > MAX_FILES) { say("Up to " + MAX_FILES + " ads at a time. We've taken the first " + MAX_FILES + ".", true); files = files.slice(0, MAX_FILES); }
-    else say(files.length > 1 ? "Checking " + files.length + " ads…" : "Checking your ad…");
-    items = [];
-    out.innerHTML = "";
-    var errors = [], i = 0;
-    (function next() {
-      if (i >= files.length) {
-        items.sort(function (a, b) { return a.idx - b.idx; });
-        paint();
-        if (errors.length) say(errors.join(" "), true); else say(items.length ? "Done. Your ad stayed on this device." : "");
-        if (items.length) out.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      var f = files[i], idx = i++;
-      analyseFile(f, idx).then(function (it) { items.push(it); }, function (e) { errors.push(e.message || String(e)); }).then(function () {
-        say(i < files.length ? "Checking ad " + (i + 1) + " of " + files.length + "…" : "Almost done…");
-        setTimeout(next, 16);
-      });
-    })();
-  }
-
-  input.addEventListener("change", function () { handle(input.files); input.value = ""; });
-  ["dragenter", "dragover"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
-  ["dragleave", "drop"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
-  drop.addEventListener("drop", function (e) { if (e.dataTransfer) handle(e.dataTransfer.files); });
-
-  out.addEventListener("click", function (e) {
-    var b = e.target.closest("button"); if (!b) return;
-    var el = b.closest(".res"), it = el && items[+el.getAttribute("data-i")]; if (!it) return;
-    if (b.hasAttribute("data-mode")) {
-      it.mode = b.getAttribute("data-mode");
-      Array.prototype.forEach.call(el.querySelectorAll(".seg button"), function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-      draw(el, it);
-    } else if (b.hasAttribute("data-save")) {
-      var c = document.createElement("canvas");
-      draw(c, { base: it.base, res: it.res, mode: it.mode === "original" ? "heat" : it.mode }, true);
-      var a = document.createElement("a");
-      a.download = it.name.replace(/\.[a-z0-9]+$/i, "") + "-adsure-heatmap.png";
-      a.href = c.toDataURL("image/png");
-      document.body.appendChild(a); a.click(); a.remove();
-    }
-  });
-
-  /* Start loading the face finder as soon as someone shows they're about to add an ad, so the check is quick. */
-  ["pointerenter", "focusin", "touchstart"].forEach(function (ev) { drop.addEventListener(ev, function () { faceFinder(); }, { once: true, passive: true }); });
-})();
-</script>
+<script src="/assets/heatmap.js?v=20261014c"></script>
+<script src="/assets/heatmap-page.js?v=20261014c"></script>
 </body>
 </html>
