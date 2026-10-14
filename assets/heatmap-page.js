@@ -60,8 +60,12 @@
       var url = URL.createObjectURL(file), v = document.createElement("video"), frames = [], times = [], k = 0, t;
       v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
       function done() { URL.revokeObjectURL(url); v.removeAttribute("src"); v.load(); }
-      function fail() { clearTimeout(t); done(); no(new Error("We couldn't read " + file.name + ". Try an MP4, or a screenshot of its first frame.")); }
-      t = setTimeout(fail, 25000);
+      function finish() { clearTimeout(t); var w = v.videoWidth, h = v.videoHeight; done(); ok({ frames: frames, w: w, h: h, video: true, done: function () {} }); }
+      function fail() {
+        if (frames.length) return finish();   /* keep the frames we managed to read */
+        clearTimeout(t); done(); no(new Error("We couldn't read " + file.name + ". Try an MP4, or a screenshot of its first frame."));
+      }
+      t = setTimeout(fail, 20000);
       v.onerror = fail;
       v.onloadedmetadata = function () {
         var d = isFinite(v.duration) && v.duration > 0 ? v.duration : 99;   /* some WebM files report no length */
@@ -73,10 +77,8 @@
         c.getContext("2d").drawImage(v, 0, 0);
         frames.push({ el: c, t: times[k] });
         k++;
-        if (k < times.length) { v.currentTime = times[k]; return; }
-        clearTimeout(t);
-        var w = v.videoWidth, h = v.videoHeight; done();
-        ok({ frames: frames, w: w, h: h, video: true, done: function () {} });
+        if (k < times.length && v.currentTime < (isFinite(v.duration) ? v.duration : 1e9) - 0.05) { clearTimeout(t); t = setTimeout(fail, 8000); v.currentTime = times[k]; return; }
+        finish();
       };
     });
   }
