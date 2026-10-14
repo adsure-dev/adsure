@@ -5,6 +5,8 @@ One page, no build step. Upload this folder to GitHub and it works.
 ```
 index.html          the whole page (HTML, CSS and JavaScript)
 terms.html, privacy.html, refund-policy.html   policy pages (styles in assets/legal.css)
+heatmap.html        free ad attention heatmap at /heatmap (no sign-up; runs in the browser, ads are never uploaded)
+assets/heatmap.js   the heatmap model used by heatmap.html
 vercel.json         clean links: /terms, /privacy, /refund-policy
 supabase.sql        run once in Supabase to create the sign-up table and live counter
 assets/
