@@ -15,14 +15,17 @@
   var ORD = ["", "1st", "2nd", "3rd", "4th", "5th", "6th"];
 
   /* ---------- Trained model (loaded once, only when someone is about to use the tool) ---------- */
-  function goodNet() {   /* the model + runtime is a one-time ~8 MB download, so skip it on slow or data-saver connections */
+  /* The model + runtime is a one-time ~8 MB download (cached after). Results always show instantly with the quick
+     model first, then upgrade by themselves when the eye-tracking model is ready. On data-saver or 2G connections
+     it only downloads if the person taps the button. */
+  function autoLoad() {
     var c = navigator.connection || {};
-    return !c.saveData && !/(^|-)2g|3g/.test(c.effectiveType || "");
+    return !c.saveData && !/2g/.test(c.effectiveType || "");
   }
-  var modelP = null, modelState = "idle";
-  function model() {
+  var modelP = null, modelState = "idle", modelObj = null;
+  function model(force) {
     if (modelP) return modelP;
-    if (!goodNet()) { modelState = "skipped"; return (modelP = Promise.resolve(null)); }
+    if (!force && !autoLoad()) { modelState = "skipped"; return Promise.resolve(null); }
     modelState = "loading";
     var load = import(ORT + "ort.wasm.min.mjs").then(function (ort) {
       ort = ort.default && ort.default.InferenceSession ? ort.default : ort;
@@ -30,8 +33,8 @@
       ort.env.wasm.numThreads = 1;
       return ort.InferenceSession.create(MODEL_URL, { executionProviders: ["wasm"], graphOptimizationLevel: "all" }).then(function (s) { return { ort: ort, s: s }; });
     });
-    modelP = Promise.race([load, new Promise(function (_, no) { setTimeout(function () { no(new Error("slow")); }, 30000); })])
-      .then(function (m) { modelState = "ready"; return m; }, function (e) { modelState = "failed"; if (window.console) console.warn("Eye-tracking model unavailable, using the quick model.", e); return null; });
+    modelP = Promise.race([load, new Promise(function (_, no) { setTimeout(function () { no(new Error("slow")); }, 120000); })])
+      .then(function (m) { modelState = "ready"; modelObj = m; return m; }, function (e) { modelState = "failed"; if (window.console) console.warn("Eye-tracking model unavailable, using the quick model.", e); return null; });
     return modelP;
   }
   function runModel(m, canvas) {
@@ -94,15 +97,15 @@
     var isVideo = /^video\//.test(file.type);
     if (!/^(image\/(jpeg|png|webp)|video\/)/.test(file.type)) return Promise.reject(new Error(file.name + ": please use a JPG, PNG, WebP or MP4 file."));
     if (file.size > MAX_MB * 1024 * 1024) return Promise.reject(new Error(file.name + " is over " + MAX_MB + " MB."));
-    return Promise.all([isVideo ? loadVideo(file) : loadImage(file), model()]).then(function (x) {
-      var src = x[0], m = x[1];
+    return (isVideo ? loadVideo(file) : loadImage(file)).then(function (src) {
+      var m = modelObj;
       if (!src.w || !src.h) throw new Error("We couldn't read the size of " + file.name + ".");
       var frames = [];
       return src.frames.reduce(function (p, f) {
         return p.then(function () { return analyseFrame(f.el, src.w, src.h, m).then(function (r) { r.t = f.t; frames.push(r); }); });
       }, Promise.resolve()).then(function () {
         src.done();
-        return { name: file.name, video: !!src.video, frames: frames, f: 0, mode: "heat", idx: idx, marks: [], marking: null, safe: false, phone: false, ratio: src.h / src.w };
+        return { name: file.name, video: !!src.video, frames: frames, f: 0, mode: "heat", idx: idx, marks: [], marking: null, safe: false, phone: false, ratio: src.h / src.w, model: !!m };
       });
     });
   }
@@ -254,6 +257,35 @@
     Array.prototype.forEach.call(out.querySelectorAll(".res"), function (el) { fillCard(el, items[+el.getAttribute("data-i")]); });
   }
 
+  /* Re-check every ad with the eye-tracking model once it's ready. Marks, views and frames are kept. */
+  function upgrade(m) {
+    var todo = items.filter(function (it) { return !it.model; });
+    if (!m || !todo.length) return Promise.resolve();
+    return todo.reduce(function (p, it) {
+      return p.then(function () {
+        return it.frames.reduce(function (q, fr) {
+          return q.then(function () { return analyseFrame(fr.base, fr.base.width, fr.base.height, m).then(function (r) { fr.res = r.res; }); });
+        }, Promise.resolve()).then(function () { it.model = true; });
+      });
+    }, Promise.resolve()).then(function () { paint(); });
+  }
+  function modelNote() {
+    if (modelState === "ready") return "Checked with the eye-tracking model. Your ad stayed on this device.";
+    if (modelState === "loading") return "Quick result shown. Loading the eye-tracking model (one time only); your results will update by themselves.";
+    if (modelState === "skipped") return "Quick result shown to save data on this connection. ";
+    return "Checked with the quick model. Your ad stayed on this device.";
+  }
+  function showNote(prefix) {
+    say((prefix || "") + modelNote());
+    if (modelState === "skipped") statusEl.insertAdjacentHTML("beforeend", '<button type="button" class="btn btn-ghost btn-sm" id="use-model" style="margin-left:6px">Use the eye-tracking model (one-time 8 MB)</button>');
+  }
+  statusEl.addEventListener("click", function (e) {
+    if (!e.target.closest("#use-model")) return;
+    modelP = null;
+    model(true).then(function (m) { return upgrade(m); }).then(function () { showNote(); });
+    showNote();
+  });
+
   /* ---------- Flow ---------- */
   function handle(files) {
     files = Array.prototype.slice.call(files || []);
@@ -261,15 +293,16 @@
     var note = "";
     if (files.length > MAX_FILES) { note = "Up to " + MAX_FILES + " ads at a time, so we took the first " + MAX_FILES + ". "; files = files.slice(0, MAX_FILES); }
     items = []; out.innerHTML = "";
-    say(note + (modelState === "ready" || modelState === "skipped" ? "Checking your ad…" : "Loading the eye-tracking model (one time only)…"));
+    say(note + "Checking your ad…");
+    var mp = model();
     var errors = [], i = 0;
     (function next() {
       if (i >= files.length) {
         items.sort(function (a, b) { return a.idx - b.idx; });
         paint();
-        var how = modelState === "ready" ? "Checked with the eye-tracking model." : "Checked with the quick model" + (modelState === "skipped" ? " to save data on this connection." : ".");
-        if (errors.length) say(note + errors.join(" "), true); else say(items.length ? note + how + " Your ad stayed on this device." : "");
+        if (errors.length) say(note + errors.join(" "), true); else if (items.length) showNote(note); else say("");
         if (items.length) out.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (items.some(function (x) { return !x.model; })) mp.then(function (m) { return upgrade(m); }).then(function () { if (!errors.length && items.length) showNote(note); });
         return;
       }
       var f = files[i], idx = i++;
