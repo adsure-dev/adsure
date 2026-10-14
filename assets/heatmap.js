@@ -190,7 +190,7 @@
       v = { key: "split", label: "Split attention", tone: "mid", line: "Two parts of the ad compete for the first look (spots 1 and 2). People may notice the wrong one." };
       tips.push("Pick the one thing you want seen first and make it bigger or brighter. Tone down the other.");
     }
-    if (busy > 0.42) tips.push("There's a lot of text or fine detail. In a feed, people read 5 to 7 words at most. Keep the rest for the ad text or landing page.");
+    if (busy > 0.5) tips.push("There's a lot of text or fine detail. In a feed, people read 5 to 7 words at most. Keep the rest for the ad text or landing page.");
     if (faceCount && first && first.face) tips.push("A face takes the first look. Have the person look at or hold the product, so eyes move from them to it.");
     if (faceCount && first && !first.face) tips.push("The face isn't getting the first look. That's fine if your product is, but check it isn't a background detail.");
     if (first && /bottom/.test(first.where)) tips.push("The first look lands near the bottom. On Instagram and Facebook, buttons and captions can cover the bottom part, so keep key things away from the edges.");
