@@ -30,13 +30,23 @@ const SB_URL = String(process.env.SUPABASE_URL || "https://zzfldryjluevajwbitra.
 const SB_KEY = String(process.env.SUPABASE_SECRET_KEY || "").trim();
 const TS_SECRET = String(process.env.TURNSTILE_SECRET_KEY || "").trim();
 const CF_ACCOUNT = String(process.env.CF_ACCOUNT_ID || "").trim();
-const CF_TOKEN = String(process.env.CF_API_TOKEN || "").trim();
+// The token alone, even if a whole "curl ... Authorization: Bearer <token>" line was pasted by mistake.
+const CF_TOKEN_RAW = String(process.env.CF_API_TOKEN || "").trim();
+const CF_TOKEN = (/\s/.test(CF_TOKEN_RAW) ? ((CF_TOKEN_RAW.match(/Bearer\s+([A-Za-z0-9_\-.]+)/) || [])[1] || "") : CF_TOKEN_RAW.replace(/^Bearer\s+/i, ""));
 const MODEL = String(process.env.FREE_IMAGE_MODEL || "@cf/black-forest-labs/flux-2-klein-4b").trim();
 const DAILY_CAP = Number(process.env.FREE_IMAGE_DAILY_CAP) || 60;
 const PER_IP = Number(process.env.FREE_IMAGE_PER_IP_DAY) || 3;
 const SALT = String(process.env.IP_HASH_SALT || SB_KEY);
 const READY = !!(SB_KEY && CF_ACCOUNT && CF_TOKEN);
 
+// Error text for the page: never includes keys, tokens or the account id.
+function safeDetail(e) {
+  let t = String((e && e.message) || e || "");
+  for (const secret of [CF_TOKEN_RAW, CF_TOKEN, CF_ACCOUNT, SB_KEY, TS_SECRET]) if (secret && secret.length > 6) t = t.split(secret).join("[hidden]");
+  t = t.replace(/Bearer\s+\S+/gi, "Bearer [hidden]").replace(/\b(cfut_|cfat_|sb_secret_)[A-Za-z0-9_\-]+/g, "[hidden]");
+  if (/Headers\.append|invalid header value/i.test(t)) t = "CF_API_TOKEN in Vercel isn't a valid token. Paste only the token itself, nothing else.";
+  return t.slice(0, 300);
+}
 const hash = (s) => createHash("sha256").update(SALT + "|" + s).digest("hex").slice(0, 40);
 function dayStartIST() {
   const n = new Date(Date.now() + 5.5 * 3600e3);
@@ -150,6 +160,6 @@ export default async function handler(req, res) {
     console.error("free-image", e);
     if (rowId) await db(`free_images?id=eq.${rowId}`, { method: "PATCH", body: { status: "failed" }, prefer: "return=minimal" }).catch(() => {});
     // detail: the technical reason (no keys or personal data), for fixing setup problems; the page doesn't show it.
-    return res.status(502).json({ error: "Couldn't make the image right now. Please try again in a minute. This didn't use up your free image.", detail: String(e && e.message || e).slice(0, 300) });
+    return res.status(502).json({ error: "Couldn't make the image right now. Please try again in a minute. This didn't use up your free image.", detail: safeDetail(e) });
   }
 }
