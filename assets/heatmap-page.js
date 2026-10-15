@@ -1,4 +1,5 @@
-/* AdSure free heatmap page. Everything runs in the visitor's browser: the ad is never uploaded.
+/* AdSure free heatmap page. The heatmap runs in the visitor's browser: the ad is never uploaded for it.
+   (The optional free AI image is a separate step the person chooses; see "Free AI image" below.)
    Where people look comes from a trained eye-tracking model (UNISAL, fine-tuned on the MIT1003
    eye-tracking study, Apache-2.0), run with ONNX Runtime Web. On slow or data-saver connections,
    or if the model can't load, the instant built-in model in heatmap.js is used instead. */
@@ -219,9 +220,102 @@
       '<div class="mark-btns">' + Object.keys(KINDS).map(function (k) { return '<button type="button" data-mark="' + k + '" aria-pressed="' + (it.marking === k) + '">+ ' + KINDS[k] + '</button>'; }).join("") + '</div>' +
       (it.marking ? '<p class="small mark-hint">Now drag a box around the ' + esc(KINDS[it.marking].toLowerCase()) + ' on the ad.</p>' : "") +
       (tall ? '<label class="chk"><input type="checkbox" data-safe' + (it.safe ? " checked" : "") + '> Show Reels and Stories safe zones <span class="muted">(' + Math.round(safe.share * 100) + '% of attention falls in covered areas)</span></label>' : "") +
-      '<h3>What to change</h3><ul class="tips">' + markTips(stats).concat(tips).slice(0, 4).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>' +
+      '<h3>What to change</h3><ul class="tips">' + (it.tipsNow = markTips(stats).concat(tips).slice(0, 4)).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>' +
+      freeHTML(it) +
       '<div class="res-actions"><button type="button" class="btn btn-ink btn-sm" data-save>Save heatmap</button><button type="button" class="btn btn-ghost btn-sm" data-phone aria-pressed="' + it.phone + '">' + (it.phone ? "Hide phone preview" : "Phone preview") + '</button><a class="btn btn-ghost btn-sm" href="/#join">Get the full ad review</a></div>';
   }
+  /* ---------- Free AI image: one AI-improved version of the ad (basic model), no sign-up ----------
+     The heatmap never leaves the device. This is a separate step the person chooses: a small copy of the
+     ad (under 512 px) and the tips are sent to /api/free-image, and the new image comes straight back.
+     Limits: 1 per browser, a few per network per day, a daily total, and Cloudflare Turnstile. */
+  var FREE = { ready: null, asked: false };
+  var CFG = window.ADSURE_CONFIG || {}, TS_KEY = String(CFG.TURNSTILE_SITE_KEY || "").trim();
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  function deviceId() {
+    var d = lsGet("adsure_dev");
+    if (!d) { d = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + "-" + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2); lsSet("adsure_dev", d); }
+    return d;
+  }
+  function freeUsed() { return lsGet("adsure_free_img") === "used"; }
+  function askFree() {
+    if (FREE.asked) return; FREE.asked = true;
+    fetch("/api/free-image", { cache: "no-store" }).then(function (r) { return r.json(); })
+      .then(function (j) { FREE.ready = !!(j && j.ready); if (FREE.ready && items.length) paint(); })
+      .catch(function () { FREE.ready = false; });
+  }
+  var tsLib = null;
+  function loadTurnstile() {
+    if (!TS_KEY) return Promise.resolve(null);
+    if (!tsLib) tsLib = new Promise(function (res) {
+      window.__adsureTsFree = function () { res(window.turnstile || null); };
+      var sc = document.createElement("script");
+      sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__adsureTsFree";
+      sc.async = true; sc.onerror = function () { res(null); };
+      document.head.appendChild(sc);
+      setTimeout(function () { res(window.turnstile || null); }, 15000);
+    });
+    return tsLib;
+  }
+  var tsId;
+  function humanToken() {
+    return loadTurnstile().then(function (ts) {
+      if (!ts) return "";
+      var box = document.getElementById("ts-free");
+      if (!box) { box = document.createElement("div"); box.id = "ts-free"; box.className = "ts-free"; document.body.appendChild(box); }
+      return new Promise(function (resolve) {
+        var settled = false, done = function (t) { if (!settled) { settled = true; resolve(t || ""); } };
+        try {
+          if (tsId !== undefined) { try { ts.remove(tsId); } catch (e) { /* already gone */ } }
+          tsId = ts.render("#ts-free", { sitekey: TS_KEY, action: "free_image", execution: "execute", appearance: "interaction-only", theme: "light",
+            callback: done, "error-callback": function () { done(""); return true; }, "timeout-callback": function () { done(""); } });
+          ts.execute("#ts-free");
+        } catch (e) { done(""); }
+        setTimeout(function () { done(""); }, 60000);
+      });
+    });
+  }
+  function usefulTips(it) {
+    return (it.tipsNow || []).filter(function (t) { return !/sensible order|That's fine on Meta/.test(t); });
+  }
+  function freeHTML(it) {
+    if (it.video || FREE.ready !== true || !usefulTips(it).length) return "";
+    var ai = it.ai || {};
+    if (ai.img) {
+      return '<div class="ai-free"><h3>Your free AI-improved version</h3><img class="ai-img" src="' + ai.img + '" alt="AI-improved version of your ad">' +
+        '<div class="res-actions" style="margin-top:12px"><a class="btn btn-ink btn-sm" href="' + ai.img + '" download="' + esc(it.name.replace(/\.[a-z0-9]+$/i, "")) + '-adsure-ai.jpg">Download image</a><a class="btn btn-ghost btn-sm" href="/#join">Get more with AdSure</a></div>' +
+        '<p class="small muted" style="margin:10px 0 0">Made by a basic AI model. Check the product and every word before you use it. AdSure didn\'t save it, so download it now. For sharper versions made from our expert and AI review, join AdSure.</p></div>';
+    }
+    if (freeUsed()) {
+      return '<div class="ai-free"><h3>You\'ve used your free AI image</h3><p class="small" style="margin:0">Want more improved versions, plus a full review of your ad by our experts and AI? <a href="/#join">Get early access to AdSure</a>.</p></div>';
+    }
+    if (ai.busy) return '<div class="ai-free"><h3>Making your AI-improved version…</h3><p class="small muted" style="margin:0"><span class="ai-spin"></span>Usually 10 to 30 seconds. Please keep this page open.</p></div>';
+    return '<div class="ai-free"><h3>Free: see an AI-improved version</h3>' +
+      '<p class="small" style="margin:0 0 10px">Our AI redraws your ad with the changes above. One free image, no sign-up.</p>' +
+      '<button type="button" class="btn btn-lime btn-sm" data-ai>Make my free AI image</button>' +
+      '<p class="small muted" style="margin:10px 0 0">To make it, a small copy of your ad is sent to our AI. It isn\'t stored. The heatmap stays on your device.</p>' +
+      (ai.error ? '<p class="small ai-err">' + esc(ai.error) + '</p>' : '') + '</div>';
+  }
+  function makeFree(i) {
+    var it = items[i]; if (!it || (it.ai && it.ai.busy)) return;
+    var refresh = function () { var el = out.querySelector('.res[data-i="' + i + '"]'); if (el) repaint(el, it); };
+    it.ai = { busy: true }; refresh();
+    var base = it.frames[0].base, k = Math.min(1, 504 / Math.max(base.width, base.height)), c = document.createElement("canvas");
+    c.width = Math.round(base.width * k); c.height = Math.round(base.height * k);
+    var g = c.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(base, 0, 0, c.width, c.height);
+    var small = c.toDataURL("image/jpeg", 0.9);
+    humanToken().then(function (token) {
+      return fetch("/api/free-image", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: small, width: base.width, height: base.height, tips: usefulTips(it), device: deviceId(), turnstile: token }) });
+    }).then(function (r) {
+      return r.text().then(function (t) { var j = null; try { j = JSON.parse(t); } catch (e) { /* not JSON */ } return { ok: r.ok, j: j || {} }; });
+    }).then(function (o) {
+      if (o.ok && o.j.image) { lsSet("adsure_free_img", "used"); it.ai = { img: o.j.image }; }
+      else { if (o.j.used) lsSet("adsure_free_img", "used"); it.ai = { error: o.j.error || "Couldn't make the image right now. Please try again in a minute." }; }
+      refresh();
+    }).catch(function () { it.ai = { error: "Couldn't reach our AI. Check your connection and try again." }; refresh(); });
+  }
+
   function phoneHTML(it) {
     if (!it.phone) return "";
     return '<div class="phones"><figure><div class="phone"><div class="ph-top"><span class="av"></span><b>yourbrand</b><small>Sponsored</small></div><div class="ph-ad" data-phone-img></div><div class="ph-cta"><span>Shop now</span><span>›</span></div><div class="ph-cap"></div></div><figcaption>In the feed, at real phone size</figcaption></figure>' +
@@ -295,6 +389,7 @@
     var note = "";
     if (files.length > MAX_FILES) { note = "Up to " + MAX_FILES + " ads at a time, so we took the first " + MAX_FILES + ". "; files = files.slice(0, MAX_FILES); }
     items = []; out.innerHTML = "";
+    askFree();
     say(note + "Checking your ad…");
     var mp = model();
     var errors = [], i = 0;
@@ -332,6 +427,7 @@
     if (b.hasAttribute("data-mark")) { var k = b.getAttribute("data-mark"); it.marking = it.marking === k ? null : k; repaint(el, it).querySelector(".res-media").scrollIntoView({ behavior: "smooth", block: "nearest" }); return; }
     if (b.hasAttribute("data-unmark")) { it.marks.splice(+b.getAttribute("data-unmark"), 1); repaint(el, it); return; }
     if (b.hasAttribute("data-phone")) { it.phone = !it.phone; repaint(el, it); return; }
+    if (b.hasAttribute("data-ai")) { makeFree(+el.getAttribute("data-i")); return; }
     if (b.hasAttribute("data-save")) {
       var c = document.createElement("canvas");
       draw(c, it, true, it.mode === "original" ? "heat" : it.mode);

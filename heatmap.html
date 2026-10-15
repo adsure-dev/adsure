@@ -47,7 +47,7 @@
   "@type": "FAQPage",
   "mainEntity": [
    { "@type": "Question", "name": "Is the ad heatmap really free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. No sign-up, no limit on how many ads you check." } },
-   { "@type": "Question", "name": "Is my ad uploaded anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it." } },
+   { "@type": "Question", "name": "Is my ad uploaded anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "Not for the heatmap. The heatmap is worked out inside your browser, so your image or video never leaves your phone or computer. The only exception is the optional free AI image: if you choose it, a small copy of that one ad is sent to our AI to make it, and neither image is stored." } },
    { "@type": "Question", "name": "How accurate is an attention heatmap?", "acceptedAnswer": { "@type": "Answer", "text": "It uses a model trained on real eye-tracking studies, so it is good at showing what stands out first and what gets lost. It is a prediction, not a new eye-tracking study of your ad, and it cannot tell you whether people will click or buy." } },
    { "@type": "Question", "name": "Does it work for video ads?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It checks the opening frame and one frame for each of the first 3 seconds." } }
   ]
@@ -169,6 +169,14 @@
   .phone.glance .ph-ad img{filter:blur(3px) saturate(.9);transform:scale(1.02)}
   @media (max-width:860px){.res,.cta,.two{grid-template-columns:1fr}.nav-in .btn-ghost{display:none}}
   @media print{.drop,.res-actions,.seg,.cta,.sec{display:none}}
+  .ai-free{margin-top:20px;padding:16px 18px;border-radius:18px;background:var(--lime-soft,#EEF8C4);box-shadow:inset 0 0 0 2px var(--ink)}
+  .ai-free h3{margin:0 0 6px}
+  .ai-img{display:block;width:100%;max-width:420px;height:auto;margin-top:10px;border-radius:12px;box-shadow:0 0 0 1px var(--line)}
+  .ai-err{color:#B3261E;margin:10px 0 0}
+  .ai-spin{display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-2px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--ink);animation:aispin .8s linear infinite}
+  @keyframes aispin{to{transform:rotate(360deg)}}
+  .ts-free{position:fixed;right:16px;bottom:16px;z-index:60}
+  @media print{.ai-free{display:none}}
 </style>
 </head>
 <body>
@@ -253,7 +261,8 @@
       <h2>Good to know</h2>
       <div class="faq">
         <details><summary>Is it really free?</summary><p>Yes. No sign-up, no limit on how many ads you check.</p></details>
-        <details><summary>Is my ad uploaded anywhere?</summary><p>No. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it. Close the tab and it's gone.</p></details>
+        <details><summary>Is my ad uploaded anywhere?</summary><p>Not for the heatmap. The heatmap is worked out inside your browser. Your image or video never leaves your phone or computer, and AdSure never sees it. Close the tab and it's gone.</p><p>The only exception is the optional free AI image. If you tap "Make my free AI image", a small copy of that one ad and our tips are sent to our AI to make it. Neither image is stored.</p></details>
+        <details><summary>How does the free AI image work?</summary><p>After your heatmap, you can get one AI-improved version of an image ad, free and without signing up. It uses a basic AI model, so check the product and any text before you use it. To keep it fair, it's one per person. For more and sharper versions made from a full review by our experts and AI, join AdSure.</p></details>
         <details><summary>How does it predict where people look?</summary><p>It uses a model trained on real eye-tracking studies, where cameras recorded exactly where people looked at over a thousand images. The model learned what pulls the eye: faces, text, contrast and position. On slow connections we use a lighter, instant model instead, and the result says which one was used. It's a prediction, not a new eye-tracking study of your ad.</p></details>
         <details><summary>What does "Is your product seen?" do?</summary><p>Draw a box around your product, offer, logo or button. We show what share of attention each one gets and the order people see them in, so you know whether the thing you're paying to show actually gets noticed.</p></details>
         <details><summary>Does it work for video ads?</summary><p>Yes. It checks the opening frame, the one people see while they scroll, and one frame for each of the first 3 seconds, where most people decide to stay or scroll on.</p></details>
@@ -295,7 +304,8 @@
   </div>
 </footer>
 
+<script src="/config.js?v=20261015a"></script>
 <script src="/assets/heatmap.js?v=20261014c"></script>
-<script src="/assets/heatmap-page.js?v=20261014f"></script>
+<script src="/assets/heatmap-page.js?v=20261015a"></script>
 </body>
 </html>

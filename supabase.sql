@@ -40,3 +40,23 @@ $$;
 
 revoke all on function public.seats_taken() from public;
 grant execute on function public.seats_taken() to anon, authenticated;
+
+-- ===================== Free AI image on /heatmap (run once; safe to run again) =====================
+-- One row per free AI image. IP address and browser id are stored only as salted hashes, never the real values.
+-- Only /api/free-image (secret key) can read or write this table.
+create table if not exists public.free_images (
+  id           bigint generated always as identity primary key,
+  created_at   timestamptz not null default now(),
+  ip_hash      text not null,
+  device_hash  text not null,
+  status       text not null default 'pending' check (status in ('pending','done','failed')),
+  model        text
+);
+create index if not exists free_images_ip_day on public.free_images (ip_hash, created_at desc);
+create index if not exists free_images_device on public.free_images (device_hash);
+create index if not exists free_images_day on public.free_images (created_at desc);
+alter table public.free_images enable row level security;
+revoke all on public.free_images from anon, authenticated;
+grant select, insert, update, delete on public.free_images to service_role;
+-- /api/free-image deletes rows older than about 85 days by itself (the privacy policy promises 90).
+notify pgrst, 'reload schema';

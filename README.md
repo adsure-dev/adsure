@@ -91,3 +91,13 @@ Use them as provided (don't recolour or stretch) and keep the "Works with" wordi
 | `REFRESH_SECONDS` | How often the live counter updates |
 
 After your domain is live, change `assets/og-image.png` in the `og:image` line at the top of `index.html` to the full address (for example `https://yourdomain.com/assets/og-image.png`) so WhatsApp and LinkedIn show the preview image.
+
+## Free AI image on /heatmap (one per person)
+
+After the heatmap, image ads get a "Make my free AI image" box: one AI-improved version (Cloudflare Workers AI, FLUX.2 klein, a basic model), no sign-up. The heatmap itself still runs only in the browser; this step is optional and says so on the page. The box stays hidden until everything below is set up.
+
+1. **Supabase** (website project): run the "Free AI image" part at the end of `supabase.sql` in the SQL Editor.
+2. **Cloudflare**: copy your Account ID, then My Profile → API Tokens → Create token → "Workers AI" template.
+3. **Vercel** (adsure project) → Settings → Environment Variables: `CF_ACCOUNT_ID`, `CF_API_TOKEN`. `SUPABASE_SECRET_KEY` and `TURNSTILE_SECRET_KEY` are already there for the sign-up form. Redeploy.
+
+Limits: 1 per browser, `FREE_IMAGE_PER_IP_DAY` per network per day (default 3), `FREE_IMAGE_DAILY_CAP` for everyone per day (default 60, inside Cloudflare's free daily allowance), plus Turnstile. IPs are stored only as salted hashes and deleted after about 85 days.
