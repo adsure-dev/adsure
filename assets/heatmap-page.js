@@ -271,7 +271,7 @@
             callback: done, "error-callback": function () { done(""); return true; }, "timeout-callback": function () { done(""); } });
           ts.execute("#ts-free");
         } catch (e) { done(""); }
-        setTimeout(function () { done(""); }, 60000);
+        setTimeout(function () { done(""); }, 300000);   /* give people time to tick "Verify you are human" if Cloudflare asks */
       });
     });
   }
