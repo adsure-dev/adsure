@@ -294,7 +294,7 @@
       '<p class="small" style="margin:0 0 10px">Our AI redraws your ad with the changes above. One free image, no sign-up.</p>' +
       '<button type="button" class="btn btn-lime btn-sm" data-ai>Make my free AI image</button>' +
       '<p class="small muted" style="margin:10px 0 0">To make it, a small copy of your ad is sent to our AI. It isn\'t stored. The heatmap stays on your device.</p>' +
-      (ai.error ? '<p class="small ai-err">' + esc(ai.error) + '</p>' : '') + '</div>';
+      (ai.error ? '<p class="small ai-err">' + esc(ai.error) + '</p>' + (ai.detail ? '<details class="small muted" style="margin-top:6px"><summary>Technical details</summary>' + esc(ai.detail) + '</details>' : '') : '') + '</div>';
   }
   function makeFree(i) {
     var it = items[i]; if (!it || (it.ai && it.ai.busy)) return;
@@ -311,7 +311,7 @@
       return r.text().then(function (t) { var j = null; try { j = JSON.parse(t); } catch (e) { /* not JSON */ } return { ok: r.ok, j: j || {} }; });
     }).then(function (o) {
       if (o.ok && o.j.image) { lsSet("adsure_free_img", "used"); it.ai = { img: o.j.image }; }
-      else { if (o.j.used) lsSet("adsure_free_img", "used"); it.ai = { error: o.j.error || "Couldn't make the image right now. Please try again in a minute." }; }
+      else { if (o.j.used) lsSet("adsure_free_img", "used"); it.ai = { error: o.j.error || "Couldn't make the image right now. Please try again in a minute.", detail: o.j.detail || "" }; }
       refresh();
     }).catch(function () { it.ai = { error: "Couldn't reach our AI. Check your connection and try again." }; refresh(); });
   }
