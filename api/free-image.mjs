@@ -90,9 +90,11 @@ Clean, sharp, well-lit, high-quality ad for social media.`;
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (req.method === "GET") {
-    if (!READY) return res.status(200).json({ ready: false });
+    // Names of what's missing only, never any values, so setup problems are easy to spot.
+    const missing = [!CF_ACCOUNT && "CF_ACCOUNT_ID", !CF_TOKEN && "CF_API_TOKEN", !SB_KEY && "SUPABASE_SECRET_KEY"].filter(Boolean);
+    if (!READY) return res.status(200).json({ ready: false, missing });
     try { await db("free_images?select=id&limit=1"); return res.status(200).json({ ready: true }); }
-    catch (e) { console.error("free-image status", e); return res.status(200).json({ ready: false }); }
+    catch (e) { console.error("free-image status", e); return res.status(200).json({ ready: false, missing: ["free_images table (run the SQL in supabase.sql)"] }); }
   }
   if (req.method !== "POST") return res.status(405).json({ error: "GET or POST only" });
   if (!READY) return res.status(503).json({ error: "The free AI image isn't switched on yet." });
