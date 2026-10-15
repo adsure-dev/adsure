@@ -138,7 +138,8 @@ export default async function handler(req, res) {
     const b64 = out && out.result && out.result.image;
     if (!r.ok || !b64) {
       console.error("free-image cloudflare", r.status, text.slice(0, 400));
-      throw new Error("model");
+      const why = out && Array.isArray(out.errors) && out.errors.length ? out.errors.map((x) => `${x.code || ""} ${x.message || ""}`.trim()).join("; ") : text.slice(0, 160);
+      throw new Error(`cloudflare ${r.status}: ${why}`);
     }
     // Privacy policy promise: hashes are deleted within 90 days. Tidy up now and then (about 1 in 20 images).
     if (Math.random() < 0.05) await db(`free_images?created_at=lt.${encodeURIComponent(new Date(Date.now() - 85 * 864e5).toISOString())}`, { method: "DELETE", prefer: "return=minimal" }).catch((e) => console.error("free-image cleanup", e));
@@ -148,6 +149,7 @@ export default async function handler(req, res) {
   } catch (e) {
     console.error("free-image", e);
     if (rowId) await db(`free_images?id=eq.${rowId}`, { method: "PATCH", body: { status: "failed" }, prefer: "return=minimal" }).catch(() => {});
-    return res.status(502).json({ error: "Couldn't make the image right now. Please try again in a minute. This didn't use up your free image." });
+    // detail: the technical reason (no keys or personal data), for fixing setup problems; the page doesn't show it.
+    return res.status(502).json({ error: "Couldn't make the image right now. Please try again in a minute. This didn't use up your free image.", detail: String(e && e.message || e).slice(0, 300) });
   }
 }
